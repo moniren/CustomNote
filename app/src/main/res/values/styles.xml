@@ -1,0 +1,137 @@
+<resources>
+
+    <!--<style name="AppTheme1" parent="@style/MaterialDesignLibraryTheme.Light">-->
+        <!--<item name="colorPrimary">@color/color_primary</item>-->
+        <!--<item name="colorPrimaryDark">@color/color_primary_dark</item>-->
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+    <!--</style>-->
+    <!--<style name="DrawerArrowStyle1" parent="Widget.AppCompat.DrawerArrowToggle">-->
+        <!--<item name="color">@android:color/white</item>-->
+    <!--</style>-->
+    <!--<style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">-->
+        <!--<item name="colorPrimary">@color/color_primary</item>-->
+        <!--<item name="colorPrimaryDark">@color/color_primary_dark</item>-->
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+    <!--</style>-->
+
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:actionBarItemBackground">@null</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverflowButtonStyle</item>-->
+
+    </style>
+
+    <style name="ActionBarStyle" parent="android:Widget.Holo.ActionBar.Solid">
+        <item name="android:background">@color/color_primary</item>
+        <item name="android:displayOptions">showTitle</item>
+        <item name="android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse</item>
+    </style>
+
+    <style name="ActionButtonStyle" parent="android:Widget.Holo.ActionButton">
+        <item name="android:background">@color/color_primary</item>
+    </style>
+
+    <style name="OverflowButtonStyle" parent="android:Widget.Holo.ActionButton.Overflow">
+        <item name="android:background">@color/color_primary_dark</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="AppBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="selectableItemBackground">@null</item>
+    </style>
+    <!-- Navigator Drawable -->
+
+    <style name="NavigatorDrawableIcon" parent="Material.Drawable.NavigationDrawerIcon">
+        <item name="lmd_strokeSize">3dp</item>
+        <item name="lmd_padding">15dp</item>
+    </style>
+
+    <style name="NavigationDrawerDrawable">
+        <item name="nd_ripple">@style/ToolbarRippleStyle</item>
+        <item name="nd_icon">@style/NavigatorDrawableIcon</item>
+    </style>
+
+    <style name="ToolbarRippleStyle" parent="Material.Drawable.Ripple.Touch.MatchView.Light">
+        <item name="rd_backgroundColor">@color/color_primary</item>
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="RaiseWaveColorButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="android:background">@color/color_primary</item>
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+        <item name="rd_leftPadding">1dp</item>
+        <item name="rd_topPadding">1dp</item>
+        <item name="rd_rightPadding">1dp</item>
+        <item name="rd_bottomPadding">2dp</item>
+    </style>
+
+    <style name="RaiseColorButtonRippleStyle" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="android:background">@color/color_primary</item>
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+        <item name="rd_leftPadding">1dp</item>
+        <item name="rd_topPadding">1dp</item>
+        <item name="rd_rightPadding">1dp</item>
+        <item name="rd_bottomPadding">2dp</item>
+    </style>
+
+    <style name="FlatButtonRippleStyle" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_cornerRadius">4dp</item>
+    </style>
+
+    <style name="FlatColorButtonRippleStyle" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_backgroundColor">@color/color_primary</item>
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+        <item name="rd_cornerRadius">4dp</item>
+    </style>
+
+    <style name="FlatWaveColorButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+        <item name="rd_cornerRadius">4dp</item>
+    </style>
+
+    <style name="FloatingColorActionButton" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+        <item name="fab_backgroundColor">@color/color_primary</item>
+        <item name="fab_elevation">4dp</item>
+        <item name="rd_delayClick">afterRelease</item>
+    </style>
+
+    <style name="FloatingWaveColorActionButton" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_rippleColor">@color/color_primary_dark</item>
+        <item name="fab_backgroundColor">@color/color_primary</item>
+        <item name="fab_elevation">4dp</item>
+        <item name="fab_iconLineMorphing">@style/FloatingActionButtonIcon</item>
+        <item name="rd_delayClick">afterRelease</item>
+    </style>
+
+    <style name="FloatingActionButtonIcon" >
+        <item name="lmd_state">@xml/fab_icon_states</item>
+        <item name="lmd_curState">0</item>
+        <item name="lmd_padding">2dp</item>
+        <item name="lmd_animDuration">400</item>
+        <item name="lmd_interpolator">@android:anim/accelerate_decelerate_interpolator</item>
+        <item name="lmd_strokeSize">3dp</item>
+        <item name="lmd_strokeColor">#FFFFFFFF</item>
+        <item name="lmd_strokeCap">butt</item>
+        <item name="lmd_strokeJoin">miter</item>
+        <item name="lmd_clockwise">true</item>
+    </style>
+</resources>

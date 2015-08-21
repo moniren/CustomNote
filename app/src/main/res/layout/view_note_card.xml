@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <LinearLayout
+            android:id="@+id/card_circle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/shape_circle"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true">
+            <TextView
+                android:id = "@+id/card_abbrev"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:fontFamily="sans-serif"
+                android:textSize="40dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/card_circle"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:background="@drawable/left_section">
+            <TextView
+                android:id = "@+id/card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:layout_margin="10dp"
+                android:textSize="25dp"
+                android:fontFamily="sans-serif"
+                />
+            <TextView
+                android:id = "@+id/card_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="sans-serif"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/left_section">
+            <com.rey.material.widget.ImageButton
+                android:id="@+id/card_delete_note"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                style="@style/FlatButtonRippleStyle"
+                android:src="@drawable/ic_delete_grey"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="7dp"
+                app:rd_delayClick="afterRelease" />
+            <com.rey.material.widget.ImageButton
+                android:id="@+id/card_config_note"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                style="@style/FlatButtonRippleStyle"
+                android:src="@drawable/ic_settings_grey"
+                app:rd_delayClick="afterRelease" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

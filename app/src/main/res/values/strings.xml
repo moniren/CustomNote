@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">ImmersiveNote</string>
+    <string name="hello">Hello World, CaptureSignatureActivity!</string>
+    <string name="external_dir">GetSignature</string>
+    <string name="notes">Notes</string>
+    <string name="start_writing">Start Writing</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>

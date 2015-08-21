@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?android:attr/actionBarSize"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <com.rey.material.widget.ImageButton
+                    android:id="@+id/actionbar_edit_view"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_edit_white"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.ImageButton
+                    android:id="@+id/actionbar_backspace"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/actionbar_edit_view"
+                    android:layout_toStartOf="@id/actionbar_edit_view"
+                    android:src="@drawable/ic_backspace_white"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.ImageButton
+                    android:id="@+id/actionbar_add_page"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/actionbar_edit_view"
+                    android:layout_toStartOf="@id/actionbar_edit_view"
+                    android:src="@drawable/ic_add_white"
+                    android:visibility="invisible"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.ImageButton
+                    android:id="@+id/actionbar_space"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/actionbar_backspace"
+                    android:layout_toStartOf="@id/actionbar_backspace"
+                    android:src="@drawable/ic_space_bar_white"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.ImageButton
+                    android:id="@+id/actionbar_remove_page"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/actionbar_add_page"
+                    android:layout_toStartOf="@id/actionbar_add_page"
+                    android:src="@drawable/ic_remove_white"
+                    android:visibility="invisible"
+                    app:rd_delayClick="afterRelease" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <FrameLayout
+        android:id="@+id/singlePageBase"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/single_line_bg">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/notesPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.lyk.immersivenote.notepad.CursorHolder
+            android:id="@+id/cursorHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator_pager"
+            android:layout_gravity="bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            app:ci_drawable="@drawable/circle_indicator"
+            app:ci_width="7dp"
+            app:ci_height="7dp"
+            android:visibility="invisible"/>
+
+        <com.lyk.immersivenote.notepad.SignatureHolder
+            android:id="@+id/sigHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <include
+                android:id="@+id/sig_auxi"
+                layout="@layout/signature_auxiliary_layer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+        </com.lyk.immersivenote.notepad.SignatureHolder>
+
+    </FrameLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="4dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/shadow_btm" />
+</RelativeLayout>
+
+</LinearLayout>

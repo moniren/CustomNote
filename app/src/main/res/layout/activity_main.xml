@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarHome"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?android:attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="?android:attr/actionBarSize">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ListView
+                    android:id="@+id/notes_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="10.0dp"
+                    android:choiceMode="singleChoice" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="4dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/shadow_btm" />
+            </RelativeLayout>
+
+            <com.rey.material.widget.FloatingActionButton
+                android:id="@+id/homeFabButton"
+                style="@style/FloatingColorActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/fab_margin"
+                app:borderWidth="0dp"
+                app:fab_iconSrc="@drawable/ic_add_white" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/main_ll_drawer"
+            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/windowBackground">
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/button_start_writing"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Start Writing"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    app:rd_delayClick="afterRelease" />
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="4dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/shadow_btm" />
+        </RelativeLayout>
+
+
+    </android.support.v4.widget.DrawerLayout>
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+
