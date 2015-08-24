@@ -20,6 +20,8 @@ public class SignatureView extends ImageView{
 
 	private int viewWidth;
 
+	private Bitmap image;
+
 	//space
 	public SignatureView(Context context, int lineHeight, CursorHolder cursorHolder) {
 		super(context);
@@ -47,6 +49,7 @@ public class SignatureView extends ImageView{
 		this.setLayoutParams(layoutParams);
 		this.setBackground(null);
 		this.setImageBitmap(image);
+		this.image = image;
 //		this.setOnClickListener(new OnClickListener() {
 //
 //			@Override
@@ -63,6 +66,10 @@ public class SignatureView extends ImageView{
 //		getLocationOnScreen(location);
 //		cursorHolder.setCusorPosition(location[0]+this.getWidth(), lineNum);
 		cursorHolder.setCursorViewLeft(getLeft(), lineNum, getPosInLine());
+	}
+
+	public Bitmap getImage(){
+		return this.image;
 	}
 	
 	public void setPosInLine(int pos){

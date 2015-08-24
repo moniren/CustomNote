@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.settings.PrefManager;
 
+import java.util.ArrayList;
+
 /**
  * Created by John on 2015/7/22.
  */
@@ -17,6 +19,8 @@ public class SinglePage extends LinearLayout{
     private int lineHeight = 0;
     private int lineWidth = 0;
     public static int NUM_LINES = 15;
+
+    private ArrayList<SingleLine> singleLines = null;
 
     public SinglePage(Context context){
         super(context);
@@ -42,9 +46,12 @@ public class SinglePage extends LinearLayout{
         lineHeight = PrefManager.getIntPreference(PrefManager.NOTE_LINE_HEIGHT, getContext());
         lineWidth = PrefManager.getIntPreference(PrefManager.NOTE_PAGE_WIDTH, getContext());
 
+        singleLines= new ArrayList<>();
+
         for (int i = 0; i < NUM_LINES; i++) {
             SingleLine currentLine = new SingleLine(getContext(), lineWidth, lineHeight, i, this);
             this.addView(currentLine);
+            singleLines.add(currentLine);
         }
     }
 
@@ -62,6 +69,10 @@ public class SinglePage extends LinearLayout{
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
+    }
+
+    public ArrayList<SingleLine> getSingleLines(){
+        return singleLines;
     }
 
 //    public LinearLayout getLinesBase(){
