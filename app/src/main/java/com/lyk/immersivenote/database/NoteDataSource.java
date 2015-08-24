@@ -30,8 +30,7 @@ public class NoteDataSource {
             NoteTable.COLUMN_PAGE_NO, NoteTable.COLUMN_LINE_NO,
             NoteTable.COLUMN_BITMAP,NoteTable.COLUMN_TYPE};
 
-    public static synchronized void createNoteTable(SQLiteDatabase database,String tableName) {
-        NoteDataSource.database = database;
+    public static synchronized void createNoteTable(String tableName) {
         NoteTable.create(NoteDataSource.database,tableName);
         Log.i(LOGTAG, "NoteTable has been created");
     }
@@ -131,20 +130,18 @@ public class NoteDataSource {
                 values);
     }
 
-    public static synchronized void insertAlert(Context ctx,
-                                                ContentValues values,String tableName) {
+    public static synchronized void insertNoteTable(Context ctx,
+                                                    ContentValues values, String tableName) {
         DataAccessWrapper.insert(database, ctx, tableName,
                 NoteTable.COLUMN_ID, values);
     }
 
-    public static synchronized void removeAlert(Context ctx, long rowId,String tableName) {
-        if (ctx != null && rowId != -1) {
-            DataAccessWrapper.remove(NoteDataSource.database, ctx,
-                    tableName, rowId);
-        } else {
-            throw new IllegalArgumentException(
-                    "Context is null or rowId is incorrect");
-        }
+    public static synchronized void removeNoteTable(String tableName) {
+        DataAccessWrapper.removeTable(database, tableName);
+    }
+
+    public static void setDatabase(SQLiteDatabase database){
+        NoteDataSource.database = database;
     }
 
 }

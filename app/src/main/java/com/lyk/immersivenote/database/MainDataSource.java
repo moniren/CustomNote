@@ -31,8 +31,7 @@ public class MainDataSource {
             MainTable.COLUMN_TITLE, MainTable.COLUMN_TIME,
             MainTable.COLUMN_BACKGROUND};
 
-    public static synchronized void createMainTable(SQLiteDatabase database) {
-        MainDataSource.database = database;
+    public static synchronized void createMainTable() {
         MainTable.create(MainDataSource.database);
         Log.i(LOGTAG, "MainTable has been created");
     }
@@ -137,9 +136,9 @@ public class MainDataSource {
                 values);
     }
 
-    public static synchronized void insertNote(Context ctx,
+    public static synchronized long insertNote(Context ctx,
                                                 ContentValues values) {
-        DataAccessWrapper.insert(database, ctx, MainTable.TABLE_MAIN,
+        return DataAccessWrapper.insert(database, ctx, MainTable.TABLE_MAIN,
                 MainTable.COLUMN_ID, values);
     }
 
@@ -151,6 +150,10 @@ public class MainDataSource {
             throw new IllegalArgumentException(
                     "Context is null or rowId is incorrect");
         }
+    }
+
+    public static void setDatabase(SQLiteDatabase database){
+        MainDataSource.database = database;
     }
 
 }

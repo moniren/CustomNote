@@ -1,8 +1,8 @@
 package com.lyk.immersivenote.notepad;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -25,7 +24,12 @@ import android.widget.LinearLayout;
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainDataSource;
 import com.lyk.immersivenote.database.MainTable;
+import com.lyk.immersivenote.database.MyDatabaseHelper;
+import com.lyk.immersivenote.database.NoteDataSource;
+import com.lyk.immersivenote.database.NoteTable;
 import com.lyk.immersivenote.settings.PrefManager;
+import com.lyk.immersivenote.utils.Base64Uti;
+import com.lyk.immersivenote.utils.DBUti;
 import com.rey.material.widget.ImageButton;
 
 import java.beans.PropertyChangeEvent;
@@ -82,10 +86,17 @@ public class SinglePageActivity extends FragmentActivity implements
     private ViewPager mPager;
     private ArrayList<SinglePage> pages;
 
+    private static MyDatabaseHelper myDBHelper = null;
+    private static SQLiteDatabase database = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(myDBHelper == null){
+            myDBHelper = new MyDatabaseHelper(this.getApplication());
+            database = myDBHelper.getDB();
+        }
         setContentView(R.layout.activity_note_pad);
         initCustomActionBar();
 
@@ -384,14 +395,10 @@ public class SinglePageActivity extends FragmentActivity implements
 
             @Override
             public void onAnimationStart(Animation animation) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
-
             }
         });
 
@@ -435,6 +442,15 @@ public class SinglePageActivity extends FragmentActivity implements
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
+                        //show a progress dialog
+                        sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                        sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+                        sDialog.setTitleText("Deleting...");
+                        sDialog.setCancelable(false);
+                        sDialog.showContentText(false);
+                        sDialog.showCancelButton(false);
+
+                        //saving
                         ContentValues values = new ContentValues();
                         values.put(MainTable.COLUMN_TITLE, "no title");
                         values.put(MainTable.COLUMN_BACKGROUND, 0);
@@ -443,7 +459,33 @@ public class SinglePageActivity extends FragmentActivity implements
                                 "yyyy-MM-dd HH:mm:ss");
                         String currentTime = dateFormat.format(Calendar.getInstance().getTime());
                         values.put(MainTable.COLUMN_TIME, currentTime);
-                        MainDataSource.insertNote(sDialog.getContext().getApplicationContext(), values);
+                        String tableName = DBUti.getTableNameById(MainDataSource.insertNote(sDialog.getContext().getApplicationContext(), values));
+                        NoteDataSource.createNoteTable(tableName);
+                        int pageNumber = pages.size();
+                        for(int i = 0;i<pageNumber;i++){
+                            SinglePage tempPage = pages.get(i);
+                            for(int j = 0;j<SinglePage.NUM_LINES;j++){
+                                SingleLine tempLine = tempPage.getSingleLines().get(j);
+                                int viewNumber = tempLine.getChildCount();
+                                for(int k = 0;k<viewNumber;k++){
+                                    SignatureView tempSig = (SignatureView) tempLine.getChildAt(k);
+                                    values = new ContentValues();
+                                    values.put(NoteTable.COLUMN_LINE_NO,tempLine.getLineNum());
+                                    values.put(NoteTable.COLUMN_PAGE_NO,tempPage.getPageNumber());
+                                    values.put(NoteTable.COLUMN_TYPE,tempSig.getType());
+                                    if(tempSig.getType() == SignatureView.IMAGE){
+                                        values.put(NoteTable.COLUMN_BITMAP, Base64Uti.encodeTobase64(tempSig.getImage()));
+                                    }
+                                    else{
+                                        values.put(NoteTable.COLUMN_BITMAP, "null");
+                                    }
+                                    NoteDataSource.insertNoteTable(sDialog.getContext().getApplicationContext(), values, tableName);
+                                }
+                            }
+                        }
+
+
+                        //save completed
                         sDialog.setTitleText("Saved!")
                                 .setContentText("The note is saved!")
                                 .setConfirmText("OK")
@@ -457,6 +499,7 @@ public class SinglePageActivity extends FragmentActivity implements
                                     }
                                 })
                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+
                     }
                 }).showCancelButton(true)
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -572,6 +615,7 @@ public class SinglePageActivity extends FragmentActivity implements
         @Override
         public void onClick(View v) {
             spaceSig = new SignatureView(context, lineHeight, cursorHolder);
+            spaceSig.setType(SignatureView.SPACE);
             SingleLine currentLine = ((SingleLine) mPagerAdapter.getmCurrentPage()
                     .getChildAt(cursorHolder.getLineNum()));
             currentLine.addSignature(spaceSig, cursorHolder.getCursorPos());
@@ -607,6 +651,30 @@ public class SinglePageActivity extends FragmentActivity implements
         new TaskAddSig(this, image).execute();
     }
 
+    private class TaskSaveNote extends AsyncTask<Void, Void, Void> {
+
+        private SinglePageActivity context = null;
+        private SweetAlertDialog sDialog;
+        private SignatureView tempSig;
+
+        public TaskSaveNote(SinglePageActivity context, SweetAlertDialog sDialog) {
+            Log.d(TAG, "taskAddSig created");
+            this.context = context;
+            this.sDialog = sDialog;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+        }
+    }
 
     private class TaskAddSig extends AsyncTask<Void, Void, Void> {
 
@@ -643,6 +711,7 @@ public class SinglePageActivity extends FragmentActivity implements
             super.onPostExecute(result);
             tempSig = new SignatureView(context, image,
                     cursorHolder);
+            tempSig.setType(SignatureView.IMAGE);
 //            if (lastAvailable >= NUM_LINES) {
 //                Toast toast = Toast.makeText(context, "Notepad is full!",
 //                        Toast.LENGTH_SHORT);

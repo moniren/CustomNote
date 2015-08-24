@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ImmersiveNote.iml" filepath="$PROJECT_DIR$/ImmersiveNote.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CustomNote.iml" filepath="$PROJECT_DIR$/CustomNote.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

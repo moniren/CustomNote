@@ -25,7 +25,9 @@ import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainDataSource;
 import com.lyk.immersivenote.database.MainTable;
 import com.lyk.immersivenote.database.MyDatabaseHelper;
+import com.lyk.immersivenote.database.NoteDataSource;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
+import com.lyk.immersivenote.utils.DBUti;
 import com.rey.material.drawable.ToolbarRippleDrawable;
 import com.rey.material.util.ViewUtil;
 import com.rey.material.widget.Button;
@@ -81,7 +83,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if(myDBHelper == null){
             myDBHelper = new MyDatabaseHelper(this.getApplication());
             database = myDBHelper.getDB();
-            MainDataSource.createMainTable(database);
+            NoteDataSource.setDatabase(database);
+            MainDataSource.setDatabase(database);
+            MainDataSource.createMainTable();
         }
         setContentView(R.layout.activity_main);
         initCustomActionBar();
@@ -242,12 +246,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
-
                         sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
                         sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
                         sDialog.setTitleText("Deleting...");
                         sDialog.setCancelable(false);
                         sDialog.showContentText(false);
+                        sDialog.showCancelButton(false);
+
+                        NoteDataSource.removeNoteTable(DBUti.getTableNameById(deleteID));
                         MainDataSource.removeNote(sDialog.getContext(), deleteID);
                     }
                 }).showCancelButton(true)
