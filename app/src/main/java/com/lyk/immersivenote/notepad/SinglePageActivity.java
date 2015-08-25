@@ -2,6 +2,7 @@ package com.lyk.immersivenote.notepad;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -88,6 +89,11 @@ public class SinglePageActivity extends FragmentActivity implements
 
     private static MyDatabaseHelper myDBHelper = null;
     private static SQLiteDatabase database = null;
+
+    public static String WRITE_EDIT_INTENT = "write_edit_intent";
+    public static int START_WRITING = 0;
+    public static int START_EDITING = 1;
+    public static String EDIT_PAGE_ID = "edit_page_id";
 
 
     @Override
@@ -403,6 +409,20 @@ public class SinglePageActivity extends FragmentActivity implements
         });
 
 
+
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+        sweetAlertDialog.setTitleText("Loading");
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+
         circleIndicator = (CircleIndicator) findViewById(R.id.indicator_pager);
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.notesPager);
@@ -424,12 +444,38 @@ public class SinglePageActivity extends FragmentActivity implements
         });
         //initialize the arraylist keeping track of the pages
         pages = new ArrayList<>();
-        SinglePage tempPage = new SinglePage(this);
-        tempPage.setPageNumber(0);
-        pages.add(tempPage);
-        mPagerAdapter.addView(tempPage, mPager, circleIndicator);
-        mPager.setAdapter(mPagerAdapter);
+        Intent intent = getIntent();
+        if(intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_WRITING){
+            SinglePage tempPage = new SinglePage(this);
+//        tempPage.setPageNumber(0);
+            pages.add(tempPage);
+            mPagerAdapter.addView(tempPage, mPager, circleIndicator);
+            mPager.setAdapter(mPagerAdapter);
 //        circleIndicator.setViewPager(mPager);
+        }
+        else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
+
+            String tableName =  DBUti.getTableNameById(intent.getIntExtra(EDIT_PAGE_ID,1));
+
+            //set up the pages
+            int pageNumber = NoteDataSource.getMaxPageNumber(tableName);
+            ArrayList<SignatureView> signatureViews = null;
+            SignatureView tempSig = null;
+            for(int i=0;i<=pageNumber;i++){
+                SinglePage tempPage = new SinglePage(this);
+                pages.add(tempPage);
+                mPagerAdapter.addView(tempPage, mPager, circleIndicator);
+                signatureViews = NoteDataSource.getSignaturesForPage(tableName,i,this,cursorHolder,lineHeight);
+                for(int j=0;j<signatureViews.size();j++){
+                    tempSig = signatureViews.get(j);
+                    tempPage.getSingleLines().get(tempSig.getLineNum()).addSignature(tempSig);
+                }
+            }
+            mPager.setAdapter(mPagerAdapter);
+
+        }
+        //dismiss the loading dialog
+        sweetAlertDialog.dismiss();
     }
 
     @Override
@@ -471,7 +517,8 @@ public class SinglePageActivity extends FragmentActivity implements
                                     SignatureView tempSig = (SignatureView) tempLine.getChildAt(k);
                                     values = new ContentValues();
                                     values.put(NoteTable.COLUMN_LINE_NO,tempLine.getLineNum());
-                                    values.put(NoteTable.COLUMN_PAGE_NO,tempPage.getPageNumber());
+                                    values.put(NoteTable.COLUMN_PAGE_NO,i);
+//                                    values.put(NoteTable.COLUMN_PAGE_NO,tempPage.getPageNumber());
                                     values.put(NoteTable.COLUMN_TYPE,tempSig.getType());
                                     if(tempSig.getType() == SignatureView.IMAGE){
                                         values.put(NoteTable.COLUMN_BITMAP, Base64Uti.encodeTobase64(tempSig.getImage()));
@@ -513,6 +560,8 @@ public class SinglePageActivity extends FragmentActivity implements
         dialog.show();
     }
 
+
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -553,7 +602,7 @@ public class SinglePageActivity extends FragmentActivity implements
                             public void onClick(SweetAlertDialog sDialog) {
                                 //must set the page numbers of the pages behind the deleting page
                                 for (int i = mPager.getCurrentItem() + 1; i < pages.size(); i++) {
-                                    pages.get(i).setPageNumber(i - 1);
+//                                    pages.get(i).setPageNumber(i - 1);
                                 }
                                 pages.remove(mPager.getCurrentItem());
                                 mPagerAdapter.removeView(mPager, mPager.getCurrentItem(), circleIndicator);
@@ -764,9 +813,9 @@ public class SinglePageActivity extends FragmentActivity implements
     public void addPage() {
         SinglePage tempPage = new SinglePage(this);
         //change the page numbers of the pages after the adding page
-        for (int i = mPager.getCurrentItem() + 1; i < pages.size(); i++) {
-            pages.get(i).setPageNumber(i + 1);
-        }
+//        for (int i = mPager.getCurrentItem() + 1; i < pages.size(); i++) {
+//            pages.get(i).setPageNumber(i + 1);
+//        }
         pages.add(mPager.getCurrentItem() + 1, tempPage);
         mPagerAdapter.addView(tempPage, mPager.getCurrentItem() + 1, mPager, circleIndicator);
     }

@@ -26,8 +26,10 @@ import com.lyk.immersivenote.database.MainDataSource;
 import com.lyk.immersivenote.database.MainTable;
 import com.lyk.immersivenote.database.MyDatabaseHelper;
 import com.lyk.immersivenote.database.NoteDataSource;
+import com.lyk.immersivenote.notepad.SinglePage;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
 import com.lyk.immersivenote.utils.DBUti;
+import com.lyk.immersivenote.utils.RippleBgUti;
 import com.rey.material.drawable.ToolbarRippleDrawable;
 import com.rey.material.util.ViewUtil;
 import com.rey.material.widget.Button;
@@ -47,7 +49,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isDrawerOpened;
     private RelativeLayout llDrawer;
     private Button btnStartWriting;
-    private FloatingActionButton fabStartWriting;
 
     //    private MaterialMenuView materialMenu;
     private MaterialMenuIconToolbar materialMenu;
@@ -64,6 +65,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private SweetAlertDialog sweetAlertDialog = null;
 
     private int deleteID;
+
 
     // this is a private custom BroadcastReceiver which can access the
     // ViewAlertActivity to trigger the ui update
@@ -93,8 +95,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         llDrawer = (RelativeLayout) findViewById(R.id.main_ll_drawer);
         btnStartWriting = (Button) findViewById(R.id.button_start_writing);
         btnStartWriting.setOnClickListener(this);
-        fabStartWriting = (FloatingActionButton) findViewById(R.id.homeFabButton);
-        fabStartWriting.setOnClickListener(this);
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -123,6 +123,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         noteChangeReceiver = new DatabaseBroadcastReceiver();
+
     }
 
 
@@ -207,7 +208,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        ViewUtil.setBackground(getToolbarNavigationIcon(toolbar), getRippleBackground());
+        ViewUtil.setBackground(getToolbarNavigationIcon(toolbar), RippleBgUti.getFlatColorRippleBackground(this));
     }
 
     // used for setting the ripple effect for the materialMenu icon
@@ -228,12 +229,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (hadContentDescription)
             toolbar.setNavigationContentDescription(null);
         return navIcon;
-    }
-
-
-    private ToolbarRippleDrawable getRippleBackground() {
-        ToolbarRippleDrawable.Builder mBuilder = new ToolbarRippleDrawable.Builder(this, R.style.FlatColorButtonRippleStyle);
-        return mBuilder.build();
     }
 
     public void showDeleteConfirmationDialog(int id){
@@ -300,12 +295,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             return;
         }
+    }
 
-        if (v.getId() == R.id.homeFabButton) {
-            Intent intent = new Intent(this, SinglePageActivity.class);
-            startActivity(intent);
-            return;
-        }
+    public void startWriting(View view){
+        Intent intent = new Intent(this, SinglePageActivity.class);
+        intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_WRITING);
+        startActivity(intent);
+    }
+
+    public void startEditing(int editPageId){
+        Intent intent = new Intent(this, SinglePageActivity.class);
+        intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_EDITING);
+        intent.putExtra(SinglePageActivity.EDIT_PAGE_ID,editPageId);
+        startActivity(intent);
     }
 
 }

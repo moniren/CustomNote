@@ -33,6 +33,17 @@
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:background="@drawable/left_section">
+            <!--<com.rey.material.widget.Button-->
+                <!--android:id="@+id/card_title"-->
+                <!--style="@style/FlatButtonRippleStyle"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:textSize="25dp"-->
+                <!--android:fontFamily="sans-serif"-->
+                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"-->
+                <!--app:rd_delayClick="afterRelease" />-->
             <TextView
                 android:id = "@+id/card_title"
                 android:layout_width="wrap_content"

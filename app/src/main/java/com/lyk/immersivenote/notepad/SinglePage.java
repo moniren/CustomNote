@@ -63,13 +63,13 @@ public class SinglePage extends LinearLayout{
         return pageFull;
     }
 
-    public int getPageNumber() {
-        return pageNumber;
-    }
+//    public int getPageNumber() {
+//        return pageNumber;
+//    }
 
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
+//    public void setPageNumber(int pageNumber) {
+//        this.pageNumber = pageNumber;
+//    }
 
     public ArrayList<SingleLine> getSingleLines(){
         return singleLines;
