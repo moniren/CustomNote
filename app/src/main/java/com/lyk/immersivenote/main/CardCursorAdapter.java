@@ -96,7 +96,7 @@ public class CardCursorAdapter extends CursorAdapter {
         TitleOnClickListener titleOnClickListener = new TitleOnClickListener(id);
         holder.title.setOnClickListener(titleOnClickListener);
         view.setTag(holder);
-        ViewUtil.setBackground(holder.title, RippleBgUti.getFlatRippleBackground(context));
+        RippleBgUti.setFlatRippleBackground(holder.title,context);
         return view;
     }
 }

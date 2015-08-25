@@ -208,7 +208,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        ViewUtil.setBackground(getToolbarNavigationIcon(toolbar), RippleBgUti.getFlatColorRippleBackground(this));
+        RippleBgUti.setFlatColorRippleBackground(getToolbarNavigationIcon(toolbar),this);
     }
 
     // used for setting the ripple effect for the materialMenu icon

@@ -94,11 +94,17 @@ public class SinglePageActivity extends FragmentActivity implements
     public static int START_WRITING = 0;
     public static int START_EDITING = 1;
     public static String EDIT_PAGE_ID = "edit_page_id";
+    //use the sign of this id as a flag
+    private int noteId;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set the noteId by default as -1
+        noteId = -1;
+
         if(myDBHelper == null){
             myDBHelper = new MyDatabaseHelper(this.getApplication());
             database = myDBHelper.getDB();
@@ -454,8 +460,10 @@ public class SinglePageActivity extends FragmentActivity implements
 //        circleIndicator.setViewPager(mPager);
         }
         else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
+            //set the noteId
+            noteId = intent.getIntExtra(EDIT_PAGE_ID, 1);
 
-            String tableName =  DBUti.getTableNameById(intent.getIntExtra(EDIT_PAGE_ID,1));
+            String tableName =  DBUti.getTableNameById(noteId);
 
             //set up the pages
             int pageNumber = NoteDataSource.getMaxPageNumber(tableName);
@@ -491,12 +499,13 @@ public class SinglePageActivity extends FragmentActivity implements
                         //show a progress dialog
                         sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
                         sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-                        sDialog.setTitleText("Deleting...");
+                        sDialog.setTitleText("Saving...");
                         sDialog.setCancelable(false);
                         sDialog.showContentText(false);
                         sDialog.showCancelButton(false);
 
                         //saving
+
                         ContentValues values = new ContentValues();
                         values.put(MainTable.COLUMN_TITLE, "no title");
                         values.put(MainTable.COLUMN_BACKGROUND, 0);
@@ -505,7 +514,18 @@ public class SinglePageActivity extends FragmentActivity implements
                                 "yyyy-MM-dd HH:mm:ss");
                         String currentTime = dateFormat.format(Calendar.getInstance().getTime());
                         values.put(MainTable.COLUMN_TIME, currentTime);
-                        String tableName = DBUti.getTableNameById(MainDataSource.insertNote(sDialog.getContext().getApplicationContext(), values));
+                        String tableName;
+                        if(noteId > 0){
+                            tableName = DBUti.getTableNameById(noteId);
+                            MainDataSource.updateNote(sDialog.getContext().getApplicationContext(),noteId,values);
+                            NoteDataSource.removeNoteTable(tableName);
+                        }
+                        else{
+                            tableName = DBUti.getTableNameById(MainDataSource.insertNote(sDialog.getContext().getApplicationContext(), values));
+                        }
+                        //reset noteId (actually no need, just a reminder here in case of future change)
+                        noteId = -1;
+
                         NoteDataSource.createNoteTable(tableName);
                         int pageNumber = pages.size();
                         for(int i = 0;i<pageNumber;i++){
