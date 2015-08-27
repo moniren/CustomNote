@@ -577,7 +577,7 @@ public class SinglePageActivity extends FragmentActivity implements
                 .setCancelText("No")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onClick(SweetAlertDialog sDialog) {
+                    public void onClick(final SweetAlertDialog sDialog) {
                         //show a progress dialog
                         sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
                         sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
