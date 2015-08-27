@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -26,8 +27,10 @@ import com.lyk.immersivenote.database.MainDataSource;
 import com.lyk.immersivenote.database.MainTable;
 import com.lyk.immersivenote.database.MyDatabaseHelper;
 import com.lyk.immersivenote.database.NoteDataSource;
+import com.lyk.immersivenote.notepad.SinglePage;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
 import com.lyk.immersivenote.utils.DBUti;
+import com.lyk.immersivenote.utils.RippleBgUti;
 import com.rey.material.drawable.ToolbarRippleDrawable;
 import com.rey.material.util.ViewUtil;
 import com.rey.material.widget.Button;
@@ -47,7 +50,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isDrawerOpened;
     private RelativeLayout llDrawer;
     private Button btnStartWriting;
-    private FloatingActionButton fabStartWriting;
+
+    private ListView listView;
 
     //    private MaterialMenuView materialMenu;
     private MaterialMenuIconToolbar materialMenu;
@@ -59,11 +63,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    private BroadcastReceiver noteChangeReceiver;
+//    private BroadcastReceiver noteChangeReceiver;
 
     private SweetAlertDialog sweetAlertDialog = null;
 
     private int deleteID;
+
 
     // this is a private custom BroadcastReceiver which can access the
     // ViewAlertActivity to trigger the ui update
@@ -71,9 +76,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onReceive(Context context, Intent intent) {
                 Log.d("HomeActivity", "received broadcast");
-                loadNotes();
-                dismissMaterialProgress("Deleted!");
-                return;
+                showMaterialProgress("Loading...");
+                new TaskLoadNote(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            return;
             }
     }
 
@@ -92,9 +97,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         llDrawer = (RelativeLayout) findViewById(R.id.main_ll_drawer);
         btnStartWriting = (Button) findViewById(R.id.button_start_writing);
+        listView = (ListView) findViewById(R.id.notes_list);
         btnStartWriting.setOnClickListener(this);
-        fabStartWriting = (FloatingActionButton) findViewById(R.id.homeFabButton);
-        fabStartWriting.setOnClickListener(this);
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -122,7 +126,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        noteChangeReceiver = new DatabaseBroadcastReceiver();
+//        noteChangeReceiver = new DatabaseBroadcastReceiver();
+
     }
 
 
@@ -137,21 +142,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
 
         showMaterialProgress("Loading...");
-        loadNotes();
-        dismissMaterialProgress();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("com.lyk.immersivenote.database.insert."
-                + MainTable.TABLE_MAIN);
-        filter.addAction("com.lyk.immersivenote.database.remove." + MainTable.TABLE_MAIN);
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(noteChangeReceiver, filter);
+        new TaskLoadNote(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction("com.lyk.immersivenote.database.insert."
+//                + MainTable.TABLE_MAIN);
+//        filter.addAction("com.lyk.immersivenote.database.remove." + MainTable.TABLE_MAIN);
+//        LocalBroadcastManager.getInstance(getApplicationContext())
+//                .registerReceiver(noteChangeReceiver, filter);
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(noteChangeReceiver);
+//        LocalBroadcastManager.getInstance(getApplicationContext())
+//                .unregisterReceiver(noteChangeReceiver);
     }
 
 
@@ -159,30 +164,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         materialMenu.onSaveInstanceState(outState);
-    }
-
-    private void loadNotes(){
-        Cursor cursor = MainDataSource.getWholeCursor();
-
-//        String[] columns = {MainTable.COLUMN_ID,
-//                MainTable.COLUMN_TITLE, MainTable.COLUMN_TIME,
-//                MainTable.COLUMN_BACKGROUND};
-//        int[] to = {
-//                R.id.card_id,
-//                R.id.card_title,
-//                R.id.card_time,
-//                R.id.card_bg_id
-//        };
-//        dataAdapter = new SimpleCursorAdapter(
-//                this, R.layout.view_note_card,
-//                cursor,
-//                columns,
-//                to,
-//                0);
-        dataAdapter = new CardCursorAdapter(this,cursor,0);
-        ListView listView = (ListView) findViewById(R.id.notes_list);
-        // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
     }
 
     private void initCustomActionBar() {
@@ -207,7 +188,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        ViewUtil.setBackground(getToolbarNavigationIcon(toolbar), getRippleBackground());
+        RippleBgUti.setFlatColorRippleBackground(getToolbarNavigationIcon(toolbar),this);
     }
 
     // used for setting the ripple effect for the materialMenu icon
@@ -230,16 +211,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return navIcon;
     }
 
-
-    private ToolbarRippleDrawable getRippleBackground() {
-        ToolbarRippleDrawable.Builder mBuilder = new ToolbarRippleDrawable.Builder(this, R.style.FlatColorButtonRippleStyle);
-        return mBuilder.build();
-    }
-
     public void showDeleteConfirmationDialog(int id){
         deleteID = id;
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Sure to delete the note?")
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog.setOwnerActivity(this);
+        sweetAlertDialog.setTitleText("Sure to delete the note?")
                 .setContentText("Won't be able to recover !")
                 .setConfirmText("Yes")
                 .setCancelText("No")
@@ -252,9 +228,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         sDialog.setCancelable(false);
                         sDialog.showContentText(false);
                         sDialog.showCancelButton(false);
+                        new TaskDeleteNote(sDialog.getOwnerActivity(),sDialog).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                        NoteDataSource.removeNoteTable(DBUti.getTableNameById(deleteID));
-                        MainDataSource.removeNote(sDialog.getContext(), deleteID);
                     }
                 }).showCancelButton(true)
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -267,7 +242,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showMaterialProgress(String title){
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        if(sweetAlertDialog == null)
+            sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        else
+            sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setCancelable(false);
@@ -300,11 +278,65 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             return;
         }
+    }
 
-        if (v.getId() == R.id.homeFabButton) {
-            Intent intent = new Intent(this, SinglePageActivity.class);
-            startActivity(intent);
-            return;
+    public void startWriting(View view){
+        Intent intent = new Intent(this, SinglePageActivity.class);
+        intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_WRITING);
+        startActivity(intent);
+    }
+
+    public void startEditing(int editPageId){
+        Intent intent = new Intent(this, SinglePageActivity.class);
+        intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_EDITING);
+        intent.putExtra(SinglePageActivity.EDIT_PAGE_ID,editPageId);
+        startActivity(intent);
+    }
+
+    private class TaskDeleteNote extends AsyncTask<Void, Void, Void> {
+        private SweetAlertDialog sDialog;
+        private Context context;
+
+        public TaskDeleteNote(Context context, SweetAlertDialog sDialog){
+            this.context = context;
+            this.sDialog = sDialog;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            NoteDataSource.removeNoteTable(DBUti.getTableNameById(deleteID));
+            MainDataSource.removeNote(sDialog.getContext(), deleteID);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            new TaskLoadNote(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private class TaskLoadNote extends AsyncTask<Void, Void, Void> {
+
+        private Context context;
+
+        public TaskLoadNote(Context context){
+            this.context = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Cursor cursor = MainDataSource.getWholeCursor();
+            dataAdapter = new CardCursorAdapter(context,cursor,0);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            // Assign adapter to ListView
+            listView.setAdapter(dataAdapter);
+            dismissMaterialProgress();
         }
     }
 

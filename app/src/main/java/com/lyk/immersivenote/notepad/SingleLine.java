@@ -152,6 +152,13 @@ public class SingleLine extends LinearLayout {
         }
     }
 
+    //for loading the saved notes
+    public void addSignature(SignatureView sig){
+        sig.setPosInLine(getChildCount());
+        addView(sig);
+    }
+
+
     public void addSignature(SignatureView sig, int pos) {
         Log.d(TAG, "---------------");
         Log.d(TAG, "adding to line: " + lineNum);

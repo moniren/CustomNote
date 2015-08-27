@@ -8,12 +8,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.lyk.immersivenote.datamodel.SignatureViewModel;
+import com.lyk.immersivenote.notepad.CursorHolder;
+import com.lyk.immersivenote.notepad.SignatureView;
+import com.lyk.immersivenote.utils.Base64Uti;
 
 import java.util.ArrayList;
 
 public class NoteDataSource {
-    private static final String LOGTAG = "MAIN_DATA_SOURCE";
+    private static final String LOGTAG = "NOTE_DATA_SOURCE";
     // need to use "" to surround the column name otherwise it will be treated
     // as a string, use DESC so the newest will be on top
 
@@ -35,15 +41,6 @@ public class NoteDataSource {
         Log.i(LOGTAG, "NoteTable has been created");
     }
 
-    /*
-     * The following getWhole... methods will return an ArrayList containing the
-     * item of the column as indicated by the name of the method 
-     * Notes: 
-     * 1. The list contains only the data for the alert items that are not acknowledged
-     * except for the getWholeAcknowledged() 
-     * 2. For the lists that contain several column items, the items are put together into one string and use
-     * a "!" to separate them
-     */
     public static synchronized ArrayList<String> getWholeIDList(String tableName) {
         ArrayList<String> idList = new ArrayList<String>();
         Cursor cursor = DataAccessWrapper.queryDB(database,
@@ -64,6 +61,8 @@ public class NoteDataSource {
 
         return idList;
     }
+
+
 
     public static synchronized ArrayList<String> getWholeDataCList(String tableName) {
         ArrayList<String> alertDataCList = new ArrayList<String>();
@@ -109,6 +108,57 @@ public class NoteDataSource {
             return false;
         }
 
+    }
+
+    public static synchronized ArrayList<SignatureViewModel> getSignaturesForPage(String tableName, int pageNumber,Context context, CursorHolder cursorHolder, int lineHeight){
+        String where = "\"" + NoteTable.COLUMN_PAGE_NO + "\" = " + pageNumber;
+        ArrayList<SignatureViewModel> signatureList = new ArrayList<>();
+        Cursor cursor = DataAccessWrapper.queryDB(database,
+                tableName, allColumns, where, null, null, null,
+                null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    SignatureViewModel tempSig = null;
+                    int type = cursor.getInt(cursor.getColumnIndex(NoteTable.COLUMN_TYPE));
+                    int lineNumber = cursor.getInt(cursor.getColumnIndex(NoteTable.COLUMN_LINE_NO));
+                    Bitmap bitmap = null;
+                    if(type==SignatureView.SPACE){
+                        tempSig = new SignatureViewModel(context,type,lineNumber,pageNumber,cursorHolder,lineHeight);
+                    }
+                    else if (type == SignatureView.IMAGE){
+                        Log.d(LOGTAG,cursor.getString(cursor.getColumnIndex(NoteTable.COLUMN_BITMAP)));
+                        bitmap = Base64Uti.decodeBase64(cursor.getString(cursor.getColumnIndex(NoteTable.COLUMN_BITMAP)));
+                        tempSig = new SignatureViewModel(context,type,lineNumber,pageNumber,cursorHolder,bitmap);
+                    }
+                    signatureList.add(tempSig);
+                    cursor.moveToNext();
+                }
+            } else {
+                Log.i(LOGTAG, "Cursor is empty!");
+            }
+        } else {
+            Log.i(LOGTAG, "Cursor is null!");
+        }
+        return signatureList;
+    }
+
+    public static synchronized int getMaxPageNumber(String tableName){
+        Cursor cursor = DataAccessWrapper.queryDB(database, tableName, new String[]{"MAX(" + NoteTable.COLUMN_PAGE_NO + ")"}, null, null, null, null, null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                //must use a constant 0 here
+                return cursor.getInt(0);
+            } else {
+                Log.i(LOGTAG, "Cursor is empty!");
+                return -1;
+            }
+        } else {
+            Log.i(LOGTAG, "Cursor is null!");
+            return -1;
+        }
     }
 
     public static synchronized int getTableSize(String tableName) {

@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainDataSource;
 import com.lyk.immersivenote.database.MainTable;
+import com.lyk.immersivenote.utils.RippleBgUti;
+import com.rey.material.util.ViewUtil;
+import com.rey.material.widget.Button;
 import com.rey.material.widget.ImageButton;
 
 /**
@@ -28,7 +31,7 @@ public class CardCursorAdapter extends CursorAdapter {
 
     private    static  class   ViewHolder  {
 //        int    id;
-        TextView   title;
+        TextView title;
         TextView   time;
         TextView abbrev;
         ImageButton deleteBtn;
@@ -45,6 +48,19 @@ public class CardCursorAdapter extends CursorAdapter {
         @Override
         public void onClick(View v) {
             homeActivity.showDeleteConfirmationDialog(id);
+        }
+    }
+
+    private class TitleOnClickListener implements View.OnClickListener {
+        private int id;
+        TitleOnClickListener(int id){
+            this.id = id;
+            Log.d("TitleOnClickListener","holding id: "+id);
+        }
+
+        @Override
+        public void onClick(View v) {
+            homeActivity.startEditing(id);
         }
     }
 
@@ -77,7 +93,10 @@ public class CardCursorAdapter extends CursorAdapter {
         int id = cursor.getInt(cursor.getColumnIndex(MainTable.COLUMN_ID));
         DeleteOnClickListener deleteOnClickListener = new DeleteOnClickListener(id);
         holder.deleteBtn.setOnClickListener(deleteOnClickListener);
+        TitleOnClickListener titleOnClickListener = new TitleOnClickListener(id);
+        holder.title.setOnClickListener(titleOnClickListener);
         view.setTag(holder);
+        RippleBgUti.setFlatRippleBackground(holder.title,context);
         return view;
     }
 }
