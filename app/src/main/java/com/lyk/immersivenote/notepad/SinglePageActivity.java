@@ -32,6 +32,7 @@ import com.lyk.immersivenote.datamodel.SignatureViewModel;
 import com.lyk.immersivenote.settings.PrefManager;
 import com.lyk.immersivenote.utils.Base64Uti;
 import com.lyk.immersivenote.utils.DBUti;
+import com.rey.material.app.Dialog;
 import com.rey.material.widget.ImageButton;
 
 import java.beans.PropertyChangeEvent;
@@ -97,6 +98,8 @@ public class SinglePageActivity extends FragmentActivity implements
     public static String EDIT_PAGE_ID = "edit_page_id";
     //use the sign of this id as a flag
     private int noteId;
+
+    private NotepadDialog menuDialog;
 
 
     @Override
@@ -415,6 +418,8 @@ public class SinglePageActivity extends FragmentActivity implements
             }
         });
 
+        menuDialog = new NotepadDialog(this);
+
         initPages();
 
 
@@ -517,6 +522,10 @@ public class SinglePageActivity extends FragmentActivity implements
         });
     }
 
+    public void showMenuDialog(View view){
+        menuDialog.show();
+    }
+
     private void initPages(){
 
 
@@ -615,8 +624,6 @@ public class SinglePageActivity extends FragmentActivity implements
         dialog.show();
 
     }
-
-
     private class SpaceBtnClickListener implements OnClickListener {
         private SinglePageActivity context;
         private SignatureView spaceSig;

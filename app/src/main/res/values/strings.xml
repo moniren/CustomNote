@@ -8,5 +8,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu_font_color">Font Color</string>
-    <string name ="menu_writing_mode">Writing mode</string>
+    <string name ="notepad_dialog_writing_mode">Writing Mode</string>
+    <string name="notepad_dialog_save_note">Save Note</string>
+    <string name="notepad_dialog_sketch_color">Sketch Color</string>
 </resources>
