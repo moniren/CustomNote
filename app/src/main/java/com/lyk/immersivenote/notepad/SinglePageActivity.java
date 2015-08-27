@@ -20,6 +20,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainDataSource;
@@ -30,6 +32,7 @@ import com.lyk.immersivenote.database.NoteTable;
 import com.lyk.immersivenote.settings.PrefManager;
 import com.lyk.immersivenote.utils.Base64Uti;
 import com.lyk.immersivenote.utils.DBUti;
+import com.rey.material.app.Dialog;
 import com.rey.material.widget.ImageButton;
 
 import java.beans.PropertyChangeEvent;
@@ -602,7 +605,21 @@ public class SinglePageActivity extends FragmentActivity implements
             }
         });
     }
-
+    private void showMenuDialog(){
+//        try {
+            final Dialog dialog = new Dialog(this);
+            //dialog.setContentView(R.layout.dialog_show_menu);
+            dialog.show();
+//        }
+//        catch(Exception e){
+//            Log.d(TAG,e.getMessage());
+//            Toast toast = new Toast(this);
+//            toast.setText(e.getMessage());
+//            toast.setDuration(Toast.LENGTH_LONG);
+//            toast.show();
+//
+//        }
+    }
 
     private class SpaceBtnClickListener implements OnClickListener {
         private SinglePageActivity context;

@@ -35,14 +35,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical">
+                <com.rey.material.widget.ImageButton
+                    android:id="@+id/actionbar_menu_view"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_more_vert_white"
+                    app:rd_delayClick="afterRelease"
+                    android:onClick ="showMenuDialog"/>
 
                 <com.rey.material.widget.ImageButton
                     android:id="@+id/actionbar_edit_view"
                     style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="?android:attr/actionBarSize"
                     android:layout_height="?android:attr/actionBarSize"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/actionbar_menu_view"
+                    android:layout_toStartOf="@id/actionbar_menu_view"
                     android:src="@drawable/ic_edit_white"
                     app:rd_delayClick="afterRelease" />
 
