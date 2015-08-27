@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.lyk.immersivenote.datamodel.SignatureViewModel;
 import com.lyk.immersivenote.notepad.CursorHolder;
 import com.lyk.immersivenote.notepad.SignatureView;
 import com.lyk.immersivenote.utils.Base64Uti;
@@ -18,7 +19,7 @@ import com.lyk.immersivenote.utils.Base64Uti;
 import java.util.ArrayList;
 
 public class NoteDataSource {
-    private static final String LOGTAG = "MAIN_DATA_SOURCE";
+    private static final String LOGTAG = "NOTE_DATA_SOURCE";
     // need to use "" to surround the column name otherwise it will be treated
     // as a string, use DESC so the newest will be on top
 
@@ -109,9 +110,9 @@ public class NoteDataSource {
 
     }
 
-    public static synchronized ArrayList<SignatureView> getSignaturesForPage(String tableName, int pageNumber,Context context, CursorHolder cursorHolder, int lineHeight){
+    public static synchronized ArrayList<SignatureViewModel> getSignaturesForPage(String tableName, int pageNumber,Context context, CursorHolder cursorHolder, int lineHeight){
         String where = "\"" + NoteTable.COLUMN_PAGE_NO + "\" = " + pageNumber;
-        ArrayList<SignatureView> signatureList = new ArrayList<>();
+        ArrayList<SignatureViewModel> signatureList = new ArrayList<>();
         Cursor cursor = DataAccessWrapper.queryDB(database,
                 tableName, allColumns, where, null, null, null,
                 null);
@@ -119,20 +120,18 @@ public class NoteDataSource {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    SignatureView tempSig = null;
+                    SignatureViewModel tempSig = null;
                     int type = cursor.getInt(cursor.getColumnIndex(NoteTable.COLUMN_TYPE));
                     int lineNumber = cursor.getInt(cursor.getColumnIndex(NoteTable.COLUMN_LINE_NO));
                     Bitmap bitmap = null;
                     if(type==SignatureView.SPACE){
-                        tempSig = new SignatureView(context,lineHeight,cursorHolder);
+                        tempSig = new SignatureViewModel(context,type,lineNumber,pageNumber,cursorHolder,lineHeight);
                     }
                     else if (type == SignatureView.IMAGE){
                         Log.d(LOGTAG,cursor.getString(cursor.getColumnIndex(NoteTable.COLUMN_BITMAP)));
                         bitmap = Base64Uti.decodeBase64(cursor.getString(cursor.getColumnIndex(NoteTable.COLUMN_BITMAP)));
-                        tempSig = new SignatureView(context,bitmap,cursorHolder);
+                        tempSig = new SignatureViewModel(context,type,lineNumber,pageNumber,cursorHolder,bitmap);
                     }
-                    tempSig.setType(type);
-                    tempSig.setLineNum(lineNumber);
                     signatureList.add(tempSig);
                     cursor.moveToNext();
                 }

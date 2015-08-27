@@ -28,6 +28,7 @@ import com.lyk.immersivenote.database.MainTable;
 import com.lyk.immersivenote.database.MyDatabaseHelper;
 import com.lyk.immersivenote.database.NoteDataSource;
 import com.lyk.immersivenote.database.NoteTable;
+import com.lyk.immersivenote.datamodel.SignatureViewModel;
 import com.lyk.immersivenote.settings.PrefManager;
 import com.lyk.immersivenote.utils.Base64Uti;
 import com.lyk.immersivenote.utils.DBUti;
@@ -414,170 +415,14 @@ public class SinglePageActivity extends FragmentActivity implements
             }
         });
 
+        initPages();
 
 
-
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-        sweetAlertDialog.setTitleText("Loading");
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
-
-        circleIndicator = (CircleIndicator) findViewById(R.id.indicator_pager);
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.notesPager);
-        mPagerAdapter = new SinglePageAdapter(this);
-        //this line is important for keepin the fragment from garbage collected
-//        mPager.setOffscreenPageLimit(5 - 1); //NUM_ITEMS-1
-//        mPager.setPageTransformer(true, new DepthPageTransformer());
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {
-            }
-
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                showIndicator();
-            }
-
-            public void onPageSelected(int position) {
-                resetCursor();
-            }
-        });
-        //initialize the arraylist keeping track of the pages
-        pages = new ArrayList<>();
-        Intent intent = getIntent();
-        if(intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_WRITING){
-            SinglePage tempPage = new SinglePage(this);
-//        tempPage.setPageNumber(0);
-            pages.add(tempPage);
-            mPagerAdapter.addView(tempPage, mPager, circleIndicator);
-            mPager.setAdapter(mPagerAdapter);
-//        circleIndicator.setViewPager(mPager);
-        }
-        else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
-            //set the noteId
-            noteId = intent.getIntExtra(EDIT_PAGE_ID, 1);
-
-            String tableName =  DBUti.getTableNameById(noteId);
-
-            //set up the pages
-            int pageNumber = NoteDataSource.getMaxPageNumber(tableName);
-            ArrayList<SignatureView> signatureViews = null;
-            SignatureView tempSig = null;
-            for(int i=0;i<=pageNumber;i++){
-                SinglePage tempPage = new SinglePage(this);
-                pages.add(tempPage);
-                mPagerAdapter.addView(tempPage, mPager, circleIndicator);
-                signatureViews = NoteDataSource.getSignaturesForPage(tableName,i,this,cursorHolder,lineHeight);
-                for(int j=0;j<signatureViews.size();j++){
-                    tempSig = signatureViews.get(j);
-                    tempPage.getSingleLines().get(tempSig.getLineNum()).addSignature(tempSig);
-                }
-            }
-            mPager.setAdapter(mPagerAdapter);
-
-        }
-        //dismiss the loading dialog
-        sweetAlertDialog.dismiss();
     }
 
     @Override
     public void onBackPressed() {
-
-        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Save the note?")
-                .setConfirmText("Yes")
-                .setCancelText("No")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        //show a progress dialog
-                        sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                        sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-                        sDialog.setTitleText("Saving...");
-                        sDialog.setCancelable(false);
-                        sDialog.showContentText(false);
-                        sDialog.showCancelButton(false);
-
-                        //saving
-
-                        ContentValues values = new ContentValues();
-                        values.put(MainTable.COLUMN_TITLE, "no title");
-                        values.put(MainTable.COLUMN_BACKGROUND, 0);
-                        values.put(MainTable.COLUMN_ENCRYPTED, "false");
-                        DateFormat dateFormat = new SimpleDateFormat(
-                                "yyyy-MM-dd HH:mm:ss");
-                        String currentTime = dateFormat.format(Calendar.getInstance().getTime());
-                        values.put(MainTable.COLUMN_TIME, currentTime);
-                        String tableName;
-                        if(noteId > 0){
-                            tableName = DBUti.getTableNameById(noteId);
-                            MainDataSource.updateNote(sDialog.getContext().getApplicationContext(),noteId,values);
-                            NoteDataSource.removeNoteTable(tableName);
-                        }
-                        else{
-                            tableName = DBUti.getTableNameById(MainDataSource.insertNote(sDialog.getContext().getApplicationContext(), values));
-                        }
-                        //reset noteId (actually no need, just a reminder here in case of future change)
-                        noteId = -1;
-
-                        NoteDataSource.createNoteTable(tableName);
-                        int pageNumber = pages.size();
-                        for(int i = 0;i<pageNumber;i++){
-                            SinglePage tempPage = pages.get(i);
-                            for(int j = 0;j<SinglePage.NUM_LINES;j++){
-                                SingleLine tempLine = tempPage.getSingleLines().get(j);
-                                int viewNumber = tempLine.getChildCount();
-                                for(int k = 0;k<viewNumber;k++){
-                                    SignatureView tempSig = (SignatureView) tempLine.getChildAt(k);
-                                    values = new ContentValues();
-                                    values.put(NoteTable.COLUMN_LINE_NO,tempLine.getLineNum());
-                                    values.put(NoteTable.COLUMN_PAGE_NO,i);
-//                                    values.put(NoteTable.COLUMN_PAGE_NO,tempPage.getPageNumber());
-                                    values.put(NoteTable.COLUMN_TYPE,tempSig.getType());
-                                    if(tempSig.getType() == SignatureView.IMAGE){
-                                        values.put(NoteTable.COLUMN_BITMAP, Base64Uti.encodeTobase64(tempSig.getImage()));
-                                    }
-                                    else{
-                                        values.put(NoteTable.COLUMN_BITMAP, "null");
-                                    }
-                                    NoteDataSource.insertNoteTable(sDialog.getContext().getApplicationContext(), values, tableName);
-                                }
-                            }
-                        }
-
-
-                        //save completed
-                        sDialog.setTitleText("Saved!")
-                                .setContentText("The note is saved!")
-                                .setConfirmText("OK")
-                                .showCancelButton(false)
-                                .setCancelClickListener(null)
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismiss();
-                                        sDialog.getOwnerActivity().finish();
-                                    }
-                                })
-                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-
-                    }
-                }).showCancelButton(true)
-                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismiss();
-                        sDialog.getOwnerActivity().finish();
-                    }
-                });
-        dialog.setOwnerActivity(this);
-        dialog.show();
+        save();
     }
 
 
@@ -672,6 +517,105 @@ public class SinglePageActivity extends FragmentActivity implements
         });
     }
 
+    private void initPages(){
+
+
+        circleIndicator = (CircleIndicator) findViewById(R.id.indicator_pager);
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.notesPager);
+        mPagerAdapter = new SinglePageAdapter(this);
+        //this line is important for keepin the fragment from garbage collected
+//        mPager.setOffscreenPageLimit(5 - 1); //NUM_ITEMS-1
+//        mPager.setPageTransformer(true, new DepthPageTransformer());
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {
+            }
+
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                showIndicator();
+            }
+
+            public void onPageSelected(int position) {
+                resetCursor();
+            }
+        });
+        //initialize the arraylist keeping track of the pages
+        pages = new ArrayList<>();
+        Intent intent = getIntent();
+        if(intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_WRITING){
+            SinglePage tempPage = new SinglePage(this);
+//        tempPage.setPageNumber(0);
+            pages.add(tempPage);
+            mPagerAdapter.addView(tempPage, mPager, circleIndicator);
+            resetCursor();
+
+//        circleIndicator.setViewPager(mPager);
+        }
+        else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+            sweetAlertDialog.setTitleText("Loading");
+            sweetAlertDialog.setCancelable(false);
+            sweetAlertDialog.show();
+
+            //set the noteId
+            noteId = intent.getIntExtra(EDIT_PAGE_ID, 1);
+
+
+            new TaskLoadNote(this,sweetAlertDialog,noteId).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+
+        }
+        mPager.setAdapter(mPagerAdapter);
+
+    }
+
+    private void save(){
+        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Save the note?")
+                .setConfirmText("Yes")
+                .setCancelText("No")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        //show a progress dialog
+                        sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                        sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+                        sDialog.setTitleText("Saving...");
+                        sDialog.setCancelable(false);
+                        sDialog.showContentText(false);
+                        sDialog.showCancelButton(false);
+
+                        //set up the models for the async task
+                        ArrayList<SignatureViewModel> signatureViewModels = new ArrayList<>();
+                        int pageNumber = pages.size();
+                        for(int i = 0;i<pageNumber;i++){
+                            SinglePage tempPage = pages.get(i);
+                            for(int j = 0;j<SinglePage.NUM_LINES;j++){
+                                SingleLine tempLine = tempPage.getSingleLines().get(j);
+                                int viewNumber = tempLine.getChildCount();
+                                for(int k = 0;k<viewNumber;k++){
+                                    SignatureView tempSig = (SignatureView) tempLine.getChildAt(k);
+                                    signatureViewModels.add(tempSig.getDataModel());
+                                }
+                            }
+                        }
+                        new TaskSaveNote(sDialog,signatureViewModels).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                    }
+                }).showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                        sDialog.getOwnerActivity().finish();
+                    }
+                });
+        dialog.setOwnerActivity(this);
+        dialog.show();
+
+    }
+
 
     private class SpaceBtnClickListener implements OnClickListener {
         private SinglePageActivity context;
@@ -683,7 +627,7 @@ public class SinglePageActivity extends FragmentActivity implements
 
         @Override
         public void onClick(View v) {
-            spaceSig = new SignatureView(context, lineHeight, cursorHolder);
+            spaceSig = new SignatureView(context, lineHeight, cursorHolder, mPager.getCurrentItem());
             spaceSig.setType(SignatureView.SPACE);
             SingleLine currentLine = ((SingleLine) mPagerAdapter.getmCurrentPage()
                     .getChildAt(cursorHolder.getLineNum()));
@@ -717,31 +661,132 @@ public class SinglePageActivity extends FragmentActivity implements
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         Bitmap image = (Bitmap) event.getNewValue();
-        new TaskAddSig(this, image).execute();
+        new TaskAddSig(this, image).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private class TaskSaveNote extends AsyncTask<Void, Void, Void> {
 
-        private SinglePageActivity context = null;
         private SweetAlertDialog sDialog;
-        private SignatureView tempSig;
+        private ArrayList<SignatureViewModel> signatureViewModels;
 
-        public TaskSaveNote(SinglePageActivity context, SweetAlertDialog sDialog) {
-            Log.d(TAG, "taskAddSig created");
-            this.context = context;
+        public TaskSaveNote(SweetAlertDialog sDialog, ArrayList<SignatureViewModel> signatureViewModels){
             this.sDialog = sDialog;
+            this.signatureViewModels = signatureViewModels;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
+            //saving
+            ContentValues values = new ContentValues();
+            values.put(MainTable.COLUMN_TITLE, "no title");
+            values.put(MainTable.COLUMN_BACKGROUND, 0);
+            values.put(MainTable.COLUMN_ENCRYPTED, "false");
+            DateFormat dateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss");
+            String currentTime = dateFormat.format(Calendar.getInstance().getTime());
+            values.put(MainTable.COLUMN_TIME, currentTime);
+            String tableName;
+            if(noteId > 0){
+                tableName = DBUti.getTableNameById(noteId);
+                MainDataSource.updateNote(sDialog.getContext().getApplicationContext(),noteId,values);
+                NoteDataSource.removeNoteTable(tableName);
+            }
+            else{
+                tableName = DBUti.getTableNameById(MainDataSource.insertNote(sDialog.getContext().getApplicationContext(), values));
+            }
+            //reset noteId (actually no need, just a reminder here in case of future change)
+            noteId = -1;
 
+            NoteDataSource.createNoteTable(tableName);
+            int viewNumber = signatureViewModels.size();
+            for(int i = 0;i<viewNumber;i++){
+                        values = new ContentValues();
+                        values.put(NoteTable.COLUMN_LINE_NO,signatureViewModels.get(i).getLineNum());
+                        values.put(NoteTable.COLUMN_PAGE_NO,signatureViewModels.get(i).getPageNum());
+                        values.put(NoteTable.COLUMN_TYPE,signatureViewModels.get(i).getType());
+                        if(signatureViewModels.get(i).getType() == SignatureView.IMAGE){
+                            values.put(NoteTable.COLUMN_BITMAP, Base64Uti.encodeTobase64(signatureViewModels.get(i).getImage()));
+                        }
+                        else if (signatureViewModels.get(i).getType() == SignatureView.SPACE){
+                            values.put(NoteTable.COLUMN_BITMAP, "null");
+                        }
+                        NoteDataSource.insertNoteTable(sDialog.getContext().getApplicationContext(), values, tableName);
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            //save completed
+            sDialog.setTitleText("Saved!")
+                    .setContentText("The note is saved!")
+                    .setConfirmText("OK")
+                    .showCancelButton(false)
+                    .setCancelClickListener(null)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismiss();
+                            sDialog.getOwnerActivity().finish();
+                        }
+                    })
+                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+        }
 
+
+    }
+
+    private class TaskLoadNote extends AsyncTask<Void, Void, Void> {
+
+        private SinglePageActivity context = null;
+        private SweetAlertDialog sDialog;
+        private SignatureView tempSig;
+        private int noteId;
+        private int pageNumber;
+        private ArrayList<ArrayList<SignatureViewModel>> signatureViewModels = null;
+
+        public TaskLoadNote(SinglePageActivity context, SweetAlertDialog sDialog, int noteId) {
+            Log.d(TAG, "taskAddSig created");
+            this.context = context;
+            this.sDialog = sDialog;
+            this.noteId = noteId;
+            signatureViewModels = new ArrayList<>();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            String tableName =  DBUti.getTableNameById(noteId);
+            //set up the pages
+            pageNumber = NoteDataSource.getMaxPageNumber(tableName);
+            for(int i=0;i<=pageNumber;i++){
+                ArrayList<SignatureViewModel> tempSignatureViewModels = NoteDataSource.getSignaturesForPage(tableName,i,context,cursorHolder,lineHeight);
+                signatureViewModels.add(tempSignatureViewModels);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            for(int i=0;i<=pageNumber;i++){
+                SinglePage tempPage = new SinglePage(context);
+                pages.add(tempPage);
+                mPagerAdapter.addView(tempPage, mPager, circleIndicator);
+                int pageViewSize = signatureViewModels.get(i).size();
+                for(int j=0;j<pageViewSize;j++){
+                    if(signatureViewModels.get(i).get(j) == null){
+                        Log.d(TAG,"The signatureViewModel is null");
+                    }
+                    if(signatureViewModels.get(i).get(j).getContext() == null){
+                        Log.d(TAG,"The signatureViewModel's context is null");
+                    }
+                    tempSig = new SignatureView(signatureViewModels.get(i).get(j));
+                    tempPage.getSingleLines().get(tempSig.getLineNum()).addSignature(tempSig);
+                }
+            }
+            sDialog.dismiss();
+            resetCursor();
         }
     }
 
@@ -759,18 +804,17 @@ public class SinglePageActivity extends FragmentActivity implements
 
         @Override
         protected Void doInBackground(Void... params) {
-            Log.d(TAG, "taskAddSig running");
-            Log.d(TAG,
-                    "imageW: " + image.getWidth() + " imageH: "
-                            + image.getHeight());
-
+//            Log.d(TAG, "taskAddSig running");
+//            Log.d(TAG,
+//                    "imageW: " + image.getWidth() + " imageH: "
+//                            + image.getHeight());
             image = Bitmap.createScaledBitmap(image, image.getWidth()
                     * lineHeight / image.getHeight(), lineHeight, true);
 //            context.updateLastAvailable(image.getWidth());
 
-            Log.d(TAG,
-                    "tempSigW: " + image.getWidth() + " tempSigH: "
-                            + image.getHeight());
+//            Log.d(TAG,
+//                    "tempSigW: " + image.getWidth() + " tempSigH: "
+//                            + image.getHeight());
 
             return null;
         }
@@ -778,8 +822,9 @@ public class SinglePageActivity extends FragmentActivity implements
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+
             tempSig = new SignatureView(context, image,
-                    cursorHolder);
+                    cursorHolder,mPager.getCurrentItem());
             tempSig.setType(SignatureView.IMAGE);
 //            if (lastAvailable >= NUM_LINES) {
 //                Toast toast = Toast.makeText(context, "Notepad is full!",
