@@ -4,8 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.lyk.immersivenote.R;
-import com.lyk.immersivenote.settings.PrefManager;
+import com.lyk.immersivenote.utils.PrefUti;
 
 import java.util.ArrayList;
 
@@ -43,8 +42,8 @@ public class SinglePage extends LinearLayout{
         });
 
         this.removeAllViews();
-        lineHeight = PrefManager.getIntPreference(PrefManager.NOTE_LINE_HEIGHT, getContext());
-        lineWidth = PrefManager.getIntPreference(PrefManager.NOTE_PAGE_WIDTH, getContext());
+        lineHeight = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT, getContext());
+        lineWidth = PrefUti.getIntPreference(PrefUti.NOTE_PAGE_WIDTH, getContext());
 
         singleLines= new ArrayList<>();
 

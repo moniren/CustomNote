@@ -1,15 +1,11 @@
 package com.lyk.immersivenote.main;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,88 +13,50 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.lyk.immersivenote.R;
-import com.lyk.immersivenote.database.MainDataSource;
-import com.lyk.immersivenote.database.MainTable;
-import com.lyk.immersivenote.database.MyDatabaseHelper;
-import com.lyk.immersivenote.database.NoteDataSource;
-import com.lyk.immersivenote.notepad.SinglePage;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
-import com.lyk.immersivenote.utils.DBUti;
+import com.lyk.immersivenote.utils.PrefUti;
 import com.lyk.immersivenote.utils.RippleBgUti;
-import com.rey.material.drawable.ToolbarRippleDrawable;
-import com.rey.material.util.ViewUtil;
-import com.rey.material.widget.Button;
 import com.rey.material.widget.FloatingActionButton;
 
 import java.util.ArrayList;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 /**
  * Created by lyk on 2015/7/4.
  */
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private boolean isDrawerOpened;
     private RelativeLayout llDrawer;
-    private Button btnStartWriting;
 
-    private ListView listView;
-
-    //    private MaterialMenuView materialMenu;
     private MaterialMenuIconToolbar materialMenu;
 
-    private static MyDatabaseHelper myDBHelper = null;
-    private static SQLiteDatabase database = null;
+    private TextView drawerNotes;
+    private TextView drawerSettings;
 
-    private CardCursorAdapter dataAdapter;
+    private FragmentManager fragmentManager;
+    private Fragment fragment;
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-//    private BroadcastReceiver noteChangeReceiver;
-
-    private SweetAlertDialog sweetAlertDialog = null;
-
-    private int deleteID;
-
-
-    // this is a private custom BroadcastReceiver which can access the
-    // ViewAlertActivity to trigger the ui update
-    private class DatabaseBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-                Log.d("HomeActivity", "received broadcast");
-                showMaterialProgress("Loading...");
-                new TaskLoadNote(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            return;
-            }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(myDBHelper == null){
-            myDBHelper = new MyDatabaseHelper(this.getApplication());
-            database = myDBHelper.getDB();
-            NoteDataSource.setDatabase(database);
-            MainDataSource.setDatabase(database);
-            MainDataSource.createMainTable();
-        }
+        setUpLocale();
         setContentView(R.layout.activity_main);
         initCustomActionBar();
+        initDrawer();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         llDrawer = (RelativeLayout) findViewById(R.id.main_ll_drawer);
-        btnStartWriting = (Button) findViewById(R.id.button_start_writing);
-        listView = (ListView) findViewById(R.id.notes_list);
-        btnStartWriting.setOnClickListener(this);
+        llDrawer.setOnClickListener(null);
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -126,8 +84,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-//        noteChangeReceiver = new DatabaseBroadcastReceiver();
 
+        fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragment = new NotesFragment();
+        fragmentTransaction.add(R.id.home_fragment_place_holder,fragment);
+        fragmentTransaction.commit();
     }
 
 
@@ -140,24 +102,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume(){
         super.onResume();
-
-        showMaterialProgress("Loading...");
-        new TaskLoadNote(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction("com.lyk.immersivenote.database.insert."
-//                + MainTable.TABLE_MAIN);
-//        filter.addAction("com.lyk.immersivenote.database.remove." + MainTable.TABLE_MAIN);
-//        LocalBroadcastManager.getInstance(getApplicationContext())
-//                .registerReceiver(noteChangeReceiver, filter);
     }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-//        LocalBroadcastManager.getInstance(getApplicationContext())
-//                .unregisterReceiver(noteChangeReceiver);
-    }
 
 
     @Override
@@ -166,9 +112,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         materialMenu.onSaveInstanceState(outState);
     }
 
+    private void setUpLocale(){
+        String localePref = PrefUti.getStringPreference(PrefUti.CUSTOM_LOCALE,this);
+        if(localePref != null) {
+            Log.d("HomeActivity","locale Pref is : "+localePref);
+            PrefUti.updateLocale(localePref, this);
+            Log.d("HomeActivity", "after setting locale Pref is : " +getResources().getConfiguration().locale.getDisplayName());
+        }
+    }
+
     private void initCustomActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +144,42 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        RippleBgUti.setFlatColorRippleBackground(getToolbarNavigationIcon(toolbar),this);
+        RippleBgUti.setFlatColorRippleBackground(getToolbarNavigationIcon(toolbar), this);
+    }
+
+    private void initDrawer(){
+        drawerNotes = (TextView) findViewById(R.id.drawer_notes);
+        drawerSettings = (TextView) findViewById(R.id.drawer_settings);
+        drawerNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(! (fragment instanceof NotesFragment)){
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.remove(fragment);
+                    fragmentTransaction.commit();
+                    fragment = new NotesFragment();
+                    FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
+                    fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
+                    fragmentTransactionNew.commit();
+                }
+            }
+        });
+        drawerSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(! (fragment instanceof SettingsFragment)){
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.remove(fragment);
+                    fragmentTransaction.commit();
+                    fragment = new SettingsFragment();
+                    FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
+                    fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
+                    fragmentTransactionNew.commit();
+                }
+            }
+        });
+        RippleBgUti.setFlatRippleBackground(drawerNotes,this);
+        RippleBgUti.setFlatRippleBackground(drawerSettings, this);
     }
 
     // used for setting the ripple effect for the materialMenu icon
@@ -211,74 +202,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return navIcon;
     }
 
-    public void showDeleteConfirmationDialog(int id){
-        deleteID = id;
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setOwnerActivity(this);
-        sweetAlertDialog.setTitleText("Sure to delete the note?")
-                .setContentText("Won't be able to recover !")
-                .setConfirmText("Yes")
-                .setCancelText("No")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                        sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-                        sDialog.setTitleText("Deleting...");
-                        sDialog.setCancelable(false);
-                        sDialog.showContentText(false);
-                        sDialog.showCancelButton(false);
-                        new TaskDeleteNote(sDialog.getOwnerActivity(),sDialog).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-                    }
-                }).showCancelButton(true)
-                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.cancel();
-                    }
-                });
-        sweetAlertDialog.show();
-    }
-
-    public void showMaterialProgress(String title){
-        if(sweetAlertDialog == null)
-            sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        else
-            sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-        sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-        sweetAlertDialog.setTitleText(title);
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
-    }
-
-    public void dismissMaterialProgress(){
-        if(sweetAlertDialog!=null){
-            sweetAlertDialog.dismiss();
-        }
-    }
-
-    public void dismissMaterialProgress(String title){
-        if(sweetAlertDialog != null){
-            sweetAlertDialog.setTitleText(title)
-                    .setConfirmText("OK")
-                    .showContentText(false)
-                    .showCancelButton(false)
-                    .setCancelClickListener(null)
-                    .setConfirmClickListener(null)
-                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-        }
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.button_start_writing) {
-            Intent intent = new Intent(this, SinglePageActivity.class);
-            startActivity(intent);
-            return;
-        }
-    }
 
     public void startWriting(View view){
         Intent intent = new Intent(this, SinglePageActivity.class);
@@ -289,55 +212,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void startEditing(int editPageId){
         Intent intent = new Intent(this, SinglePageActivity.class);
         intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_EDITING);
-        intent.putExtra(SinglePageActivity.EDIT_PAGE_ID,editPageId);
+        intent.putExtra(SinglePageActivity.EDIT_PAGE_ID, editPageId);
         startActivity(intent);
     }
 
-    private class TaskDeleteNote extends AsyncTask<Void, Void, Void> {
-        private SweetAlertDialog sDialog;
-        private Context context;
+    public void reload() {
 
-        public TaskDeleteNote(Context context, SweetAlertDialog sDialog){
-            this.context = context;
-            this.sDialog = sDialog;
-        }
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            NoteDataSource.removeNoteTable(DBUti.getTableNameById(deleteID));
-            MainDataSource.removeNote(sDialog.getContext(), deleteID);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result){
-            super.onPostExecute(result);
-            new TaskLoadNote(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-    }
-
-    private class TaskLoadNote extends AsyncTask<Void, Void, Void> {
-
-        private Context context;
-
-        public TaskLoadNote(Context context){
-            this.context = context;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Cursor cursor = MainDataSource.getWholeCursor();
-            dataAdapter = new CardCursorAdapter(context,cursor,0);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result){
-            super.onPostExecute(result);
-            // Assign adapter to ListView
-            listView.setAdapter(dataAdapter);
-            dismissMaterialProgress();
-        }
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 
 }

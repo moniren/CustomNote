@@ -1,0 +1,32 @@
+<resources>
+
+    <string name="app_name">材料記事本</string>
+
+    <string name="navigation_drawer_user_welcome">歡迎</string>
+    <string name="navigation_drawer_notes">筆記</string>
+    <string name="navigation_drawer_settings">設置</string>
+
+    <string name="settings_choose_language">語言偏好</string>
+    <string name="settings_choose_language_label">選擇您的語言</string>
+    <string name="settings_apply">應用</string>
+
+    <string name="dialog_yes">是</string>
+    <string name="dialog_no">否</string>
+    <string name="dialog_okay">好</string>
+
+    <string name="dialog_delete_note_title">確定要刪除這個筆記？</string>
+    <string name="dialog_delete_note_label">將無法恢復！</string>
+    <string name="dialog_deleting">刪除中...</string>
+    <string name="dialog_delete_page_title">確定要刪除這一頁？</string>
+    <string name="dialog_delete_page_label">將無法恢復！</string>
+    <string name="dialog_deleted">刪除完畢！</string>
+
+    <string name="dialog_loading">載入中...</string>
+    <string name="dialog_save_note_title">保存當前筆記？</string>
+    <string name="dialog_saving">存儲中...</string>
+    <string name="dialog_saved">存儲完畢！</string>
+
+    <string name="dialog_add_new_page_title">添加新頁？</string>
+    <string name="dialog_current_page_full">當前頁面已滿！</string>
+    <string name="dialog_added">添加完畢！</string>
+</resources>

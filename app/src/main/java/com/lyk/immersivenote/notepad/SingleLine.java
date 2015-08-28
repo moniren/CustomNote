@@ -185,17 +185,17 @@ public class SingleLine extends LinearLayout {
                 } else {
 //                    mPage.setPageFull(true);
                     new SweetAlertDialog(singlePageActivity, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("Add a new page?")
-                            .setContentText("The current page is full!")
-                            .setConfirmText("Yes")
-                            .setCancelText("No")
+                            .setTitleText(singlePageActivity.getString(R.string.dialog_add_new_page_title))
+                            .setContentText(singlePageActivity.getString(R.string.dialog_current_page_full))
+                            .setConfirmText(singlePageActivity.getString(R.string.dialog_yes))
+                            .setCancelText(singlePageActivity.getString(R.string.dialog_no))
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     singlePageActivity.addPage();
-                                    sDialog.setTitleText("Added!")
-                                            .setContentText("A new page is added!")
-                                            .setConfirmText("OK")
+                                    sDialog.setTitleText(singlePageActivity.getString(R.string.dialog_added))
+                                            .showCancelButton(false)
+                                            .setConfirmText(singlePageActivity.getString(R.string.dialog_okay))
                                             .setConfirmClickListener(null)
                                             .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                 }
@@ -231,17 +231,17 @@ public class SingleLine extends LinearLayout {
                 } else {
 //                    mPage.setPageFull(true);
                     new SweetAlertDialog(singlePageActivity, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("Add a new page?")
-                            .setContentText("The current page is full!")
-                            .setConfirmText("Yes")
-                            .setCancelText("No")
+                            .setTitleText(singlePageActivity.getString(R.string.dialog_add_new_page_title))
+                            .setContentText(singlePageActivity.getString(R.string.dialog_current_page_full))
+                            .setConfirmText(singlePageActivity.getString(R.string.dialog_yes))
+                            .setCancelText(singlePageActivity.getString(R.string.dialog_no))
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     singlePageActivity.addPage();
-                                    sDialog.setTitleText("Added!")
-                                            .setContentText("A new page is added!")
-                                            .setConfirmText("OK")
+                                    sDialog.setTitleText(singlePageActivity.getString(R.string.dialog_added))
+                                            .showCancelButton(false)
+                                            .setConfirmText(singlePageActivity.getString(R.string.dialog_okay))
                                             .setConfirmClickListener(null)
                                             .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                 }
@@ -304,17 +304,17 @@ public class SingleLine extends LinearLayout {
             } else {
 //                mPage.setPageFull(true);
                 new SweetAlertDialog(singlePageActivity, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Add a new page?")
-                        .setContentText("The current page is full!")
-                        .setConfirmText("Yes")
-                        .setCancelText("No")
+                        .setTitleText(singlePageActivity.getString(R.string.dialog_add_new_page_title))
+                        .setContentText(singlePageActivity.getString(R.string.dialog_current_page_full))
+                        .setConfirmText(singlePageActivity.getString(R.string.dialog_yes))
+                        .setCancelText(singlePageActivity.getString(R.string.dialog_no))
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 singlePageActivity.addPage();
-                                sDialog.setTitleText("Added!")
-                                        .setContentText("A new page is added!")
-                                        .setConfirmText("OK")
+                                sDialog.setTitleText(singlePageActivity.getString(R.string.dialog_added))
+                                        .showCancelButton(false)
+                                        .setConfirmText(singlePageActivity.getString(R.string.dialog_okay))
                                         .setConfirmClickListener(null)
                                         .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                             }

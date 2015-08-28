@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.media.Image;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class CardCursorAdapter extends CursorAdapter {
     private LayoutInflater inflater;
 
     private HomeActivity homeActivity;
+    private NotesFragment notesFragment;
 
     private    static  class   ViewHolder  {
 //        int    id;
@@ -47,7 +49,7 @@ public class CardCursorAdapter extends CursorAdapter {
 
         @Override
         public void onClick(View v) {
-            homeActivity.showDeleteConfirmationDialog(id);
+            notesFragment.showDeleteConfirmationDialog(id);
         }
     }
 
@@ -64,9 +66,10 @@ public class CardCursorAdapter extends CursorAdapter {
         }
     }
 
-    public CardCursorAdapter(Context context, Cursor c, int flags) {
+    public CardCursorAdapter(Context context, Cursor c, int flags, NotesFragment notesFragment) {
         super(context,c, flags);
         this.homeActivity = (HomeActivity) context;
+        this.notesFragment = notesFragment;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override

@@ -1,0 +1,33 @@
+<resources>
+
+    <string name="app_name">材料记事本</string>
+
+    <string name="navigation_drawer_user_welcome">欢迎</string>
+    <string name="navigation_drawer_notes">笔记</string>
+    <string name="navigation_drawer_settings">设置</string>
+
+    <string name="settings_choose_language">语言偏好</string>
+    <string name="settings_choose_language_label">选择您的语言</string>
+    <string name="settings_apply">应用</string>
+
+    <string name="dialog_yes">是</string>
+    <string name="dialog_no">否</string>
+    <string name="dialog_okay">好</string>
+
+    <string name="dialog_delete_note_title">确定要删除这个笔记？</string>
+    <string name="dialog_delete_note_label">将无法恢复！</string>
+    <string name="dialog_deleting">删除中...</string>
+    <string name="dialog_delete_page_title">确定要删除这一页？</string>
+    <string name="dialog_delete_page_label">将无法恢复！</string>
+    <string name="dialog_deleted">删除完毕！</string>
+
+    <string name="dialog_loading">载入中...</string>
+    <string name="dialog_save_note_title">保存当前笔记？</string>
+    <string name="dialog_saving">存储中...</string>
+    <string name="dialog_saved">存储完毕！</string>
+
+    <string name="dialog_add_new_page_title">添加新页？</string>
+    <string name="dialog_current_page_full">当前页面已满！</string>
+    <string name="dialog_added">添加完毕！</string>
+
+</resources>

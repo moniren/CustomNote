@@ -7,7 +7,8 @@
     android:layout_margin="10dp">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@android:color/background_light">
         <LinearLayout
             android:id="@+id/card_circle"
             android:layout_width="60dp"
