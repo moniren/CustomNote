@@ -29,7 +29,7 @@ import com.lyk.immersivenote.database.MyDatabaseHelper;
 import com.lyk.immersivenote.database.NoteDataSource;
 import com.lyk.immersivenote.database.NoteTable;
 import com.lyk.immersivenote.datamodel.SignatureViewModel;
-import com.lyk.immersivenote.settings.PrefManager;
+import com.lyk.immersivenote.utils.PrefUti;
 import com.lyk.immersivenote.utils.Base64Uti;
 import com.lyk.immersivenote.utils.DBUti;
 import com.rey.material.app.Dialog;
@@ -119,7 +119,7 @@ public class SinglePageActivity extends FragmentActivity implements
         singlePageBase = (FrameLayout) findViewById(R.id.singlePageBase);
 
         // this should be put into the base activity
-        if (PrefManager.getIntPreference(PrefManager.NOTE_PAGE_WIDTH, this) == -1) {
+        if (PrefUti.getIntPreference(PrefUti.NOTE_PAGE_WIDTH, this) == -1) {
             // get screen info
             WindowManager wm = (WindowManager) this
                     .getSystemService(Context.WINDOW_SERVICE);
@@ -158,20 +158,20 @@ public class SinglePageActivity extends FragmentActivity implements
                     - statusBarHeight);
             lineHeight = pageHeight / SinglePage.NUM_LINES;
 //            }
-            PrefManager.setIntPreference(PrefManager.NOTE_LINE_HEIGHT,
+            PrefUti.setIntPreference(PrefUti.NOTE_LINE_HEIGHT,
                     lineHeight, this);
-            PrefManager.setIntPreference(PrefManager.NOTE_PAGE_HEIGHT,
+            PrefUti.setIntPreference(PrefUti.NOTE_PAGE_HEIGHT,
                     pageHeight, this);
-            PrefManager.setIntPreference(PrefManager.NOTE_PAGE_WIDTH,
+            PrefUti.setIntPreference(PrefUti.NOTE_PAGE_WIDTH,
                     pageWidth, this);
-            PrefManager.setIntPreference(PrefManager.SCREEN_HEIGHT,
+            PrefUti.setIntPreference(PrefUti.SCREEN_HEIGHT,
                     screenHeight, this);
             Log.d(TAG, "Setting---lineHeight: " + lineHeight + " pageHeight: "
                     + pageHeight + " pageWidth: " + pageWidth);
         }
 
-        lineHeight = PrefManager.getIntPreference(PrefManager.NOTE_LINE_HEIGHT, this);
-        lineWidth = PrefManager.getIntPreference(PrefManager.NOTE_PAGE_WIDTH, this);
+        lineHeight = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT, this);
+        lineWidth = PrefUti.getIntPreference(PrefUti.NOTE_PAGE_WIDTH, this);
 
         // set the cursor layer
         cursorHolder = (CursorHolder) findViewById(R.id.cursorHolder);
@@ -463,10 +463,10 @@ public class SinglePageActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 new SweetAlertDialog(view.getContext(), SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Sure to delete the page?")
-                        .setContentText("Won't be able to recover this page!")
-                        .setConfirmText("Yes")
-                        .setCancelText("No")
+                        .setTitleText(getString(R.string.dialog_delete_page_title))
+                        .setContentText(getString(R.string.dialog_delete_page_label))
+                        .setConfirmText(getString(R.string.dialog_yes))
+                        .setCancelText(getString(R.string.dialog_no))
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
@@ -476,9 +476,9 @@ public class SinglePageActivity extends FragmentActivity implements
                                 }
                                 pages.remove(mPager.getCurrentItem());
                                 mPagerAdapter.removeView(mPager, mPager.getCurrentItem(), circleIndicator);
-                                sDialog.setTitleText("Deleted!")
-                                        .setContentText("The page is deleted!")
-                                        .setConfirmText("OK")
+                                sDialog.setTitleText(getString(R.string.dialog_deleted))
+                                        .setConfirmText(getString(R.string.dialog_okay))
+                                        .showContentText(false)
                                         .showCancelButton(false)
                                         .setCancelClickListener(null)
                                         .setConfirmClickListener(null)
@@ -563,7 +563,7 @@ public class SinglePageActivity extends FragmentActivity implements
         else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
             sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-            sweetAlertDialog.setTitleText("Loading");
+            sweetAlertDialog.setTitleText(getString(R.string.dialog_loading));
             sweetAlertDialog.setCancelable(false);
             sweetAlertDialog.show();
 
@@ -581,16 +581,16 @@ public class SinglePageActivity extends FragmentActivity implements
 
     public void save(final boolean leaveActivity){
         SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Save the note?")
-                .setConfirmText("Yes")
-                .setCancelText("No")
+                .setTitleText(getString(R.string.dialog_save_note_title))
+                .setConfirmText(getString(R.string.dialog_yes))
+                .setCancelText(getString(R.string.dialog_no))
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(final SweetAlertDialog sDialog) {
                         //show a progress dialog
                         sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
                         sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
-                        sDialog.setTitleText("Saving...");
+                        sDialog.setTitleText(getString(R.string.dialog_saving));
                         sDialog.setCancelable(false);
                         sDialog.showContentText(false);
                         sDialog.showCancelButton(false);
@@ -732,9 +732,8 @@ public class SinglePageActivity extends FragmentActivity implements
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             //save completed
-            sDialog.setTitleText("Saved!")
-                    .setContentText("The note is saved!")
-                    .setConfirmText("OK")
+            sDialog.setTitleText(sDialog.getContext().getString(R.string.dialog_saved))
+                    .setConfirmText(sDialog.getContext().getString(R.string.dialog_okay))
                     .showCancelButton(false)
                     .setCancelClickListener(null)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

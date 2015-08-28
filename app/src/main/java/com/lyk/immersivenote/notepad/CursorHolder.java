@@ -1,11 +1,9 @@
 package com.lyk.immersivenote.notepad;
 
-import com.lyk.immersivenote.R;
-import com.lyk.immersivenote.settings.PrefManager;
+import com.lyk.immersivenote.utils.PrefUti;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -43,7 +41,7 @@ public class CursorHolder extends View {
 		android.view.ViewGroup.LayoutParams params = new android.view.ViewGroup.LayoutParams(
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT);
-		lineH = PrefManager.getIntPreference(PrefManager.NOTE_LINE_HEIGHT,
+		lineH = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT,
 				context);
 
 //		cursor = BitmapFactory.decodeResource(this.getContext().getResources(),
@@ -57,7 +55,7 @@ public class CursorHolder extends View {
 
 	public CursorHolder(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		lineH = PrefManager.getIntPreference(PrefManager.NOTE_LINE_HEIGHT,
+		lineH = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT,
 				context);
 
 //		cursor = BitmapFactory.decodeResource(this.getContext().getResources(),

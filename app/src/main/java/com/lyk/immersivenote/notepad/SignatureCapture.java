@@ -495,9 +495,6 @@ public class SignatureCapture extends View {
 		return true;
 	}
 
-	private void debug(String string) {
-	}
-
 	private void expandDirtyRect(float historicalX, float historicalY) {
 		if (historicalX < dirtyRect.left) {
 			dirtyRect.left = historicalX;

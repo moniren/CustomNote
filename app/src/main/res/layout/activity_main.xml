@@ -38,15 +38,10 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <ListView
-                    android:id="@+id/notes_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="10.0dp"
-                    android:choiceMode="singleChoice" />
+                <FrameLayout
+                    android:id="@+id/home_fragment_place_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="4dp"
@@ -54,37 +49,92 @@
                 android:background="@drawable/shadow_btm" />
             </RelativeLayout>
 
-            <com.rey.material.widget.FloatingActionButton
-                android:id="@+id/homeFabButton"
-                style="@style/FloatingColorActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_margin="@dimen/fab_margin"
-                android:onClick="startWriting"
-                app:borderWidth="0dp"
-                app:fab_iconSrc="@drawable/ic_add_white" />
+
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/main_ll_drawer"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
-            android:layout_gravity="start">
+            android:layout_gravity="start"
+            android:background="@android:color/background_light">
 
-            <LinearLayout
+            <RelativeLayout
+                android:layout_height="100dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?android:attr/windowBackground">
-
-                <com.rey.material.widget.Button
-                    android:id="@+id/button_start_writing"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="match_parent"
+                android:background="@drawable/profile_bg">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Start Writing"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    app:rd_delayClick="afterRelease" />
+                    android:background="@android:color/transparent"
+                    android:text="@string/navigation_drawer_user_welcome"
+                    android:textColor="@android:color/white"
+                    android:layout_margin="20dp"
+                    android:textSize="25dp"
+                    android:fontFamily="sans-serif"/>
+            </RelativeLayout>
+            <com.pkmmte.view.CircularImageView
+                android:id = "@+id/profile_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/profile"
+                android:layout_marginTop="60dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                app:border="true"
+                app:border_color="@android:color/white"
+                app:border_width="2dp"
+                app:shadow="false" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_img"
+                android:layout_marginTop = "20dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/navigation_item_height">
+                    <TextView
+                        android:id="@+id/drawer_notes"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:textColor="@android:color/tertiary_text_dark"
+                        android:text="@string/navigation_drawer_notes"
+                        android:gravity="center"
+                        android:textSize="@dimen/navigation_item_text_size"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_assignment_grey"
+                        android:layout_alignParentLeft="true"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/section_bar"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/navigation_item_height">
+                    <TextView
+                        android:id="@+id/drawer_settings"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:textColor="@android:color/tertiary_text_dark"
+                        android:text="@string/navigation_drawer_settings"
+                        android:gravity="center"
+                        android:textSize="@dimen/navigation_item_text_size"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_settings_grey"
+                        android:layout_alignParentLeft="true"/>
+                </RelativeLayout>
+
+
             </LinearLayout>
             <View
                 android:layout_width="fill_parent"

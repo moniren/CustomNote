@@ -34,4 +34,5 @@ dependencies {
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'
     compile 'me.relex:circleindicator:1.1.5@aar'
     compile 'cn.pedant.sweetalert:library:1.3'
+    compile 'com.pkmmte.view:circularimageview:1.1'
 }
