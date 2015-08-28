@@ -427,7 +427,7 @@ public class SinglePageActivity extends FragmentActivity implements
 
     @Override
     public void onBackPressed() {
-        save();
+        save(true);
     }
 
 
@@ -579,7 +579,7 @@ public class SinglePageActivity extends FragmentActivity implements
 
     }
 
-    private void save(){
+    public void save(final boolean leaveActivity){
         SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Save the note?")
                 .setConfirmText("Yes")
@@ -609,7 +609,7 @@ public class SinglePageActivity extends FragmentActivity implements
                                 }
                             }
                         }
-                        new TaskSaveNote(sDialog,signatureViewModels).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        new TaskSaveNote(sDialog,signatureViewModels,leaveActivity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                     }
                 }).showCancelButton(true)
@@ -623,6 +623,10 @@ public class SinglePageActivity extends FragmentActivity implements
         dialog.setOwnerActivity(this);
         dialog.show();
 
+    }
+
+    public void dialogOk(View view) {
+        //dialogOk Method
     }
     private class SpaceBtnClickListener implements OnClickListener {
         private SinglePageActivity context;
@@ -675,10 +679,12 @@ public class SinglePageActivity extends FragmentActivity implements
 
         private SweetAlertDialog sDialog;
         private ArrayList<SignatureViewModel> signatureViewModels;
+        private boolean leaveActivity;
 
-        public TaskSaveNote(SweetAlertDialog sDialog, ArrayList<SignatureViewModel> signatureViewModels){
+        public TaskSaveNote(SweetAlertDialog sDialog, ArrayList<SignatureViewModel> signatureViewModels,boolean leaveActivity){
             this.sDialog = sDialog;
             this.signatureViewModels = signatureViewModels;
+            this.leaveActivity = leaveActivity;
         }
 
         @Override
@@ -734,8 +740,13 @@ public class SinglePageActivity extends FragmentActivity implements
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismiss();
-                            sDialog.getOwnerActivity().finish();
+                            if(leaveActivity){
+                                sDialog.dismiss();
+                                sDialog.getOwnerActivity().finish();
+                            }
+                            else{
+                                sDialog.dismiss();
+                            }
                         }
                     })
                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
@@ -925,5 +936,9 @@ public class SinglePageActivity extends FragmentActivity implements
 
     public void setOnePageOnly(boolean onePageOnly) {
         this.onePageOnly = onePageOnly;
+    }
+
+    public SignatureCapture getSignatureCapture(){
+        return sigCapture;
     }
 }

@@ -32,7 +32,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_exit_to_app_grey"
+                android:src="@drawable/ic_palette_grey"
                 android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -94,7 +94,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_exit_to_app_grey"
+                android:src="@drawable/ic_translate_grey"
                 android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -132,22 +132,24 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp">
         <com.rey.material.widget.Button
-            android:id="@+id/dialog_ok_button"
+            android:id="@+id/dialog_show_menu_ok_button"
             style="@style/FlatButtonRippleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ok"
             android:textSize="20dp"
+            android:textColor="@android:color/tertiary_text_dark"
             android:layout_alignParentRight="true"
             />
         <com.rey.material.widget.Button
-            android:id="@+id/dialog_cancel_button"
+            android:id="@+id/dialog_show_menu_cancel_button"
             style="@style/FlatButtonRippleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:textSize="20dp"
-            android:layout_toLeftOf="@+id/dialog_ok_button"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:layout_toLeftOf="@+id/dialog_show_menu_ok_button"
             />
     </RelativeLayout>
 </LinearLayout>

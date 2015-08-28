@@ -401,6 +401,10 @@ public class SignatureCapture extends View {
 
 	}
 
+	public void setPaintColor(int color){
+		paint.setColor(color);
+	}
+
 	public void clear() {
 		// cropX = 0;
 		// cropY = 0;
