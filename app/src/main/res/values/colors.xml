@@ -10,4 +10,5 @@
     <color name="activity_main_row_title_color">#cccccc</color>
     <color name="light_gray_transparent">#88FFFFFF</color>
     <color name="dark_gray_transparent">#88666666</color>
+    <color name="shadow_transparent">#33000000</color>
 </resources>

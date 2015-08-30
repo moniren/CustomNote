@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -21,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainDataSource;
@@ -32,7 +35,6 @@ import com.lyk.immersivenote.datamodel.SignatureViewModel;
 import com.lyk.immersivenote.utils.PrefUti;
 import com.lyk.immersivenote.utils.Base64Uti;
 import com.lyk.immersivenote.utils.DBUti;
-import com.rey.material.app.Dialog;
 import com.rey.material.widget.ImageButton;
 
 import java.beans.PropertyChangeEvent;
@@ -93,14 +95,20 @@ public class SinglePageActivity extends FragmentActivity implements
     private static SQLiteDatabase database = null;
 
     public static String WRITE_EDIT_INTENT = "write_edit_intent";
+    public static String EDIT_PAGE_ID = "edit_page_id";
+    public static String NOTE_TITLE = "note_title";
+
     public static int START_WRITING = 0;
     public static int START_EDITING = 1;
-    public static String EDIT_PAGE_ID = "edit_page_id";
+
     //use the sign of this id as a flag
     private int noteId;
 
     private NotepadDialog menuDialog;
 
+    private TextView titleBar;
+    private Toolbar toolBar;
+    private int themeColor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +123,7 @@ public class SinglePageActivity extends FragmentActivity implements
         }
         setContentView(R.layout.activity_note_pad);
         initCustomActionBar();
-
+        applyThemeColor();
         singlePageBase = (FrameLayout) findViewById(R.id.singlePageBase);
 
         // this should be put into the base activity
@@ -172,6 +180,8 @@ public class SinglePageActivity extends FragmentActivity implements
 
         lineHeight = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT, this);
         lineWidth = PrefUti.getIntPreference(PrefUti.NOTE_PAGE_WIDTH, this);
+
+        titleBar = (TextView) findViewById(R.id.notepad_title_bar);
 
         // set the cursor layer
         cursorHolder = (CursorHolder) findViewById(R.id.cursorHolder);
@@ -423,6 +433,7 @@ public class SinglePageActivity extends FragmentActivity implements
         initPages();
 
 
+
     }
 
     @Override
@@ -442,7 +453,20 @@ public class SinglePageActivity extends FragmentActivity implements
 
     }
 
+    private void applyThemeColor(){
+        String previousSelectedColor = PrefUti.getStringPreference(PrefUti.THEME_COLOR, this);
+        if(previousSelectedColor!=null){
+
+            themeColor = Color.parseColor(previousSelectedColor);
+        }
+        else{
+            themeColor = this.getResources().getColor(R.color.color_primary);
+        }
+        toolBar.setBackgroundColor(themeColor);
+    }
+
     private void initCustomActionBar() {
+        toolBar = (Toolbar) findViewById(R.id.toolbarNotepad);
         addPageBtn = (ImageButton) findViewById(R.id.actionbar_add_page);
         removePageBtn = (ImageButton) findViewById(R.id.actionbar_remove_page);
         spaceBtn = (ImageButton) findViewById(R.id.actionbar_space);
@@ -562,20 +586,22 @@ public class SinglePageActivity extends FragmentActivity implements
         }
         else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-            sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+            sweetAlertDialog.getProgressHelper().setBarColor(themeColor);
             sweetAlertDialog.setTitleText(getString(R.string.dialog_loading));
             sweetAlertDialog.setCancelable(false);
             sweetAlertDialog.show();
 
             //set the noteId
             noteId = intent.getIntExtra(EDIT_PAGE_ID, 1);
-
+            menuDialog.setTitle(intent.getStringExtra(NOTE_TITLE));
 
             new TaskLoadNote(this,sweetAlertDialog,noteId).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
         }
         mPager.setAdapter(mPagerAdapter);
+
+        setTitle(menuDialog.getTitle());
 
     }
 
@@ -589,7 +615,7 @@ public class SinglePageActivity extends FragmentActivity implements
                     public void onClick(final SweetAlertDialog sDialog) {
                         //show a progress dialog
                         sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                        sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+                        sDialog.getProgressHelper().setBarColor(themeColor);
                         sDialog.setTitleText(getString(R.string.dialog_saving));
                         sDialog.setCancelable(false);
                         sDialog.showContentText(false);
@@ -625,9 +651,6 @@ public class SinglePageActivity extends FragmentActivity implements
 
     }
 
-    public void dialogOk(View view) {
-        //dialogOk Method
-    }
     private class SpaceBtnClickListener implements OnClickListener {
         private SinglePageActivity context;
         private SignatureView spaceSig;
@@ -691,7 +714,7 @@ public class SinglePageActivity extends FragmentActivity implements
         protected Void doInBackground(Void... params) {
             //saving
             ContentValues values = new ContentValues();
-            values.put(MainTable.COLUMN_TITLE, "no title");
+            values.put(MainTable.COLUMN_TITLE, menuDialog.getTitle());
             values.put(MainTable.COLUMN_BACKGROUND, 0);
             values.put(MainTable.COLUMN_ENCRYPTED, "false");
             DateFormat dateFormat = new SimpleDateFormat(
@@ -935,6 +958,15 @@ public class SinglePageActivity extends FragmentActivity implements
 
     public void setOnePageOnly(boolean onePageOnly) {
         this.onePageOnly = onePageOnly;
+    }
+
+    public void setTitle(String title){
+        if(title.length() <= 10){
+            titleBar.setText(title);
+        }
+        else{
+            titleBar.setText(title.substring(0,7)+"...");
+        }
     }
 
     public SignatureCapture getSignatureCapture(){

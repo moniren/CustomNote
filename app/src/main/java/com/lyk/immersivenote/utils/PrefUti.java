@@ -16,6 +16,7 @@ public abstract class PrefUti {
 	public static final String SCREEN_HEIGHT = "ScreenHeight";
 
 	public static final String CUSTOM_LOCALE = "CustomLocale";
+	public static final String THEME_COLOR = "ThemeColor";
 	
 	public static void setStringPreference(String key,String info, Context context){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);

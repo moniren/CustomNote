@@ -8,11 +8,16 @@
 
     <string name="settings_choose_language">Language Preference</string>
     <string name="settings_choose_language_label">choose your language</string>
+    <string name="settings_theme_color">Theme color</string>
+    <string name="settings_red">Red : </string>
+    <string name="settings_green">Green : </string>
+    <string name="settings_blue">Blue : </string>
     <string name="settings_apply">Apply</string>
 
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_okay">Ok</string>
+    <string name="dialog_cancel">Cancel</string>
 
     <string name="dialog_delete_note_title">Sure to delete the note?</string>
     <string name="dialog_delete_note_label">Won\'t be able to recover!</string>
@@ -30,10 +35,13 @@
     <string name="dialog_current_page_full">The current page is full!</string>
     <string name="dialog_added">Added!</string>
 
-
-
-    <string name="menu_font_color">Font Color</string>
+    <string name ="notepad_dialog_title">Title</string>
+    <string name = "notepad_dialog_title_default">No Title</string>
+    <string name = "notepad_dialog_title_hint">Set a title for your note</string>
+    <string name = "notepad_dialog_title_error">Maximum 20 characters</string>
     <string name ="notepad_dialog_writing_mode">Writing Mode</string>
     <string name="notepad_dialog_save_note">Save Note</string>
     <string name="notepad_dialog_sketch_color">Sketch Color</string>
+    <string name = "dialog_kanji">Kanji</string>
+    <string name = "dialog_latin">Latin</string>
 </resources>

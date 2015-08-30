@@ -8,11 +8,16 @@
 
     <string name="settings_choose_language">語言偏好</string>
     <string name="settings_choose_language_label">選擇您的語言</string>
+    <string name="settings_theme_color">主題顏色</string>
+    <string name="settings_red">紅 ： </string>
+    <string name="settings_green">綠 ： </string>
+    <string name="settings_blue">藍 ： </string>
     <string name="settings_apply">應用</string>
 
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
     <string name="dialog_okay">好</string>
+    <string name="dialog_cancel">取消</string>
 
     <string name="dialog_delete_note_title">確定要刪除這個筆記？</string>
     <string name="dialog_delete_note_label">將無法恢復！</string>
@@ -29,4 +34,14 @@
     <string name="dialog_add_new_page_title">添加新頁？</string>
     <string name="dialog_current_page_full">當前頁面已滿！</string>
     <string name="dialog_added">添加完畢！</string>
+
+    <string name ="notepad_dialog_title">標題</string>
+    <string name = "notepad_dialog_title_default">未命名</string>
+    <string name = "notepad_dialog_title_hint">為這個筆記設置標題</string>
+    <string name = "notepad_dialog_title_error">最多20個字</string>
+    <string name ="notepad_dialog_writing_mode">書寫模式</string>
+    <string name="notepad_dialog_save_note">保存筆記</string>
+    <string name="notepad_dialog_sketch_color">筆畫顏色</string>
+    <string name = "dialog_kanji">漢字</string>
+    <string name = "dialog_latin">拉丁文</string>
 </resources>

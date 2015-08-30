@@ -5,33 +5,150 @@
                 android:layout_height="match_parent"
 
                 android:background="@android:color/background_light">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_choose_language"
-            android:textColor="@color/color_primary"
-            android:textSize="@dimen/settings_title_text_size"
-            android:textStyle="bold"/>
-        <com.rey.material.widget.Spinner
-            android:layout_gravity="right"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:id = "@+id/language_spinner"
-            style="@style/Material.Widget.Spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:spn_dividerColor="@color/single_line_line"
-            app:spn_dividerHeight="2dp"
-            app:rd_style="@style/FlatButtonRippleStyle"
-            app:spn_label="@string/settings_choose_language_label"/>
 
-    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="90dp"
+        android:background="@android:color/background_light">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/settings_language_title"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_choose_language"
+                    android:textColor="@color/color_primary"
+                    android:textSize="@dimen/settings_title_text_size"
+                    android:textStyle="bold"/>
+                <com.rey.material.widget.Spinner
+                    android:layout_gravity="right"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id = "@+id/language_spinner"
+                    style="@style/Material.Widget.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:spn_dividerColor="@color/single_line_line"
+                    app:spn_dividerHeight="2dp"
+                    app:rd_style="@style/FlatButtonRippleStyle"
+                    app:spn_label="@string/settings_choose_language_label"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/top_section">
+                <TextView
+                    android:id="@+id/settings_theme_title"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_theme_color"
+                    android:textColor="@color/color_primary"
+                    android:textSize="@dimen/settings_title_text_size"
+                    android:textStyle="bold"/>
+                <View
+                    android:layout_margin = "20dp"
+                    android:id="@+id/settings_color_preview"
+                    android:layout_height="@dimen/color_preview_size"
+                    android:layout_width="@dimen/color_preview_size"
+                    android:layout_gravity="center_horizontal"/>
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width = "match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text = "@string/settings_red"
+                        android:textSize="@dimen/navigation_item_text_size"
+                        android:layout_gravity="bottom"
+                        android:textColor="@android:color/tertiary_text_dark"/>
+                    <com.rey.material.widget.Slider
+                        android:id="@+id/settings_slider_red"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:sl_thumbRadius="@dimen/slider_thumb_radius"
+                        app:sl_stepValue="1"
+                        app:sl_discreteMode="true"
+                        app:sl_minValue="0"
+                        app:sl_maxValue="255"
+                        app:sl_value="230"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width = "match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text = "@string/settings_green"
+                        android:layout_gravity="bottom"
+                        android:textSize="@dimen/navigation_item_text_size"
+                        android:textColor="@android:color/tertiary_text_dark"/>
+                    <com.rey.material.widget.Slider
+                        android:id="@+id/settings_slider_green"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:sl_thumbRadius="@dimen/slider_thumb_radius"
+                        app:sl_stepValue="1"
+                        app:sl_discreteMode="true"
+                        app:sl_minValue="0"
+                        app:sl_maxValue="255"
+                        app:sl_value="78"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width = "match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text = "@string/settings_blue"
+                        android:layout_gravity="bottom"
+                        android:textSize="@dimen/navigation_item_text_size"
+                        android:textColor="@android:color/tertiary_text_dark"/>
+                    <com.rey.material.widget.Slider
+                        android:id="@+id/settings_slider_blue"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:sl_thumbRadius="@dimen/slider_thumb_radius"
+                        app:sl_stepValue="1"
+                        app:sl_discreteMode="true"
+                        app:sl_minValue="0"
+                        app:sl_maxValue="255"
+                        app:sl_value="64"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
     <com.rey.material.widget.Button
         android:id="@+id/apply_settings_btn"
         android:layout_height="50dp"
@@ -43,5 +160,6 @@
         app:rd_delayClick="afterRelease"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"/>
+
 
 </RelativeLayout>

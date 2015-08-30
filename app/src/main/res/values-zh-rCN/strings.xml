@@ -8,11 +8,16 @@
 
     <string name="settings_choose_language">语言偏好</string>
     <string name="settings_choose_language_label">选择您的语言</string>
+    <string name="settings_theme_color">主题颜色</string>
+    <string name="settings_red">红 ： </string>
+    <string name="settings_green">绿 ： </string>
+    <string name="settings_blue">蓝 ： </string>
     <string name="settings_apply">应用</string>
 
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
     <string name="dialog_okay">好</string>
+    <string name="dialog_cancel">取消</string>
 
     <string name="dialog_delete_note_title">确定要删除这个笔记？</string>
     <string name="dialog_delete_note_label">将无法恢复！</string>
@@ -29,5 +34,15 @@
     <string name="dialog_add_new_page_title">添加新页？</string>
     <string name="dialog_current_page_full">当前页面已满！</string>
     <string name="dialog_added">添加完毕！</string>
+
+    <string name ="notepad_dialog_title">标题</string>
+    <string name = "notepad_dialog_title_default">未命名</string>
+    <string name = "notepad_dialog_title_hint">为这个笔记设置标题</string>
+    <string name = "notepad_dialog_title_error">最多20个字</string>
+    <string name ="notepad_dialog_writing_mode">书写模式</string>
+    <string name="notepad_dialog_save_note">保存笔记</string>
+    <string name="notepad_dialog_sketch_color">笔画颜色</string>
+    <string name = "dialog_kanji">汉字</string>
+    <string name = "dialog_latin">拉丁文</string>
 
 </resources>

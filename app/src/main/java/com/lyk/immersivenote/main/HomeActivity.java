@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.lyk.immersivenote.R;
+import com.lyk.immersivenote.notepad.SinglePage;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
 import com.lyk.immersivenote.utils.PrefUti;
 import com.lyk.immersivenote.utils.RippleBgUti;
@@ -45,6 +46,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private Fragment fragment;
+    private Toolbar toolbar;
+
+    private int themeColor;
 
 
     @Override
@@ -56,6 +60,9 @@ public class HomeActivity extends AppCompatActivity {
         initDrawer();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         llDrawer = (RelativeLayout) findViewById(R.id.main_ll_drawer);
+
+        applyThemeColor();
+
         llDrawer.setOnClickListener(null);
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
@@ -122,9 +129,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initCustomActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarHome);
+        toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(R.string.app_name);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(! (fragment instanceof NotesFragment)){
+                if (!(fragment instanceof NotesFragment)) {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.remove(fragment);
                     fragmentTransaction.commit();
@@ -167,7 +174,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(! (fragment instanceof SettingsFragment)){
+                if (!(fragment instanceof SettingsFragment)) {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.remove(fragment);
                     fragmentTransaction.commit();
@@ -202,6 +209,36 @@ public class HomeActivity extends AppCompatActivity {
         return navIcon;
     }
 
+    private void applyThemeColor(){
+        String previousSelectedColor = PrefUti.getStringPreference(PrefUti.THEME_COLOR, this);
+        if(previousSelectedColor!=null){
+            themeColor = Color.parseColor(previousSelectedColor);
+        }
+        else{
+            themeColor = this.getResources().getColor(R.color.color_primary);
+        }
+        toolbar.setBackgroundColor(themeColor);
+    }
+
+    public void changeColor(int color){
+        toolbar.setBackgroundColor(color);
+    }
+
+    public int getThemeColor(){
+        return themeColor;
+    }
+
+    public void switchToNotesFragment(){
+        if (!(fragment instanceof NotesFragment)) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
+            fragment = new NotesFragment();
+            FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
+            fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
+            fragmentTransactionNew.commit();
+        }
+    }
 
     public void startWriting(View view){
         Intent intent = new Intent(this, SinglePageActivity.class);
@@ -209,10 +246,11 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startEditing(int editPageId){
+    public void startEditing(int editPageId,String title){
         Intent intent = new Intent(this, SinglePageActivity.class);
         intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_EDITING);
         intent.putExtra(SinglePageActivity.EDIT_PAGE_ID, editPageId);
+        intent.putExtra(SinglePageActivity.NOTE_TITLE,title);
         startActivity(intent);
     }
 

@@ -12,22 +12,20 @@
 
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarHome"
+            android:id="@+id/toolbarNotepad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?android:attr/actionBarSize"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+            android:background="@color/color_primary"
+            android:minHeight="?android:attr/actionBarSize">
 
             <TextView
+                android:id="@+id/notepad_title_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 

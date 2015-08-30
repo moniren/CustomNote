@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/navigation_drawer_width"
     android:layout_height="match_parent"
     android:background="@android:color/background_light">
     <com.rey.material.widget.Button
         android:id="@+id/notepad_dialog_saveBtn"
         style="@style/FlatButtonRippleStyle"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:layout_centerVertical="true"
         android:drawableLeft="@drawable/ic_save_grey"
@@ -32,6 +32,50 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:src="@drawable/ic_flag_grey"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:text="@string/notepad_dialog_title"
+                android:textColor="@android:color/tertiary_text_dark"
+                android:gravity="center"
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <com.rey.material.widget.EditText
+            android:id="@+id/textfield_note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity = "center"
+            android:inputType="text"
+            android:maxLength = "20"
+            android:hint="@string/notepad_dialog_title_hint"
+            android:text="@string/notepad_dialog_title_default"
+            android:textColor="@android:color/tertiary_text_dark"
+            app:et_dividerHeight="2dp"
+            app:et_labelEnable = "true"
+            app:et_labelTextColor = "@android:color/holo_blue_dark"
+            app:et_labelInAnim = "@anim/fade_in"
+            app:et_labelOutAnim="@anim/fade_out"
+            app:et_dividerColor="@android:color/holo_blue_dark"
+            app:et_inputId="@+id/textfield_note_title_input"
+            app:et_supportMode="none"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/top_section">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_palette_grey"
                 android:layout_marginLeft="10dp"/>
             <TextView
@@ -39,9 +83,8 @@
                 android:layout_height="?android:attr/actionBarSize"
                 android:text="@string/notepad_dialog_sketch_color"
                 android:textColor="@android:color/tertiary_text_dark"
-                android:gravity="center_vertical"
-                android:textSize="20dp"
-                android:layout_marginLeft="40dp"/>
+                android:gravity="center"
+                android:textSize="20dp"/>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -102,8 +145,7 @@
                 android:text="@string/notepad_dialog_writing_mode"
                 android:textColor="@android:color/tertiary_text_dark"
                 android:textSize="20dp"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="40dp"/>
+                android:gravity="center"/>
         </LinearLayout>
         <com.rey.material.widget.RadioButton
             android:id="@+id/writing_mode_kanji"
@@ -112,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:checked="true"
-            android:text="Kanji"
+            android:text="@string/dialog_kanji"
             app:rbd_radius="8dp"
             android:gravity="center_vertical"/>
         <com.rey.material.widget.RadioButton
@@ -122,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:checked="false"
-            android:text="Latin"
+            android:text="@string/dialog_latin"
             app:rbd_radius="8dp"
             android:gravity="center_vertical" />
 
@@ -136,7 +178,7 @@
             style="@style/FlatButtonRippleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ok"
+            android:text="@string/dialog_okay"
             android:textSize="20dp"
             android:textColor="@android:color/tertiary_text_dark"
             android:layout_alignParentRight="true"
@@ -146,7 +188,7 @@
             style="@style/FlatButtonRippleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/dialog_cancel"
             android:textSize="20dp"
             android:textColor="@android:color/tertiary_text_dark"
             android:layout_toLeftOf="@+id/dialog_show_menu_ok_button"

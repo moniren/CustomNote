@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import com.lyk.immersivenote.database.MainDataSource;
 import com.lyk.immersivenote.database.MyDatabaseHelper;
 import com.lyk.immersivenote.database.NoteDataSource;
 import com.lyk.immersivenote.utils.DBUti;
+import com.lyk.immersivenote.utils.PrefUti;
+import com.rey.material.widget.FloatingActionButton;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -32,8 +35,12 @@ public class NotesFragment extends Fragment {
     // to reference itself in private classes
     private NotesFragment self;
 
+    private FloatingActionButton fab;
+
     private static MyDatabaseHelper myDBHelper = null;
     private static SQLiteDatabase database = null;
+
+    private int themeColor;
 
     public NotesFragment(){
         self = this;
@@ -58,7 +65,8 @@ public class NotesFragment extends Fragment {
         // Inflate the layout for this fragment
         View forReturn = inflater.inflate(R.layout.fragment_notes, container, false);
         listView = (ListView) forReturn.findViewById(R.id.notes_list);
-
+        fab = (FloatingActionButton) forReturn.findViewById(R.id.homeFabButton);
+        applyThemeColor();
         return forReturn;
     }
 
@@ -69,20 +77,28 @@ public class NotesFragment extends Fragment {
         new TaskLoadNote(this.getActivity(),this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    private void applyThemeColor(){
+        String previousSelectedColor = PrefUti.getStringPreference(PrefUti.THEME_COLOR, this.getActivity());
+        if(previousSelectedColor!=null){
+            themeColor = Color.parseColor(previousSelectedColor);
+        }
+        else{
+            themeColor = this.getActivity().getResources().getColor(R.color.color_primary);
+        }
+        fab.setBackgroundColor(themeColor);
+    }
 
-
-    public void showMaterialProgress(String title){
+    private void showMaterialProgress(String title){
         if(sweetAlertDialog == null)
             sweetAlertDialog = new SweetAlertDialog(this.getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         else
             sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-        sweetAlertDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+        sweetAlertDialog.getProgressHelper().setBarColor(themeColor);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
     }
-
-
+    
 
     public void showDeleteConfirmationDialog(int id){
         deleteID = id;
@@ -96,7 +112,7 @@ public class NotesFragment extends Fragment {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                        sDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.color_primary));
+                        sDialog.getProgressHelper().setBarColor(themeColor);
                         sDialog.setTitleText(self.getActivity().getString(R.string.dialog_deleting));
                         sDialog.setCancelable(false);
                         sDialog.showContentText(false);
@@ -182,4 +198,5 @@ public class NotesFragment extends Fragment {
             dismissMaterialProgress();
         }
     }
+
 }

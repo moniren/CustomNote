@@ -80,14 +80,14 @@
                 android:layout_marginBottom="7dp"
                 app:rd_delayClick="afterRelease" />
             <com.rey.material.widget.ImageButton
-                android:id="@+id/card_config_note"
+                android:id="@+id/card_edit_note"
                 android:layout_height="40dp"
                 android:layout_width="40dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 style="@style/FlatButtonRippleStyle"
-                android:src="@drawable/ic_settings_grey"
+                android:src="@drawable/ic_edit_grey"
                 app:rd_delayClick="afterRelease" />
         </LinearLayout>
     </RelativeLayout>
