@@ -57,8 +57,9 @@ public class SignatureView extends ImageView{
 	}
 
 	//build from the data model
-	public SignatureView(SignatureViewModel signatureViewModel){
+	public SignatureView(SignatureViewModel signatureViewModel,CursorHolder cursorHolder){
 		super(signatureViewModel.getContext());
+		this.cursorHolder = cursorHolder;
 		this.setLineNum(signatureViewModel.getLineNum());
 		this.setType(signatureViewModel.getType());
 		this.setPageNum(signatureViewModel.getPageNum());
