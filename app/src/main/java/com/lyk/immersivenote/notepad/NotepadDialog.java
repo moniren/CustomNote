@@ -189,9 +189,15 @@ public class NotepadDialog extends Dialog {
         return title;
     }
 
+    public void setWritingMode(boolean kanjiMode){
+        kanjiRadioBtn.setCheckedImmediately(kanjiMode);
+        latinRadioBtn.setCheckedImmediately(!kanjiMode);
+    }
+
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         saveState();
     }
+
 }

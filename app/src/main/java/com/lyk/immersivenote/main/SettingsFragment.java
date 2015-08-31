@@ -45,7 +45,9 @@ public class SettingsFragment extends Fragment {
 
     private RadioButton kanjiRadioBtn;
     private RadioButton latinRadioBtn;
+    private String previousSelectedWritingMode;
 
+    private int previousSelectedTimeInterval;
     private Slider timeSlider;
     private TextView timePreview;
 
@@ -129,6 +131,15 @@ public class SettingsFragment extends Fragment {
 
                 boolean languageChanged = selectedLanguage != previousSelectedLanguage || previousSelectedLanguage== -1;
                 boolean colorChanged = !selectedThemeColor.equals(previousSelectedColor);
+
+                if(kanjiRadioBtn.isChecked()){
+                    PrefUti.setStringPreference(PrefUti.WRITING_MODE,PrefUti.KANJI_MODE,homeActivity);
+                }
+                else{
+                    PrefUti.setStringPreference(PrefUti.WRITING_MODE,PrefUti.LATIN_MODE,homeActivity);
+                }
+
+                PrefUti.setIntPreference(PrefUti.TIME_INTERVAL,timeSlider.getValue(),homeActivity);
 
                 if (languageChanged || colorChanged) {
                     if (colorChanged) {
@@ -237,8 +248,8 @@ public class SettingsFragment extends Fragment {
         } else {
             colorPreview.setBackgroundColor(Color.parseColor(previousSelectedColor));
             redSlider.setValue(Integer.parseInt(previousSelectedColor.substring(1, 3),16), false);
-            greenSlider.setValue(Integer.parseInt(previousSelectedColor.substring(3, 5),16), false);
-            blueSlider.setValue(Integer.parseInt(previousSelectedColor.substring(5),16), false);
+            greenSlider.setValue(Integer.parseInt(previousSelectedColor.substring(3, 5), 16), false);
+            blueSlider.setValue(Integer.parseInt(previousSelectedColor.substring(5), 16), false);
         }
 
         redSlider.setOnPositionChangeListener(colorSliderListener);
@@ -248,11 +259,21 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setUpWritingModeSection(){
+        previousSelectedWritingMode = PrefUti.getStringPreference(PrefUti.WRITING_MODE,homeActivity);
+        if(previousSelectedWritingMode != null){
+            kanjiRadioBtn.setCheckedImmediately(previousSelectedWritingMode.equals(PrefUti.KANJI_MODE));
+            latinRadioBtn.setCheckedImmediately(previousSelectedWritingMode.equals(PrefUti.LATIN_MODE));
+        }
         kanjiRadioBtn.setOnCheckedChangeListener(writingModeListener);
         latinRadioBtn.setOnCheckedChangeListener(writingModeListener);
     }
 
     private void setUpTimeIntervalSection(){
+        previousSelectedTimeInterval = PrefUti.getIntPreference(PrefUti.TIME_INTERVAL,homeActivity);
+        if(previousSelectedTimeInterval > 0){
+            timeSlider.setValue(previousSelectedTimeInterval,false);
+            timePreview.setText(previousSelectedTimeInterval+"ms");
+        }
         timeSlider.setOnPositionChangeListener(timeSliderListener);
     }
 

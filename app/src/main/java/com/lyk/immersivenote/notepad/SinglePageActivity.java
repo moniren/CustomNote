@@ -110,6 +110,7 @@ public class SinglePageActivity extends FragmentActivity implements
     private int themeColor;
     private String title;
     private boolean editing = false;
+    private boolean kanjiMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -180,6 +181,14 @@ public class SinglePageActivity extends FragmentActivity implements
         lineHeight = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT, this);
         lineWidth = PrefUti.getIntPreference(PrefUti.NOTE_PAGE_WIDTH, this);
 
+        String writingMode = PrefUti.getStringPreference(PrefUti.WRITING_MODE,this);
+        if(writingMode == null){
+            kanjiMode = true;
+        }
+        else{
+            kanjiMode = writingMode.equals(PrefUti.KANJI_MODE);
+        }
+
         titleBar = (TextView) findViewById(R.id.notepad_title_bar);
 
         // set the cursor layer
@@ -189,6 +198,8 @@ public class SinglePageActivity extends FragmentActivity implements
 
         sigCapture = new SignatureCapture(this, null, lineHeight, sigHolder);
         sigCapture.addPropertyChangeListener(this);
+        sigCapture.setKanjiMode(kanjiMode);
+
         sigHolder.addView(sigCapture);
 
         singlePageBase.setDrawingCacheEnabled(true);
@@ -428,6 +439,7 @@ public class SinglePageActivity extends FragmentActivity implements
         });
 
         menuDialog = new NotepadDialog(this);
+        menuDialog.setWritingMode(kanjiMode);
 
         initPages();
 
@@ -577,6 +589,7 @@ public class SinglePageActivity extends FragmentActivity implements
         Intent intent = getIntent();
         if(intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_WRITING){
             SinglePage tempPage = new SinglePage(this);
+            tempPage.changeMode(kanjiMode);
 //        tempPage.setPageNumber(0);
             pages.add(tempPage);
             mPagerAdapter.addView(tempPage, mPager, circleIndicator);
@@ -815,6 +828,7 @@ public class SinglePageActivity extends FragmentActivity implements
             super.onPostExecute(result);
             for(int i=0;i<=pageNumber;i++){
                 SinglePage tempPage = new SinglePage(context);
+                tempPage.changeMode(kanjiMode);
                 pages.add(tempPage);
                 mPagerAdapter.addView(tempPage, mPager, circleIndicator);
                 int pageViewSize = signatureViewModels.get(i).size();
@@ -902,6 +916,7 @@ public class SinglePageActivity extends FragmentActivity implements
 
     public void addPage() {
         SinglePage tempPage = new SinglePage(this);
+        tempPage.changeMode(kanjiMode);
         pages.add(mPager.getCurrentItem() + 1, tempPage);
         mPagerAdapter.addView(tempPage, mPager.getCurrentItem() + 1, mPager, circleIndicator);
     }
@@ -950,6 +965,7 @@ public class SinglePageActivity extends FragmentActivity implements
     }
 
     public void changeMode(boolean kanjiMode){
+        kanjiMode = kanjiMode;
         int size = pages.size();
         for(int i=0;i<size;i++){
             pages.get(i).changeMode(kanjiMode);
