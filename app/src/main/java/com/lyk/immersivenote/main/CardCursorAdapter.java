@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lyk.immersivenote.R;
@@ -26,13 +27,32 @@ public class CardCursorAdapter extends CursorAdapter {
 
     private DeleteOnClickListener deleteOnClickListener;
     private EditOnClickListener editOnClickListener;
+    private CircleOnClickListener circleOnClickListener;
 
     private    static  class   ViewHolder  {
+        LinearLayout circle;
         TextView title;
         TextView   time;
         TextView abbrev;
         ImageButton deleteBtn;
         ImageButton editBtn;
+    }
+
+    private class CircleOnClickListener implements View.OnClickListener{
+        private int id;
+        private String color;
+        private LinearLayout circle;
+
+        CircleOnClickListener(int id, LinearLayout circle){
+            this.id = id;
+            this.circle = circle;
+        }
+
+        @Override
+        public void onClick(View v) {
+            ChooseColorDialog dialog = new ChooseColorDialog(homeActivity,id,circle);
+            dialog.show();
+        }
     }
 
     private class DeleteOnClickListener implements View.OnClickListener {
@@ -74,17 +94,21 @@ public class CardCursorAdapter extends CursorAdapter {
         ViewHolder holder  =   (ViewHolder)    view.getTag();
         String title = cursor.getString(cursor.getColumnIndex(MainTable.COLUMN_TITLE));
 
-        if(title.length() > 10){
-            title = title.substring(0,7)+"...";
-        }
+
 
         int id = cursor.getInt(cursor.getColumnIndex(MainTable.COLUMN_ID));
-        deleteOnClickListener = new DeleteOnClickListener(id);
 
+        circleOnClickListener = new CircleOnClickListener(id,holder.circle);
+        deleteOnClickListener = new DeleteOnClickListener(id);
         editOnClickListener = new EditOnClickListener(id,title);
+
+        holder.circle.setOnClickListener(circleOnClickListener);
         holder.deleteBtn.setOnClickListener(deleteOnClickListener);
         holder.editBtn.setOnClickListener(editOnClickListener);
 
+        if(title.length() > 10){
+            title = title.substring(0,7)+"...";
+        }
         holder.title.setText(title);
         holder.time.setText(cursor.getString(cursor.getColumnIndex(MainTable.COLUMN_TIME)));
         holder.abbrev.setText(title.substring(0, 1));
@@ -93,6 +117,7 @@ public class CardCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View   view    =   inflater.inflate(R.layout.view_note_card, null);
         ViewHolder holder  =   new ViewHolder();
+        holder.circle = (LinearLayout) view.findViewById(R.id.card_circle);
         holder.title    =   (TextView)  view.findViewById(R.id.card_title);
         holder.time    =   (TextView)  view.findViewById(R.id.card_time);
         holder.abbrev = (TextView) view.findViewById(R.id.card_abbrev);

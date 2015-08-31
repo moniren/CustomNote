@@ -2,10 +2,8 @@ package com.lyk.immersivenote.notepad;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import com.lyk.immersivenote.R;
 import com.rey.material.app.Dialog;
@@ -40,7 +38,7 @@ public class NotepadDialog extends Dialog {
         this.setCanceledOnTouchOutside(false);
         singlePageActivity = (SinglePageActivity) context;
         self = this;
-        setContentView(R.layout.dialog_show_menu);
+        setContentView(R.layout.dialog_notepad_options);
 
         titleText = (EditText) findViewById(R.id.textfield_note_title);
         titleText.setOnKeyListener(new View.OnKeyListener() {
@@ -103,6 +101,14 @@ public class NotepadDialog extends Dialog {
                 else{
                     singlePageActivity.getSignatureCapture().setPaintColor(Color.BLUE);
                 }
+
+                if(kanjiRadioBtn.isChecked()){
+                    singlePageActivity.getSignatureCapture().setKanjiMode(true);
+                }
+                else{
+                    singlePageActivity.getSignatureCapture().setKanjiMode(false);
+                }
+
                 if(titleText.getText() == null || titleText.getText().toString().length()==0){
                     titleText.setText(R.string.notepad_dialog_title_default);
                 }
@@ -175,7 +181,7 @@ public class NotepadDialog extends Dialog {
 
     public String getTitle(){
         String title = titleText.getText().toString();
-        if(title.length()==0){
+        if(title == null || title.length()==0){
             title = this.getContext().getString(R.string.notepad_dialog_title_default);
         }
         return title;

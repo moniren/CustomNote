@@ -1,5 +1,6 @@
 package com.lyk.immersivenote.notepad;
 
+import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.utils.PrefUti;
 
 import android.content.Context;
@@ -8,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -22,7 +22,7 @@ public class CursorHolder extends View {
 	private int lineNum = 0;
 	private int lineH;
 	private Bitmap cursor;
-	private Paint mCursorPaint = new Paint();
+	private Paint mCursorPaint= new Paint();
 	private Runnable cursorAnimation = new Runnable() {
 		public void run() {
 			// Switch the cursor visibility and set it
@@ -75,28 +75,20 @@ public class CursorHolder extends View {
 	}
 
 	public void setCusorViewRight(int viewRight, int lineNum, int cursorPos) {
-//		this.cursorLeft = viewRight - (int) cursor.getWidth() / 2;
-//		this.cursorTop = lineNum * lineH + lineH - (int) cursor.getHeight() / 2;
 		this.cursorLeft = viewRight;
 		this.cursorTop = lineNum * lineH + lineH/7;
 
 		this.lineNum = lineNum;
 		this.cursorPos = cursorPos;
-		Log.d("cursorHolder", "setCursor at left: " + cursorLeft + " top: "
-				+ cursorTop);
 		this.invalidate();
 	}
 
 	public void setCursorViewLeft(int viewLeft, int lineNum, int cursorPos) {
-//		this.cursorLeft = viewLeft - (int) cursor.getWidth() / 2;
-//		this.cursorTop = lineNum * lineH + lineH - (int) cursor.getHeight() / 2;
 		this.cursorLeft = viewLeft;
 		this.cursorTop = lineNum * lineH + lineH/7;
 
 		this.lineNum = lineNum;
 		this.cursorPos = cursorPos;
-		Log.d("cursorHolder", "setCursor at left: " + cursorLeft + " top: "
-				+ cursorTop);
 		this.invalidate();
 	}
 
@@ -122,18 +114,7 @@ public class CursorHolder extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("CursorHolder", "onTouchEvent");
 		performClick();
-//		switch(event.getAction()){
-//			case MotionEvent.ACTION_DOWN:
-//				singlePageActivity.showIndicator();
-//				break;
-//			case MotionEvent.ACTION_UP:
-//				singlePageActivity.hideIndicator();
-//				break;
-//			default:
-//				break;
-//		}
 		return false;
 	}
 

@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -109,6 +108,7 @@ public class SinglePageActivity extends FragmentActivity implements
     private TextView titleBar;
     private Toolbar toolBar;
     private int themeColor;
+    private String title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -174,8 +174,6 @@ public class SinglePageActivity extends FragmentActivity implements
                     pageWidth, this);
             PrefUti.setIntPreference(PrefUti.SCREEN_HEIGHT,
                     screenHeight, this);
-            Log.d(TAG, "Setting---lineHeight: " + lineHeight + " pageHeight: "
-                    + pageHeight + " pageWidth: " + pageWidth);
         }
 
         lineHeight = PrefUti.getIntPreference(PrefUti.NOTE_LINE_HEIGHT, this);
@@ -450,6 +448,7 @@ public class SinglePageActivity extends FragmentActivity implements
         sigCapture.setBaseW(sigHolder.getWidth());
         sigCapture.setBaseH(sigHolder.getHeight());
         sigCapture.setSignatureAuxiliaryLayer((LinearLayout) findViewById(R.id.sig_auxi));
+        sigCapture.setLatinAuxiliaryLayer((LinearLayout) findViewById(R.id.latin_auxi));
 
     }
 
@@ -670,8 +669,6 @@ public class SinglePageActivity extends FragmentActivity implements
             // int viewX = lineWidth - currentLine.getSpaceLeft();
             int viewX = lineWidth
                     - currentLine.getSpaceLeft(spaceSig.getPosInLine());
-
-            Log.d(TAG, "current tempSig lineNum: " + spaceSig.getLineNum());
             cursorHolder.setCusorViewRight(viewX, spaceSig.getLineNum(),
                     spaceSig.getPosInLine() + 1);
             cursorHolder.invalidate();
@@ -714,7 +711,7 @@ public class SinglePageActivity extends FragmentActivity implements
         protected Void doInBackground(Void... params) {
             //saving
             ContentValues values = new ContentValues();
-            values.put(MainTable.COLUMN_TITLE, menuDialog.getTitle());
+            values.put(MainTable.COLUMN_TITLE, title);
             values.put(MainTable.COLUMN_BACKGROUND, 0);
             values.put(MainTable.COLUMN_ENCRYPTED, "false");
             DateFormat dateFormat = new SimpleDateFormat(
@@ -787,7 +784,6 @@ public class SinglePageActivity extends FragmentActivity implements
         private ArrayList<ArrayList<SignatureViewModel>> signatureViewModels = null;
 
         public TaskLoadNote(SinglePageActivity context, SweetAlertDialog sDialog, int noteId) {
-            Log.d(TAG, "taskAddSig created");
             this.context = context;
             this.sDialog = sDialog;
             this.noteId = noteId;
@@ -815,12 +811,6 @@ public class SinglePageActivity extends FragmentActivity implements
                 mPagerAdapter.addView(tempPage, mPager, circleIndicator);
                 int pageViewSize = signatureViewModels.get(i).size();
                 for(int j=0;j<pageViewSize;j++){
-                    if(signatureViewModels.get(i).get(j) == null){
-                        Log.d(TAG,"The signatureViewModel is null");
-                    }
-                    if(signatureViewModels.get(i).get(j).getContext() == null){
-                        Log.d(TAG,"The signatureViewModel's context is null");
-                    }
                     tempSig = new SignatureView(signatureViewModels.get(i).get(j));
                     tempPage.getSingleLines().get(tempSig.getLineNum()).addSignature(tempSig);
                 }
@@ -837,7 +827,6 @@ public class SinglePageActivity extends FragmentActivity implements
         private SignatureView tempSig;
 
         public TaskAddSig(SinglePageActivity context, Bitmap image) {
-            Log.d(TAG, "taskAddSig created");
             this.context = context;
             this.image = image;
         }
@@ -866,26 +855,14 @@ public class SinglePageActivity extends FragmentActivity implements
             tempSig = new SignatureView(context, image,
                     cursorHolder,mPager.getCurrentItem());
             tempSig.setType(SignatureView.IMAGE);
-//            if (lastAvailable >= NUM_LINES) {
-//                Toast toast = Toast.makeText(context, "Notepad is full!",
-//                        Toast.LENGTH_SHORT);
-//                toast.show();
-//            } else {
-//            if (!mPagerAdapter.getmCurrentPage().isPageFull()) {
             SingleLine currentLine = ((SingleLine) mPagerAdapter.getmCurrentPage()
                     .getChildAt(cursorHolder.getLineNum()));
             currentLine.addSignature(tempSig, cursorHolder.getCursorPos());
             int viewX = lineWidth
                     - currentLine.getSpaceLeft(tempSig.getPosInLine());
-
-            Log.d(TAG, "current tempSig lineNum: " + tempSig.getLineNum());
             cursorHolder.setCusorViewRight(viewX,
                     tempSig.getLineNum(), tempSig.getPosInLine() + 1);
             cursorHolder.invalidate();
-//            }
-//                Toast toastText = Toast.makeText(context,
-//                        "Signature capture successful!", Toast.LENGTH_SHORT);
-//                toastText.show();
         }
     }
 
@@ -917,18 +894,12 @@ public class SinglePageActivity extends FragmentActivity implements
 
     public void addPage() {
         SinglePage tempPage = new SinglePage(this);
-        //change the page numbers of the pages after the adding page
-//        for (int i = mPager.getCurrentItem() + 1; i < pages.size(); i++) {
-//            pages.get(i).setPageNumber(i + 1);
-//        }
         pages.add(mPager.getCurrentItem() + 1, tempPage);
         mPagerAdapter.addView(tempPage, mPager.getCurrentItem() + 1, mPager, circleIndicator);
     }
 
     public void showIndicator() {
-        Log.d(TAG, "Try to show indicator");
         if (viewing) {
-            Log.d(TAG, "should show indicator");
             circleIndicator.startAnimation(fadeInIndicator);
         }
     }
@@ -961,6 +932,7 @@ public class SinglePageActivity extends FragmentActivity implements
     }
 
     public void setTitle(String title){
+        this.title = title;
         if(title.length() <= 10){
             titleBar.setText(title);
         }

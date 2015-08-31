@@ -36,6 +36,7 @@ public class SignatureCapture extends View {
 	private FrameLayout sigHolder;
 
 	private LinearLayout signatureAuxiliaryLayer;
+	private LinearLayout latinAuxiliaryLayer;
 	private boolean flagAuxiliary = false;
 
 	private boolean kanjiMode = true;
@@ -79,6 +80,9 @@ public class SignatureCapture extends View {
 
 	}
 
+    public void setKanjiMode(boolean kanjiMode){
+        this.kanjiMode = kanjiMode;
+    }
 
 	public void setBaseW(int width){
 		baseW = width;
@@ -92,12 +96,15 @@ public class SignatureCapture extends View {
 		signatureAuxiliaryLayer = layer;
 	}
 
+	public void setLatinAuxiliaryLayer(LinearLayout layer){
+		latinAuxiliaryLayer = layer;
+	}
+
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
 
 	public void save() {
-		// new TaskSave(cropX, cropY, cropW, cropH, mBitmap).execute();
 		path.computeBounds(pathRect, true);
 		cropX = Math.max(0, (int) (pathRect.left - strokeWidth));
 		cropY = Math.max(0, (int) (pathRect.top - strokeWidth));
@@ -108,8 +115,6 @@ public class SignatureCapture extends View {
 
 		if(cropH > 6*strokeWidth || cropW > 6*strokeWidth){
 			padMBitmap();
-//		new TaskSave().execute();
-//		new TaskCompress().execute();
 			pcs.firePropertyChange("Signature", null, mBitmap);
 			paint.setStrokeWidth(strokeWidth);
 		}
@@ -129,164 +134,6 @@ public class SignatureCapture extends View {
 		clear();
 	}
 
-//	private class TaskCompress extends AsyncTask<Void, Void, Void> {
-//
-//		@Override
-//		protected Void doInBackground(Void... params) {
-//			ByteArrayOutputStream out = new ByteArrayOutputStream();
-//			mBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-//			mBitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-//			return null;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(Void result) {
-//			super.onPostExecute(result);
-//			pcs.firePropertyChange("Signature", null, mBitmap);
-//			clear();
-//			paint.setStrokeWidth(strokeWidth);
-//		}
-//
-//
-//
-//	}
-//	private class TaskSave extends AsyncTask<Void, Void, Void> {
-//
-//		@Override
-//		protected Void doInBackground(Void... params) {
-//			baseW = sigHolder.getWidth();
-//			baseH = sigHolder.getHeight();
-//			path.computeBounds(pathRect, true);
-//			cropX = Math.max(0, (int) (pathRect.left - strokeWidth));
-//			cropY = Math.max(0, (int) (pathRect.top - strokeWidth));
-//			cropW = Math.min(baseW - cropX,
-//					(int) (pathRect.width() + 2 * strokeWidth));
-//			cropH = Math.min(baseH - cropY,
-//					(int) (pathRect.height() + 2 * strokeWidth));
-//			int paddingX =  lineH;
-//			int paddingY = 0;
-//			Bitmap paddedBitmap = null;
-//			boolean isUpper = false;
-//			boolean isLower = false;
-//
-//			// need to render the larger bitmap first before getting the
-//			// smaller one
-//
-//			mBitmap = Bitmap.createBitmap(baseW, baseH, Bitmap.Config.ARGB_4444);
-//			mBitmap.setHasAlpha(true);
-//			Canvas canvas = new Canvas(mBitmap);
-//
-//
-//
-//			if (cropY + cropH < lineH * 3) {
-//				isUpper = true;
-//				if (cropW / cropH > 1.5 && numStroke == 1) {
-//					paint.setStrokeWidth((int) (strokeWidth * 4.5));
-//					sigHolder.draw(canvas);
-//					mBitmap = Bitmap.createBitmap(mBitmap, cropX, 0, cropW,
-//							lineH * 9);
-//					paddingY = 0;
-//
-//				} else {
-//
-//					paint.setStrokeWidth((int)((strokeWidth *cropH)/(lineH)));
-//					sigHolder.draw(canvas);
-//					paddingY = 2 * cropH;
-//					mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW, cropH);
-//					Log.d("padMBitmap", "upper case");
-//				}
-//
-//			} else if (cropY > lineH * 12) {
-//				isLower = true;
-//				if (cropW / cropH > 1.5 && numStroke == 1) {
-//					paint.setStrokeWidth((int) (strokeWidth * 4.5));
-//					sigHolder.draw(canvas);
-//					mBitmap = Bitmap.createBitmap(mBitmap, 0, lineH *6, baseW,
-//							lineH * 9);
-//					paddingY = 0;
-//
-//				} else {
-//					paddingY = 2 * cropH;
-//					paint.setStrokeWidth((int)((strokeWidth *cropH)/(lineH)));
-//					sigHolder.draw(canvas);
-//					mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW, cropH);
-//					Log.d("padMBitmap", "lower case");
-//				}
-//			} else {
-//				if(kanjiMode){
-//					paint.setStrokeWidth((int) ((strokeWidth * Math.max(cropW,cropH)) / (lineH * 1.8)));
-//					sigHolder.draw(canvas);
-//					mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW,
-//							cropH);
-//					if(cropW > cropH){
-//						paddingY = cropW - cropH + paddingX;
-//					}
-//					else{
-//						paddingY = paddingX;
-//						paddingX = cropH - cropW + paddingX;
-//					}
-//				}
-//				else{
-//					if (cropW / cropH > 1.5 && numStroke == 1) {
-//						// category = Category.CASE_;
-//
-//						paint.setStrokeWidth((int) (strokeWidth * 4.5));
-//						sigHolder.draw(canvas);
-//						mBitmap = Bitmap.createBitmap(mBitmap, 0, lineH * 3, baseW,
-//								lineH * 9);
-//						paddingY = 0;
-//						Log.d("padMBitmap", "'-' case");
-//
-//					} else {
-//						paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH * 1.8)));
-//						sigHolder.draw(canvas);
-//						mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW,
-//								cropH);
-//						paddingY = (int) 2 * cropH / 5;
-//						Log.d("padMBitmap", "normal case");
-//					}
-//				}
-//			}
-//
-//			// reset the numStroke after using
-//			numStroke = 0;
-//
-//			// mBitmap = Bitmap.createBitmap(mBitmap,cropX,cropY,cropW,cropH);
-//
-//			paddedBitmap = Bitmap.createBitmap(mBitmap.getWidth() + paddingX,
-//					mBitmap.getHeight() + paddingY, Bitmap.Config.ARGB_4444);
-//
-//			canvas = new Canvas(paddedBitmap);
-//			canvas.drawARGB(0x00, 0xFF, 0xFF, 0xFF); // this represents transparent
-//
-//			if (isUpper) {
-//				canvas.drawBitmap(mBitmap, paddingX / 2, 0, new Paint(
-//						Paint.FILTER_BITMAP_FLAG));
-//			} else if (isLower) {
-//				canvas.drawBitmap(mBitmap, paddingX / 2, paddingY, new Paint(
-//						Paint.FILTER_BITMAP_FLAG));
-//			} else {
-//				canvas.drawBitmap(mBitmap, paddingX / 2, paddingY / 2, new Paint(
-//						Paint.FILTER_BITMAP_FLAG));
-//			}
-//			paddedBitmap.setHasAlpha(true);
-//			mBitmap = paddedBitmap;
-//
-//			return null;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(Void result) {
-//			super.onPostExecute(result);
-//			pcs.firePropertyChange("Signature", null, mBitmap);
-//			clear();
-//			paint.setStrokeWidth(strokeWidth);
-//		}
-//
-//
-//
-//	}
-
 	private void padMBitmap() {
 
 
@@ -295,6 +142,9 @@ public class SignatureCapture extends View {
 		Bitmap paddedBitmap = null;
 		boolean isUpper = false;
 		boolean isLower = false;
+        boolean noBtm = false;
+        boolean noTop = false;
+
 
 		// need to render the larger bitmap first before getting the
 		// smaller one
@@ -320,7 +170,6 @@ public class SignatureCapture extends View {
 				sigHolder.draw(canvas);
 				paddingY = 2 * cropH;
 				mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW, cropH);
-				Log.d("padMBitmap", "upper case");
 			}
 
 		} else if (cropY > lineH * 12) {
@@ -337,7 +186,6 @@ public class SignatureCapture extends View {
 				paint.setStrokeWidth((int)((strokeWidth *cropH)/(lineH)));
 				sigHolder.draw(canvas);
 				mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW, cropH);
-				Log.d("padMBitmap", "lower case");
 			}
 		} else {
 			if(kanjiMode){
@@ -355,22 +203,51 @@ public class SignatureCapture extends View {
 			}
 			else{
 				if (cropW / cropH > 1.5 && numStroke == 1) {
-					// category = Category.CASE_;
 
 					paint.setStrokeWidth((int) (strokeWidth * 4.5));
 					sigHolder.draw(canvas);
 					mBitmap = Bitmap.createBitmap(mBitmap, 0, lineH * 3, baseW,
 							lineH * 9);
 					paddingY = 0;
-					Log.d("padMBitmap", "'-' case");
 
 				} else {
-					paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH * 1.8)));
-					sigHolder.draw(canvas);
-					mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW,
-							cropH);
-					paddingY = (int) 2 * cropH / 5;
-					Log.d("padMBitmap", "normal case");
+                    paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH * 1.8)));
+
+                    //the case where the user follows the instruction
+                    if(cropY > 6*lineH && cropY+cropH < 11*lineH){
+                        int btmSection = cropY + cropH - 9*lineH;
+                        int topSection = 8*lineH - cropY;
+                        // 1/5 or 1/4
+                        if(btmSection < 4*lineH/5  ){
+                            noBtm = true;
+                        }
+                        if(topSection < 4*lineH/5 ){
+                            noTop = true;
+                        }
+                        if(noBtm && noTop){
+                            paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH )));
+                            paddingY = 2*cropH;
+                            Log.d("SignatureCapture","no btm and no top");
+                        }
+                        else if (!noBtm && !noTop){
+                            paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH * 2.7)));
+                            paddingY = 0;
+                            Log.d("SignatureCapture","both btm and top");
+                        }
+                        else{
+                            if(noBtm)
+                                Log.d("SignatureCapture","no btm only");
+                            else
+                                Log.d("SignatureCapture","no top only");
+                            paddingY = cropH/2;
+                        }
+                    }
+                    else{
+                        paddingY =  2 * cropH / 5;
+                    }
+                    sigHolder.draw(canvas);
+                    mBitmap = Bitmap.createBitmap(mBitmap, cropX, cropY, cropW,
+                            cropH);
 				}
 			}
 		}
@@ -393,8 +270,24 @@ public class SignatureCapture extends View {
 			canvas.drawBitmap(mBitmap, paddingX / 2, paddingY, new Paint(
 					Paint.FILTER_BITMAP_FLAG));
 		} else {
-			canvas.drawBitmap(mBitmap, paddingX / 2, paddingY / 2, new Paint(
-					Paint.FILTER_BITMAP_FLAG));
+            if(kanjiMode){
+                canvas.drawBitmap(mBitmap, paddingX / 2, paddingY / 2, new Paint(
+                        Paint.FILTER_BITMAP_FLAG));
+            }
+            else{
+                if(!noBtm && noTop){
+                    canvas.drawBitmap(mBitmap, paddingX / 2, paddingY, new Paint(
+                            Paint.FILTER_BITMAP_FLAG));
+                }
+                else if (noBtm && !noTop){
+                    canvas.drawBitmap(mBitmap, paddingX / 2, 0, new Paint(
+                            Paint.FILTER_BITMAP_FLAG));
+                }
+                else{
+                    canvas.drawBitmap(mBitmap, paddingX / 2, paddingY / 2, new Paint(
+                            Paint.FILTER_BITMAP_FLAG));
+                }
+            }
 		}
 		paddedBitmap.setHasAlpha(true);
 		mBitmap = paddedBitmap;
@@ -406,8 +299,6 @@ public class SignatureCapture extends View {
 	}
 
 	public void clear() {
-		// cropX = 0;
-		// cropY = 0;
 		cropW = 0;
 		cropH = 0;
 		path.reset();
@@ -421,7 +312,6 @@ public class SignatureCapture extends View {
 
 	@Override
 	public boolean performClick() {
-		// TODO Auto-generated method stub
 		return super.performClick();
 	}
 
@@ -434,10 +324,15 @@ public class SignatureCapture extends View {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				if (!flagAuxiliary) {
-//					sigHolder.addView(signatureAuxiliaryLayer, 0);
-					signatureAuxiliaryLayer.setVisibility(View.VISIBLE);
-					flagAuxiliary = true;
+                    if(!kanjiMode){
+                        latinAuxiliaryLayer.setVisibility(View.VISIBLE);
+                        Log.d("SignatureCapture", "should set latin auxi visible");
+                    }
+                    else{
+                        signatureAuxiliaryLayer.setVisibility(View.VISIBLE);
+                    }
 
+					flagAuxiliary = true;
 				}
 
 				if (timer != null) {
@@ -476,10 +371,8 @@ public class SignatureCapture extends View {
 				timer.start();
 				break;
 			case INVALID_STROKE:
-				Log.d("SignatureCapture","invalid stroke case");
 				return false;
 			default:
-				Log.d("SignatureCapture","ignored case");
 				return false;
 		}
 
@@ -487,7 +380,6 @@ public class SignatureCapture extends View {
 				(int) (dirtyRect.top - halfStrokeWidth),
 				(int) (dirtyRect.right + halfStrokeWidth),
 				(int) (dirtyRect.bottom + halfStrokeWidth));
-		// updateCrop();
 
 		lastTouchX = eventX;
 		lastTouchY = eventY;
@@ -516,35 +408,6 @@ public class SignatureCapture extends View {
 		dirtyRect.bottom = Math.max(lastTouchY, eventY);
 	}
 
-	// private void updateCrop() {
-	//
-	// cropW = Math.max(
-	// (int) (dirtyRect.left + halfStrokeWidth) - cropX, cropW);
-	//
-	// cropH = Math.max((int) (dirtyRect.top + halfStrokeWidth) - cropY,
-	// cropH);
-	//
-	// if (cropX == 0) {
-	// cropX = (int) (dirtyRect.left - halfStrokeWidth);
-	// } else {
-	// cropX = Math.min((int) (dirtyRect.left - halfStrokeWidth), cropX);
-	// }
-	//
-	// if (cropY == 0) {
-	// cropY = (int) (dirtyRect.top - halfStrokeWidth);
-	// } else {
-	// cropY = Math.min((int) (dirtyRect.top - halfStrokeWidth), cropY);
-	// }
-	//
-	// cropW = Math.max((int) (dirtyRect.left + halfStrokeWidth) - cropX,
-	// cropW);
-	//
-	// cropH = Math
-	// .max((int) (dirtyRect.top + halfStrokeWidth) - cropY, cropH);
-	//
-	// Log.d("updateCrop", "" + cropX + ";" + cropY + ";" + cropW + ";"
-	// + cropH);
-	// }
 
 	private Bitmap CropBitmapTransparency(Bitmap sourceBitmap) {
 		int minX = sourceBitmap.getWidth();
@@ -585,16 +448,14 @@ public class SignatureCapture extends View {
 
 		@Override
 		public void onTick(long millisUntilFinished) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void onFinish() {
-//			sigHolder.removeViewAt(0);
 			signatureAuxiliaryLayer.setVisibility(View.INVISIBLE);
+            latinAuxiliaryLayer.setVisibility(View.INVISIBLE);
 			flagAuxiliary = false;
 			sig.save();
-//			sig.clear();
 		}
 	}
 }

@@ -147,6 +147,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="invisible" />
+            <include
+                android:id="@+id/latin_auxi"
+                layout="@layout/latin_auxiliary_layer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+
         </com.lyk.immersivenote.notepad.SignatureHolder>
 
     </FrameLayout>

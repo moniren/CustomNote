@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="@dimen/navigation_drawer_width"
+              android:layout_height="wrap_content"
+              android:background="@android:color/background_light"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_choose_color_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/settings_theme_color"
+        android:textColor="@color/color_primary"
+        android:textSize="@dimen/settings_title_text_size"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/dialog_choose_color_color_preview"
+        android:layout_width="@dimen/color_preview_size"
+        android:layout_height="@dimen/color_preview_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/settings_red"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:textSize="@dimen/navigation_item_text_size"/>
+
+        <com.rey.material.widget.Slider
+            android:id="@+id/dialog_choose_color_slider_red"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:sl_discreteMode="true"
+            app:sl_maxValue="255"
+            app:sl_minValue="0"
+            app:sl_stepValue="1"
+            app:sl_thumbRadius="@dimen/slider_thumb_radius"
+            app:sl_value="230"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/settings_green"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:textSize="@dimen/navigation_item_text_size"/>
+
+        <com.rey.material.widget.Slider
+            android:id="@+id/dialog_choose_color_slider_green"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:sl_discreteMode="true"
+            app:sl_maxValue="255"
+            app:sl_minValue="0"
+            app:sl_stepValue="1"
+            app:sl_thumbRadius="@dimen/slider_thumb_radius"
+            app:sl_value="78"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/settings_blue"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:textSize="@dimen/navigation_item_text_size"/>
+
+        <com.rey.material.widget.Slider
+            android:id="@+id/dialog_choose_color_slider_blue"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:sl_discreteMode="true"
+            app:sl_maxValue="255"
+            app:sl_minValue="0"
+            app:sl_stepValue="1"
+            app:sl_thumbRadius="@dimen/slider_thumb_radius"
+            app:sl_value="64"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp">
+        <com.rey.material.widget.Button
+            android:id="@+id/dialog_choose_color_ok_button"
+            style="@style/FlatButtonRippleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_okay"
+            android:textSize="20dp"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:layout_alignParentRight="true"
+            />
+        <com.rey.material.widget.Button
+            android:id="@+id/dialog_choose_color_cancel_button"
+            style="@style/FlatButtonRippleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_cancel"
+            android:textSize="20dp"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:layout_toLeftOf="@+id/dialog_choose_color_ok_button"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

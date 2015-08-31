@@ -2,7 +2,6 @@ package com.lyk.immersivenote.notepad;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
@@ -30,7 +29,6 @@ public class SignatureHolder extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("SigHolder", "onTouch");
         performClick();
 //        if(event.getAction() == SignatureCapture.INVALID_STROKE){
 //            MotionEvent motionEvent = MotionEvent.obtain(

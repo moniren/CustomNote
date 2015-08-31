@@ -3,7 +3,8 @@ package com.lyk.immersivenote.notepad;
 import com.lyk.immersivenote.R;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -28,19 +29,6 @@ public class SingleLine extends LinearLayout {
 
     private int lineNum = 0;
 
-    // constructors
-//    public SingleLine(Context context) {
-//        super(context);
-//        singlePageActivity = (SinglePageActivity) context;
-//        params = new android.view.ViewGroup.LayoutParams(
-//                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-//                android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-//        this.setOrientation(LinearLayout.HORIZONTAL);
-//        this.setLayoutParams(params);
-//        this.setBackgroundResource(R.drawable.bg_single_line_even);
-//        widthPix = params.width;
-//        Log.d(TAG, "constructor");
-//    }
 
     public SingleLine(Context context, int width, int height, int lineNum, SinglePage mPage) {
         super(context);
@@ -52,34 +40,7 @@ public class SingleLine extends LinearLayout {
         widthPix = width;
         this.lineNum = lineNum;
         this.mPage = mPage;
-        Log.d(TAG, "constructor");
     }
-
-//    public SingleLine(Context context, AttributeSet attrs) {
-//        super(context, attrs);
-//        singlePageActivity = (SinglePageActivity) context;
-//        params = new android.view.ViewGroup.LayoutParams(
-//                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-//                android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-//        this.setOrientation(LinearLayout.HORIZONTAL);
-//        this.setLayoutParams(params);
-//        this.setBackgroundResource(R.drawable.bg_single_line_even);
-//        widthPix = params.width;
-//        Log.d(TAG, "constructor");
-//    }
-//
-//    public SingleLine(Context context, AttributeSet attrs, int defStyleAttr) {
-//        super(context, attrs, defStyleAttr);
-//        singlePageActivity = (SinglePageActivity) context;
-//        params = new android.view.ViewGroup.LayoutParams(
-//                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-//                android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-//        this.setOrientation(LinearLayout.HORIZONTAL);
-//        this.setLayoutParams(params);
-//        this.setBackgroundResource(R.drawable.bg_single_line_even);
-//        widthPix = params.width;
-//        Log.d(TAG, "constructor");
-//    }
 
 
     public void removeSignature(int pos) {
@@ -91,9 +52,6 @@ public class SingleLine extends LinearLayout {
             } else {
                 SingleLine lineAbove = ((SingleLine) ((ViewGroup) this.getParent()).getChildAt(lineNum - 1));
                 lineAbove.removeSignature(lineAbove.getChildCount() - 1);
-//                if(mPage.isPageFull()){
-//                    mPage.setPageFull(false);
-//                }
             }
         } else {
             for (int i = pos + 1; i < getChildCount(); i++) {
@@ -102,9 +60,6 @@ public class SingleLine extends LinearLayout {
             }
             int spaceAvailable = getSpaceLeft() + ((SignatureView) getChildAt(pos)).getViewWidth();
             removeViewAt(pos);
-//            if(mPage.isPageFull()){
-//                mPage.setPageFull(false);
-//            }
             if (lineNum + 1 < SinglePage.NUM_LINES) {
                 ((SingleLine) ((ViewGroup) this.getParent()).getChildAt(lineNum + 1)).queueOutSigs(spaceAvailable);
             }
@@ -160,9 +115,6 @@ public class SingleLine extends LinearLayout {
 
 
     public void addSignature(SignatureView sig, int pos) {
-        Log.d(TAG, "---------------");
-        Log.d(TAG, "adding to line: " + lineNum);
-        Log.d(TAG, "pos: " + pos + " getChildCount: " + getChildCount());
         if (haveSpaceFor(sig.getViewWidth())) {
             sig.setPosInLine(pos);
             if (pos < getChildCount()) {
@@ -174,7 +126,6 @@ public class SingleLine extends LinearLayout {
             sig.setPosInLine(pos);
             sig.setLineNum(lineNum);
             addView(sig, pos);
-            Log.d(TAG, "111111111111");
         } else {
 
             if (pos == getChildCount()) {
@@ -183,7 +134,6 @@ public class SingleLine extends LinearLayout {
                 if (lineNum + 1 < SinglePage.NUM_LINES) {
                     popOutSigs(popStack);
                 } else {
-//                    mPage.setPageFull(true);
                     new SweetAlertDialog(singlePageActivity, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText(singlePageActivity.getString(R.string.dialog_add_new_page_title))
                             .setContentText(singlePageActivity.getString(R.string.dialog_current_page_full))
@@ -208,7 +158,6 @@ public class SingleLine extends LinearLayout {
                                 }
                             }).show();
                 }
-                Log.d(TAG, "2222222222");
             } else {
                 int i = 0;
                 int j = 0;
@@ -255,9 +204,6 @@ public class SingleLine extends LinearLayout {
                             }).show();
                 }
 
-
-
-                Log.d(TAG, "333333333");
             }
 
         }
@@ -279,7 +225,6 @@ public class SingleLine extends LinearLayout {
     }
 
     public void pushInSigs(ArrayList<SignatureView> pushList, int listWidth) {
-        Log.d(TAG, "pushing to line: " + lineNum);
         if (haveSpaceFor(listWidth)) {
             for (int i = 0; i < getChildCount(); i++) {
                 SignatureView tempChild = (SignatureView) getChildAt(i);
@@ -332,7 +277,6 @@ public class SingleLine extends LinearLayout {
         for (int i = 0; i < pushList.size(); i++) {
             SignatureView tempChild = pushList.get(i);
             tempChild.setPosInLine(i);
-            Log.d(TAG, "tempChild set LineNum: " + lineNum);
             tempChild.setLineNum(lineNum);
             ((SingleLine) ((ViewGroup) this.getParent()).getChildAt(lineNum)).addView(tempChild, i);
         }
@@ -345,10 +289,6 @@ public class SingleLine extends LinearLayout {
         for (int i = 0; i < numChildren; i++) {
             currentWidth = currentWidth + ((SignatureView) this.getChildAt(i)).getViewWidth();
         }
-        Log.d(TAG, "widthPix: " + widthPix);
-        Log.d(TAG, "currentWidth: " + currentWidth);
-        Log.d(TAG, "itemWidthPix: " + itemWidthPix);
-        Log.d(TAG, "space left: " + (widthPix - currentWidth - itemWidthPix));
         return currentWidth + itemWidthPix < widthPix;
     }
 
@@ -397,7 +337,6 @@ public class SingleLine extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("SingleLine","onTouch");
         performClick();
         resetCursor();
         return true;
@@ -406,6 +345,5 @@ public class SingleLine extends LinearLayout {
     private void resetCursor(){
         singlePageActivity.resetCursor(this);
     }
-
 
 }

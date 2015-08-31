@@ -2,9 +2,7 @@ package com.lyk.immersivenote.notepad;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -38,13 +36,6 @@ public class SignatureView extends ImageView{
 				lineHeight/2, lineHeight);
 		this.setLayoutParams(layoutParams);
 		this.setBackground(null);
-//		this.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				updateCursorPosition();
-//			}
-//		});
 		this.viewWidth = lineHeight/2;
 		this.type = SPACE;
 	}
@@ -61,13 +52,6 @@ public class SignatureView extends ImageView{
 		this.setBackground(null);
 		this.setImageBitmap(image);
 		this.image = image;
-//		this.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				updateCursorPosition();
-//			}
-//		});
 		this.viewWidth = image.getWidth();
 		this.type=IMAGE;
 	}
@@ -96,9 +80,6 @@ public class SignatureView extends ImageView{
 	}
 
 	public void updateCursorPosition(){
-//		int[] location = new int[2];
-//		getLocationOnScreen(location);
-//		cursorHolder.setCusorPosition(location[0]+this.getWidth(), lineNum);
 		cursorHolder.setCursorViewLeft(getLeft(), lineNum, getPosInLine());
 	}
 
@@ -149,7 +130,6 @@ public class SignatureView extends ImageView{
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("SignatureView", "onTouch");
 		performClick();
 		updateCursorPosition();
 		return true;
