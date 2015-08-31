@@ -709,10 +709,14 @@ public class SinglePageActivity extends FragmentActivity implements
 
         @Override
         protected Void doInBackground(Void... params) {
+            String themeColor = PrefUti.getStringPreference(PrefUti.THEME_COLOR,sDialog.getContext().getApplicationContext());
+            if(themeColor == null){
+                themeColor = "#e64e40";
+            }
             //saving
             ContentValues values = new ContentValues();
             values.put(MainTable.COLUMN_TITLE, title);
-            values.put(MainTable.COLUMN_BACKGROUND, 0);
+            values.put(MainTable.COLUMN_BACKGROUND, themeColor);
             values.put(MainTable.COLUMN_ENCRYPTED, "false");
             DateFormat dateFormat = new SimpleDateFormat(
                     "yyyy-MM-dd HH:mm:ss");

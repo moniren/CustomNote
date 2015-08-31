@@ -2,6 +2,8 @@ package com.lyk.immersivenote.main;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,14 +45,15 @@ public class CardCursorAdapter extends CursorAdapter {
         private String color;
         private LinearLayout circle;
 
-        CircleOnClickListener(int id, LinearLayout circle){
+        CircleOnClickListener(int id, LinearLayout circle, String color){
             this.id = id;
             this.circle = circle;
+            this.color = color;
         }
 
         @Override
         public void onClick(View v) {
-            ChooseColorDialog dialog = new ChooseColorDialog(homeActivity,id,circle);
+            ChooseColorDialog dialog = new ChooseColorDialog(homeActivity,id,circle,color);
             dialog.show();
         }
     }
@@ -93,16 +96,19 @@ public class CardCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder  =   (ViewHolder)    view.getTag();
         String title = cursor.getString(cursor.getColumnIndex(MainTable.COLUMN_TITLE));
+        String bgColor = cursor.getString(cursor.getColumnIndex(MainTable.COLUMN_BACKGROUND));
 
 
 
         int id = cursor.getInt(cursor.getColumnIndex(MainTable.COLUMN_ID));
 
-        circleOnClickListener = new CircleOnClickListener(id,holder.circle);
+        circleOnClickListener = new CircleOnClickListener(id,holder.circle,bgColor);
         deleteOnClickListener = new DeleteOnClickListener(id);
         editOnClickListener = new EditOnClickListener(id,title);
 
         holder.circle.setOnClickListener(circleOnClickListener);
+        ((GradientDrawable) holder.circle.getBackground()).setColor(Color.parseColor(bgColor));
+
         holder.deleteBtn.setOnClickListener(deleteOnClickListener);
         holder.editBtn.setOnClickListener(editOnClickListener);
 

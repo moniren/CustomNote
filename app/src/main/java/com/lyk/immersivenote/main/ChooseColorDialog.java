@@ -1,12 +1,17 @@
 package com.lyk.immersivenote.main;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.lyk.immersivenote.R;
+import com.lyk.immersivenote.database.MainDataSource;
+import com.lyk.immersivenote.database.MainTable;
+import com.lyk.immersivenote.utils.ColorUti;
 import com.rey.material.app.Dialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Slider;
@@ -17,8 +22,8 @@ import com.rey.material.widget.Slider;
 public class ChooseColorDialog extends Dialog {
 
     private int id;
-    private String color;
-    private ShapeDrawable circleShape;
+    private String previousColor;
+    private GradientDrawable circleShape;
 
     private View colorPreview;
     private Slider redSlider;
@@ -30,12 +35,14 @@ public class ChooseColorDialog extends Dialog {
     private Button cancelBtn;
     private ChooseColorDialog self;
 
-    public ChooseColorDialog(Context context,int id, LinearLayout circle) {
+    public ChooseColorDialog(Context context,int id, LinearLayout circle,String previousColor) {
         super(context);
         self = this;
         this.id = id;
+        this.previousColor = previousColor;
         this.setCanceledOnTouchOutside(false);
         setContentView(R.layout.dialog_choose_color);
+        this.circleShape = (GradientDrawable) circle.getBackground();
 
         colorPreview = findViewById(R.id.dialog_choose_color_color_preview);
         redSlider = (Slider) findViewById(R.id.dialog_choose_color_slider_red);
@@ -50,6 +57,7 @@ public class ChooseColorDialog extends Dialog {
             public void onPositionChanged(Slider slider, boolean b, float v, float v1, int i, int i1) {
                 int color = Color.rgb(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
                 colorPreview.setBackgroundColor(color);
+                circleShape.setColor(color);
             }
         };
 
@@ -61,6 +69,12 @@ public class ChooseColorDialog extends Dialog {
     }
 
     private void setUpdColorSection(){
+        colorPreview.setBackgroundColor(Color.parseColor(previousColor));
+
+        redSlider.setValue(Integer.parseInt(previousColor.substring(1, 3),16), false);
+        greenSlider.setValue(Integer.parseInt(previousColor.substring(3, 5),16), false);
+        blueSlider.setValue(Integer.parseInt(previousColor.substring(5),16), false);
+
         redSlider.setOnPositionChangeListener(sliderListener);
         greenSlider.setOnPositionChangeListener(sliderListener);
         blueSlider.setOnPositionChangeListener(sliderListener);
@@ -71,6 +85,17 @@ public class ChooseColorDialog extends Dialog {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String selectedThemeColor = "#" + ColorUti.getHexStringForColor(redSlider.getValue()) + ColorUti.getHexStringForColor(greenSlider.getValue()) + ColorUti.getHexStringForColor(blueSlider.getValue());
+                        if (!selectedThemeColor.equals(previousColor)) {
+                            ContentValues values = new ContentValues();
+                            values.put(MainTable.COLUMN_BACKGROUND, selectedThemeColor);
+                            MainDataSource.updateNote(self.getContext().getApplicationContext(), id, values);
+                        }
+                    }
+                }).start();
                 self.dismiss();
             }
         });
@@ -78,10 +103,22 @@ public class ChooseColorDialog extends Dialog {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                reset();
                 self.dismiss();
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        reset();
+        super.onBackPressed();
+    }
+
+    private void reset(){
+        circleShape.setColor(Color.parseColor(previousColor));
+    }
+
 
 
 }

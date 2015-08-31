@@ -19,7 +19,7 @@ public class MainTable {
     // Database creation SQL statement
     private static final String TABLE_COLUMNS = " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
             + COLUMN_TITLE + " TEXT, " + COLUMN_TIME
-            + " TEXT, " + COLUMN_BACKGROUND + " INTEGER, "+COLUMN_ENCRYPTED+ " TEXT " + " )";
+            + " TEXT, " + COLUMN_BACKGROUND + " TEXT, "+COLUMN_ENCRYPTED+ " TEXT " + " )";
 
     public static void create(SQLiteDatabase database) {
         DataAccessWrapper.create(database, TABLE_MAIN, TABLE_COLUMNS);
