@@ -74,6 +74,12 @@ public class SinglePage extends LinearLayout{
         return singleLines;
     }
 
+    public void changeMode(boolean kanjiMode){
+        for(int i=0;i<NUM_LINES;i++){
+            singleLines.get(i).changeMode(kanjiMode);
+        }
+    }
+
 //    public LinearLayout getLinesBase(){
 //        return this;
 //    }

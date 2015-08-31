@@ -811,7 +811,7 @@ public class SinglePageActivity extends FragmentActivity implements
                 mPagerAdapter.addView(tempPage, mPager, circleIndicator);
                 int pageViewSize = signatureViewModels.get(i).size();
                 for(int j=0;j<pageViewSize;j++){
-                    tempSig = new SignatureView(signatureViewModels.get(i).get(j));
+                    tempSig = new SignatureView(signatureViewModels.get(i).get(j),cursorHolder);
                     tempPage.getSingleLines().get(tempSig.getLineNum()).addSignature(tempSig);
                 }
             }
@@ -939,6 +939,14 @@ public class SinglePageActivity extends FragmentActivity implements
         else{
             titleBar.setText(title.substring(0,7)+"...");
         }
+    }
+
+    public void changeMode(boolean kanjiMode){
+        int size = pages.size();
+        for(int i=0;i<size;i++){
+            pages.get(i).changeMode(kanjiMode);
+        }
+        this.sigCapture.setKanjiMode(kanjiMode);
     }
 
     public SignatureCapture getSignatureCapture(){

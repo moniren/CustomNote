@@ -3,8 +3,10 @@ package com.lyk.immersivenote.notepad;
 import com.lyk.immersivenote.R;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -25,9 +27,15 @@ public class SingleLine extends LinearLayout {
 
     private android.view.ViewGroup.LayoutParams params;
 
+    private int heightPix = 0;
+
     private int widthPix = 0;
 
     private int lineNum = 0;
+
+    private static Bitmap background = null;
+
+    private boolean kanjiMode = true;
 
 
     public SingleLine(Context context, int width, int height, int lineNum, SinglePage mPage) {
@@ -38,8 +46,33 @@ public class SingleLine extends LinearLayout {
         this.setLayoutParams(params);
         this.setBackgroundResource(R.drawable.bg_single_line);
         widthPix = width;
+        heightPix = height;
+        createBackground();
+//        this.setBackground(new BitmapDrawable(this.getContext().getResources(),background));
         this.lineNum = lineNum;
         this.mPage = mPage;
+    }
+
+    private void createBackground(){
+        if(background == null){
+            background = Bitmap.createBitmap(widthPix,heightPix,Bitmap.Config.ARGB_4444);
+            Canvas canvas = new Canvas(background);
+            Paint paint = new Paint();
+            paint.setColor(this.getContext().getResources().getColor(R.color.single_line_line));
+            canvas.drawARGB(0xFF, 0xF2, 0xF2, 0xF2);
+            canvas.drawRect(0, 2 *heightPix/3,widthPix,2*heightPix/3+heightPix/20,paint);
+        }
+    }
+
+    public void changeMode(boolean kanjiMode){
+        if(kanjiMode && !this.kanjiMode){
+            this.kanjiMode = kanjiMode;
+            this.setBackgroundResource(R.drawable.bg_single_line);
+        }
+        else if (!kanjiMode && this.kanjiMode){
+            this.kanjiMode = kanjiMode;
+            this.setBackground(new BitmapDrawable(this.getContext().getResources(),background));
+        }
     }
 
 

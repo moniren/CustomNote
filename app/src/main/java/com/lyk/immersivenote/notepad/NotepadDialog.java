@@ -102,12 +102,14 @@ public class NotepadDialog extends Dialog {
                     singlePageActivity.getSignatureCapture().setPaintColor(Color.BLUE);
                 }
 
-                if(kanjiRadioBtn.isChecked()){
-                    singlePageActivity.getSignatureCapture().setKanjiMode(true);
-                }
-                else{
-                    singlePageActivity.getSignatureCapture().setKanjiMode(false);
-                }
+                singlePageActivity.changeMode(kanjiRadioBtn.isChecked());
+
+//                if(kanjiRadioBtn.isChecked()){
+//                    singlePageActivity.getSignatureCapture().setKanjiMode(true);
+//                }
+//                else{
+//                    singlePageActivity.getSignatureCapture().setKanjiMode(false);
+//                }
 
                 if(titleText.getText() == null || titleText.getText().toString().length()==0){
                     titleText.setText(R.string.notepad_dialog_title_default);
