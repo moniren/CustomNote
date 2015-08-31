@@ -227,7 +227,7 @@
                     app:sl_stepValue="1"
                     app:sl_discreteMode="true"
                     app:sl_minValue="0"
-                    app:sl_maxValue="500"
+                    app:sl_maxValue="600"
                     app:sl_value="300"/>
             </LinearLayout>
 

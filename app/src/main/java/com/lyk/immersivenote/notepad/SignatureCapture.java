@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.lyk.immersivenote.utils.PrefUti;
+
 public class SignatureCapture extends View {
 	public static final int INVALID_STROKE = 999;
 	private static float strokeWidth;
@@ -54,6 +56,8 @@ public class SignatureCapture extends View {
 
 	private PropertyChangeSupport pcs = null;
 
+    private int timeInterval = 300;
+
 
 
 	public SignatureCapture(Context context, AttributeSet attrs, int lineH,
@@ -77,6 +81,11 @@ public class SignatureCapture extends View {
 		this.setLayoutParams(params);
 
 		pcs = new PropertyChangeSupport(this);
+
+        int preferredTimeInterval = PrefUti.getIntPreference(PrefUti.TIME_INTERVAL,context);
+        if(preferredTimeInterval > 0){
+            timeInterval = preferredTimeInterval;
+        }
 
 	}
 
@@ -367,7 +376,7 @@ public class SignatureCapture extends View {
 					path.lineTo(historicalX, historicalY);
 				}
 				path.lineTo(eventX, eventY);
-				timer = new CustomCountDownTimer(300, this);
+				timer = new CustomCountDownTimer(timeInterval, this);
 				timer.start();
 				break;
 			case INVALID_STROKE:

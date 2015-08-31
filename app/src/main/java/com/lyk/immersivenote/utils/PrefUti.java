@@ -19,6 +19,9 @@ public abstract class PrefUti {
 	public static final String THEME_COLOR = "ThemeColor";
     public static final String WRITING_MODE = "WritingMode";
     public static final String TIME_INTERVAL = "TimeInterval";
+
+    public static final String KANJI_MODE = "Kanji";
+    public static final String LATIN_MODE = "Latin";
 	
 	public static void setStringPreference(String key,String info, Context context){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
