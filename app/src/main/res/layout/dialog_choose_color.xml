@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="@string/settings_theme_color"
-        android:textColor="@color/color_primary"
+        android:text="@string/dialog_choose_color"
+        android:textColor="@android:color/tertiary_text_dark"
         android:textSize="@dimen/settings_title_text_size"
         android:textStyle="bold"/>
 

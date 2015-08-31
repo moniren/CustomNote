@@ -13,6 +13,8 @@ import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.utils.ColorUti;
 import com.lyk.immersivenote.utils.PrefUti;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.CompoundButton;
+import com.rey.material.widget.RadioButton;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
 
@@ -23,6 +25,8 @@ public class SettingsFragment extends Fragment {
 
     private TextView languageTitle;
     private TextView themeTitle;
+    private TextView writingModeTitle;
+    private TextView intervalTitle;
 
     private Spinner languageSpinner;
     private String[] languages;
@@ -37,7 +41,18 @@ public class SettingsFragment extends Fragment {
     private Slider redSlider;
     private Slider greenSlider;
     private Slider blueSlider;
-    private Slider.OnPositionChangeListener sliderListener;
+
+
+    private RadioButton kanjiRadioBtn;
+    private RadioButton latinRadioBtn;
+
+    private Slider timeSlider;
+    private TextView timePreview;
+
+    private Slider.OnPositionChangeListener timeSliderListener;
+    private Slider.OnPositionChangeListener colorSliderListener;
+
+    private CompoundButton.OnCheckedChangeListener writingModeListener;
 
     private HomeActivity homeActivity;
 
@@ -60,12 +75,21 @@ public class SettingsFragment extends Fragment {
         greenSlider = (Slider) forReturn.findViewById(R.id.settings_slider_green);
         blueSlider = (Slider) forReturn.findViewById(R.id.settings_slider_blue);
 
+        kanjiRadioBtn = (RadioButton) forReturn.findViewById(R.id.settings_writing_mode_kanji);
+        latinRadioBtn = (RadioButton) forReturn.findViewById(R.id.settings_writing_mode_latin);
+
+        timePreview = (TextView) forReturn.findViewById(R.id.settings_time_interval_preview);
+        timeSlider = (Slider) forReturn.findViewById(R.id.settings_slider_time);
+
         languageTitle = (TextView) forReturn.findViewById(R.id.settings_language_title);
         themeTitle = (TextView) forReturn.findViewById(R.id.settings_theme_title);
+        writingModeTitle = (TextView) forReturn.findViewById(R.id.settings_writing_mode_title);
+        intervalTitle = (TextView) forReturn.findViewById(R.id.settings_time_interval_title);
+
 
         applyThemeColor();
 
-        sliderListener = new Slider.OnPositionChangeListener() {
+        colorSliderListener = new Slider.OnPositionChangeListener() {
             @Override
             public void onPositionChanged(Slider slider, boolean b, float v, float v1, int i, int i1) {
                 int color = Color.rgb(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
@@ -74,10 +98,28 @@ public class SettingsFragment extends Fragment {
             }
         };
 
+        writingModeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(android.widget.CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    kanjiRadioBtn.setChecked(kanjiRadioBtn == buttonView);
+                    latinRadioBtn.setChecked(latinRadioBtn == buttonView);
+                }
+            }
+        };
+
+        timeSliderListener = new Slider.OnPositionChangeListener() {
+            @Override
+            public void onPositionChanged(Slider slider, boolean b, float v, float v1, int i, int i1) {
+                timePreview.setText(timeSlider.getValue() + "ms");
+            }
+        };
+
         setUpLanguageValues();
         setUpLanguageSection();
         setUpThemeColorSection();
-
+        setUpWritingModeSection();
+        setUpTimeIntervalSection();
 
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,10 +185,14 @@ public class SettingsFragment extends Fragment {
         if(previousSelectedColor!=null){
             languageTitle.setTextColor(Color.parseColor(previousSelectedColor));
             themeTitle.setTextColor(Color.parseColor(previousSelectedColor));
+            writingModeTitle.setTextColor(Color.parseColor(previousSelectedColor));
+            intervalTitle.setTextColor(Color.parseColor(previousSelectedColor));
         }
         else{
             languageTitle.setTextColor(homeActivity.getResources().getColor(R.color.color_primary));
             themeTitle.setTextColor(homeActivity.getResources().getColor(R.color.color_primary));
+            writingModeTitle.setTextColor(homeActivity.getResources().getColor(R.color.color_primary));
+            intervalTitle.setTextColor(homeActivity.getResources().getColor(R.color.color_primary));
         }
     }
 
@@ -195,15 +241,26 @@ public class SettingsFragment extends Fragment {
             blueSlider.setValue(Integer.parseInt(previousSelectedColor.substring(5),16), false);
         }
 
-        redSlider.setOnPositionChangeListener(sliderListener);
-        greenSlider.setOnPositionChangeListener(sliderListener);
-        blueSlider.setOnPositionChangeListener(sliderListener);
+        redSlider.setOnPositionChangeListener(colorSliderListener);
+        greenSlider.setOnPositionChangeListener(colorSliderListener);
+        blueSlider.setOnPositionChangeListener(colorSliderListener);
 
+    }
+
+    private void setUpWritingModeSection(){
+        kanjiRadioBtn.setOnCheckedChangeListener(writingModeListener);
+        latinRadioBtn.setOnCheckedChangeListener(writingModeListener);
+    }
+
+    private void setUpTimeIntervalSection(){
+        timeSlider.setOnPositionChangeListener(timeSliderListener);
     }
 
     private void changeColor(int color){
         languageTitle.setTextColor(color);
         themeTitle.setTextColor(color);
+        writingModeTitle.setTextColor(color);
+        intervalTitle.setTextColor(color);
         homeActivity.changeColor(color);
     }
 

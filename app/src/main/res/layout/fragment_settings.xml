@@ -43,8 +43,8 @@
                     app:spn_dividerHeight="2dp"
                     app:rd_style="@style/FlatButtonRippleStyle"
                     app:spn_label="@string/settings_choose_language_label"/>
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,8 +144,93 @@
                         app:sl_maxValue="255"
                         app:sl_value="64"/>
                 </LinearLayout>
-
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/top_section">
+                <TextView
+                    android:id="@+id/settings_writing_mode_title"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_writing_mode"
+                    android:textColor="@color/color_primary"
+                    android:textSize="@dimen/settings_title_text_size"
+                    android:textStyle="bold"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp">
+
+                    <com.rey.material.widget.RadioButton
+                        android:id="@+id/settings_writing_mode_kanji"
+                        style="@style/Material.Drawable.RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:checked="true"
+                        android:text="@string/dialog_kanji"
+                        app:rbd_radius="8dp"
+                        android:gravity="center_vertical"/>
+                    <com.rey.material.widget.RadioButton
+                        android:id="@+id/settings_writing_mode_latin"
+                        style="@style/Material.Drawable.RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop = "10dp"
+                        android:layout_marginLeft="30dp"
+                        android:checked="false"
+                        android:text="@string/dialog_latin"
+                        app:rbd_radius="8dp"
+                        android:gravity="center_vertical" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/top_section">
+                <TextView
+                    android:id="@+id/settings_time_interval_title"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_time_interval"
+                    android:textColor="@color/color_primary"
+                    android:textSize="@dimen/settings_title_text_size"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/settings_time_interval_preview"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="300ms"
+                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textSize="@dimen/settings_title_text_size"
+                    android:textStyle="bold"/>
+                <com.rey.material.widget.Slider
+                    android:id="@+id/settings_slider_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    app:sl_thumbRadius="@dimen/slider_thumb_radius"
+                    app:sl_stepValue="1"
+                    app:sl_discreteMode="true"
+                    app:sl_minValue="0"
+                    app:sl_maxValue="500"
+                    app:sl_value="300"/>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

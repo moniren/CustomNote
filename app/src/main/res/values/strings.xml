@@ -12,6 +12,8 @@
     <string name="settings_red">Red : </string>
     <string name="settings_green">Green : </string>
     <string name="settings_blue">Blue : </string>
+    <string name="settings_writing_mode">Default Writing Mode</string>
+    <string name="settings_time_interval">Max Time Interval Between Strokes</string>
     <string name="settings_apply">Apply</string>
 
     <string name="dialog_yes">Yes</string>
@@ -44,4 +46,6 @@
     <string name="notepad_dialog_sketch_color">Sketch Color</string>
     <string name = "dialog_kanji">Kanji</string>
     <string name = "dialog_latin">Latin</string>
+
+    <string name = "dialog_choose_color">Choose A Color</string>
 </resources>

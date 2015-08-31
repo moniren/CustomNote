@@ -12,6 +12,8 @@
     <string name="settings_red">红 ： </string>
     <string name="settings_green">绿 ： </string>
     <string name="settings_blue">蓝 ： </string>
+    <string name="settings_writing_mode">默认书写模式</string>
+    <string name="settings_time_interval">笔画时间间隔</string>
     <string name="settings_apply">应用</string>
 
     <string name="dialog_yes">是</string>
@@ -44,5 +46,7 @@
     <string name="notepad_dialog_sketch_color">笔画颜色</string>
     <string name = "dialog_kanji">汉字</string>
     <string name = "dialog_latin">拉丁文</string>
+
+    <string name = "dialog_choose_color">选择一个颜色</string>
 
 </resources>

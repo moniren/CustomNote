@@ -109,6 +109,7 @@ public class SinglePageActivity extends FragmentActivity implements
     private Toolbar toolBar;
     private int themeColor;
     private String title;
+    private boolean editing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -584,6 +585,7 @@ public class SinglePageActivity extends FragmentActivity implements
 //        circleIndicator.setViewPager(mPager);
         }
         else if (intent.getIntExtra(WRITE_EDIT_INTENT,0) == START_EDITING){
+            editing = true;
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
             sweetAlertDialog.getProgressHelper().setBarColor(themeColor);
             sweetAlertDialog.setTitleText(getString(R.string.dialog_loading));
@@ -716,7 +718,9 @@ public class SinglePageActivity extends FragmentActivity implements
             //saving
             ContentValues values = new ContentValues();
             values.put(MainTable.COLUMN_TITLE, title);
-            values.put(MainTable.COLUMN_BACKGROUND, themeColor);
+            if(!editing){
+                values.put(MainTable.COLUMN_BACKGROUND, themeColor);
+            }
             values.put(MainTable.COLUMN_ENCRYPTED, "false");
             DateFormat dateFormat = new SimpleDateFormat(
                     "yyyy-MM-dd HH:mm:ss");
