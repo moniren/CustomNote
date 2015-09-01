@@ -18,6 +18,8 @@ import com.rey.material.widget.RadioButton;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
 
+import java.util.Locale;
+
 /**
  * Created by John on 2015/8/27.
  */
@@ -240,6 +242,27 @@ public class SettingsFragment extends Fragment {
                     previousSelectedLanguage = i;
                     break;
                 }
+            }
+        }
+        else{
+            Locale currentLocale = getResources().getConfiguration().locale;
+            boolean foundLocale = false;
+            for (int i = 0; i < languagePrefs.length; i++) {
+                Locale tempLocale = new Locale(languagePrefs[i]);
+                if(languagePrefs[i].equals("zh_CN")){
+                    tempLocale = Locale.SIMPLIFIED_CHINESE;
+                }
+                else if (languagePrefs[i].equals("zh_TW")){
+                    tempLocale = Locale.TRADITIONAL_CHINESE;
+                }
+                if (tempLocale.equals(currentLocale)) {
+                    languageSpinner.setSelection(i);
+                    foundLocale = true;
+                    break;
+                }
+            }
+            if(!foundLocale){
+                languageSpinner.setSelection(0);
             }
         }
     }
