@@ -35,11 +35,11 @@ public class ChooseColorDialog extends Dialog {
     private Button cancelBtn;
     private ChooseColorDialog self;
 
-    public ChooseColorDialog(Context context,int id, LinearLayout circle,String previousColor) {
+    public ChooseColorDialog(Context context,int id, LinearLayout circle) {
         super(context);
         self = this;
         this.id = id;
-        this.previousColor = previousColor;
+        this.previousColor = MainDataSource.getCircleBg(context,id);
         this.setCanceledOnTouchOutside(false);
         setContentView(R.layout.dialog_choose_color);
         this.circleShape = (GradientDrawable) circle.getBackground();

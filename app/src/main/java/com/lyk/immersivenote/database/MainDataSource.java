@@ -130,6 +130,23 @@ public class MainDataSource {
         return size;
     }
 
+    public static synchronized  String getCircleBg(Context ctx, long rowId){
+        String color = null;
+        Cursor cursor = DataAccessWrapper.queryDB(database,
+                MainTable.TABLE_MAIN, allColumns, null, null, null, null,
+                ORDER_BY_TIME);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                color = cursor.getString(cursor.getColumnIndex(MainTable.COLUMN_BACKGROUND));
+            } else {
+                Log.i(LOGTAG, "Cursor is empty!");
+            }
+        } else
+            Log.i(LOGTAG, "Cursor is null!");
+        return color;
+    }
+
     public static synchronized void updateNote(Context ctx, long rowId,
                                                    ContentValues values) {
         DataAccessWrapper.update(database, ctx, MainTable.TABLE_MAIN, rowId,
