@@ -131,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initCustomActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+        setTitle(getResources().getString(R.string.navigation_drawer_notes));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +168,7 @@ public class HomeActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
                     fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
                     fragmentTransactionNew.commit();
+                    setTitle(getResources().getString(R.string.navigation_drawer_notes));
                 }
             }
         });
@@ -182,6 +183,7 @@ public class HomeActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
                     fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
                     fragmentTransactionNew.commit();
+                    setTitle(getResources().getString(R.string.navigation_drawer_settings));
                 }
             }
         });
@@ -267,6 +269,11 @@ public class HomeActivity extends AppCompatActivity {
 
     public void closeDrawer(){
         drawerLayout.closeDrawer(llDrawer);
+    }
+
+    private void setTitle(String title){
+
+        getSupportActionBar().setTitle(title);
     }
 
 }
