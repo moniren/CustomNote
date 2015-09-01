@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.lyk.immersivenote.R;
+import com.lyk.immersivenote.demo.AppDemo;
 import com.lyk.immersivenote.notepad.SinglePage;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
 import com.lyk.immersivenote.utils.PrefUti;
@@ -43,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView drawerNotes;
     private TextView drawerSettings;
+    private TextView drawerViewIntro;
 
     private FragmentManager fragmentManager;
     private Fragment fragment;
@@ -50,10 +52,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private int themeColor;
 
+    private HomeActivity self;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        self = this;
         setUpLocale();
         setContentView(R.layout.activity_main);
         initCustomActionBar();
@@ -157,6 +162,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initDrawer(){
         drawerNotes = (TextView) findViewById(R.id.drawer_notes);
         drawerSettings = (TextView) findViewById(R.id.drawer_settings);
+        drawerViewIntro = (TextView) findViewById(R.id.drawer_view_demo);
         drawerNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,8 +193,18 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-        RippleBgUti.setFlatRippleBackground(drawerNotes,this);
+        drawerViewIntro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, AppDemo.class);
+                intent.putExtra(AppDemo.FORCE_VIEW,true);
+                startActivity(intent);
+                self.finish();
+            }
+        });
+        RippleBgUti.setFlatRippleBackground(drawerNotes, this);
         RippleBgUti.setFlatRippleBackground(drawerSettings, this);
+        RippleBgUti.setFlatRippleBackground(drawerViewIntro, this);
     }
 
     // used for setting the ripple effect for the materialMenu icon

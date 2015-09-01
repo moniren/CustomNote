@@ -22,7 +22,21 @@ public abstract class PrefUti {
 
     public static final String KANJI_MODE = "Kanji";
     public static final String LATIN_MODE = "Latin";
-	
+
+    public static final String NOT_FIRST_TIME_USE = "NotFirstTimeUse";
+
+    public static void setBooleanPreference(String key,boolean info, Context context){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(key, info);
+        editor.commit();
+    }
+
+    public static boolean getBooleanPreference(String key,Context context){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        return settings.getBoolean(key,false);
+    }
+
 	public static void setStringPreference(String key,String info, Context context){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = settings.edit();

@@ -133,6 +133,29 @@
                         android:src="@drawable/ic_settings_grey"
                         android:layout_alignParentLeft="true"/>
                 </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/section_bar"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/navigation_item_height">
+                    <TextView
+                        android:id="@+id/drawer_view_demo"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:textColor="@android:color/tertiary_text_dark"
+                        android:text="@string/navigation_drawer_view_intro"
+                        android:gravity="center"
+                        android:textSize="@dimen/navigation_item_text_size"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_view_intro_grey"
+                        android:layout_alignParentLeft="true"/>
+                </RelativeLayout>
 
 
             </LinearLayout>
