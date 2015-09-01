@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">メモ帳</string>
+    <string name="navigation_drawer_user_welcome">ようこそ！</string>
+    <string name="navigation_drawer_notes">メモ</string>
+    <string name="navigation_drawer_settings">設定</string>
+
+    <string name="settings_choose_language">言語</string>
+    <string name="settings_choose_language_label">言語を選択してください</string>
+    <string name="settings_theme_color">画面の色</string>
+    <string name="settings_red">赤い : </string>
+    <string name="settings_green">緑 : </string>
+    <string name="settings_blue">青い : </string>
+    <string name="settings_writing_mode"> デフォルトの書き込みモード</string>
+    <string name="settings_time_interval">入力の最大の時間</string>
+    <string name="settings_apply">申し込み</string>
+
+    <string name="dialog_yes">はい</string>
+    <string name="dialog_no">いいえ</string>
+    <string name="dialog_okay">確認</string>
+    <string name="dialog_cancel">キャンセル</string>
+
+    <string name="dialog_delete_note_title">メモを削除してもよろしい？</string>
+    <string name="dialog_delete_note_label">回復できない</string>
+    <string name="dialog_deleting">削除中</string>
+    <string name="dialog_delete_page_title">このページを消してもよろしい？</string>
+    <string name="dialog_delete_page_label">回復できない</string>
+    <string name="dialog_deleted">削除した!</string>
+
+    <string name="dialog_loading">ローディング</string>
+    <string name="dialog_save_note_title">このメモを細んしますか</string>
+    <string name="dialog_saving">保存中</string>
+    <string name="dialog_saved">保存した!</string>
+
+    <string name="dialog_add_new_page_title">新しいページを追加しますか</string>
+    <string name="dialog_current_page_full">現在のページがフールです!</string>
+    <string name="dialog_added">追加した!</string>
+
+    <string name ="notepad_dialog_title">タイトル</string>
+    <string name = "notepad_dialog_title_default">タイトルなし</string>
+    <string name = "notepad_dialog_title_hint">メモのタイトルを保存してください</string>
+    <string name = "notepad_dialog_title_error">最大２０文字</string>
+    <string name ="notepad_dialog_writing_mode">書き込みモード</string>
+    <string name="notepad_dialog_save_note">メモを保存する</string>
+    <string name="notepad_dialog_sketch_color">スケッチの色をしてください</string>
+    <string name = "dialog_kanji">漢字</string>
+    <string name = "dialog_latin">ラテン</string>
+    <string name = "dialog_choose_color">色を選択してください</string>
+</resources>

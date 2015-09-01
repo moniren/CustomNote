@@ -214,8 +214,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setUpLanguageValues() {
-        languages = new String[4];
-        languagePrefs = new String[4];
+        languages = new String[5];
+        languagePrefs = new String[5];
 
         languages[0] = "English";
         languagePrefs[0] = "en_US";
@@ -226,8 +226,11 @@ public class SettingsFragment extends Fragment {
         languages[2] = "繁體中文";
         languagePrefs[2] = "zh_TW";
 
-        languages[3] = "ภาษาไทย";
-        languagePrefs[3] = "th";
+        languages[3] = "日本語";
+        languagePrefs[3] = "ja";
+
+        languages[4] = "ภาษาไทย";
+        languagePrefs[4] = "th";
     }
 
     private void setUpLanguageSection() {
