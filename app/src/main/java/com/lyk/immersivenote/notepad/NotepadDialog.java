@@ -140,6 +140,12 @@ public class NotepadDialog extends Dialog {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        resetState();
+        super.onBackPressed();
+    }
+
     private void saveState(){
         if(blackRadioBtn.isChecked()){
             firstSectionSelected = blackRadioBtn;
