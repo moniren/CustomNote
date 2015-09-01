@@ -3,7 +3,7 @@
     <string name="app_name">มือสมุดบันทึก</string>
 
     <string name="navigation_drawer_user_welcome">ยินดีต้อนรับ</string>
-    <string name="navigation_drawer_notes">บันทึก</string>
+    <string name="navigation_drawer_notes">สมุดบันทึก</string>
     <string name="navigation_drawer_settings">การตั้งค่า</string>
 
     <string name="settings_choose_language">ภาษา</string>
@@ -13,7 +13,7 @@
     <string name="settings_green">สีเขียว : </string>
     <string name="settings_blue">สีน้ำเงิน : </string>
     <string name="settings_writing_mode">โหมดการเขียนเริ่มต้น</string>
-    <string name="settings_time_interval">ช่วงเวลามากที่สุดระหว่างการเขียน</string>
+    <string name="settings_time_interval">เวลามากที่สุดระหว่างการเขียน</string>
     <string name="settings_apply">ใช้</string>
 
     <string name="dialog_yes">ใช่</string>
@@ -42,7 +42,7 @@
     <string name = "notepad_dialog_title_hint">ตั้งชื่อสำหรับบันทึกของคุณ</string>
     <string name = "notepad_dialog_title_error">ไม่เกิน 20 ตัวอักษร</string>
     <string name ="notepad_dialog_writing_mode">โหมดการเขียน</string>
-    <string name="notepad_dialog_save_note">เก็บสมุดบันทึก</string>
+    <string name="notepad_dialog_save_note">บันทึก</string>
     <string name="notepad_dialog_sketch_color">สีวาด</string>
     <string name = "dialog_kanji">คันจิ</string>
     <string name = "dialog_latin">ลาติน</string>
