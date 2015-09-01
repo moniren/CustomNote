@@ -25,8 +25,8 @@
 
             <View
                 android:id="@+id/dialog_choose_color_color_preview"
-                android:layout_width="@dimen/color_preview_size"
-                android:layout_height="@dimen/color_preview_size"
+                android:layout_width="@dimen/half_color_preview_size"
+                android:layout_height="@dimen/half_color_preview_size"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"/>
 

@@ -42,18 +42,16 @@ public class CardCursorAdapter extends CursorAdapter {
 
     private class CircleOnClickListener implements View.OnClickListener{
         private int id;
-        private String color;
         private LinearLayout circle;
 
-        CircleOnClickListener(int id, LinearLayout circle, String color){
+        CircleOnClickListener(int id, LinearLayout circle){
             this.id = id;
             this.circle = circle;
-            this.color = color;
         }
 
         @Override
         public void onClick(View v) {
-            ChooseColorDialog dialog = new ChooseColorDialog(homeActivity,id,circle,color);
+            ChooseColorDialog dialog = new ChooseColorDialog(homeActivity,id,circle);
             dialog.show();
         }
     }
@@ -102,13 +100,14 @@ public class CardCursorAdapter extends CursorAdapter {
 
         int id = cursor.getInt(cursor.getColumnIndex(MainTable.COLUMN_ID));
 
-        circleOnClickListener = new CircleOnClickListener(id,holder.circle,bgColor);
+
+
+        circleOnClickListener = new CircleOnClickListener(id,holder.circle);
         deleteOnClickListener = new DeleteOnClickListener(id);
         editOnClickListener = new EditOnClickListener(id,title);
 
         holder.circle.setOnClickListener(circleOnClickListener);
         ((GradientDrawable) holder.circle.getBackground()).setColor(Color.parseColor(bgColor));
-
         holder.deleteBtn.setOnClickListener(deleteOnClickListener);
         holder.editBtn.setOnClickListener(editOnClickListener);
 

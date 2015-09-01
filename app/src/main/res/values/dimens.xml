@@ -10,5 +10,6 @@
     <dimen name="navigation_item_height">40dp</dimen>
     <dimen name="settings_title_text_size">20dp</dimen>
     <dimen name="color_preview_size">100dp</dimen>
+    <dimen name="half_color_preview_size">50dp</dimen>
     <dimen name="slider_thumb_radius">12dp</dimen>
 </resources>
