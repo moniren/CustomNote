@@ -223,10 +223,10 @@ public class SettingsFragment extends Fragment {
         languagePrefs[2] = "zh_TW";
 
         languages[3] = "ภาษาไทย";
-        languagePrefs[3] = "th_TH";
+        languagePrefs[3] = "th";
 
         languages[4] = "ພາສາລາວ";
-        languagePrefs[4] = "lo_LA";
+        languagePrefs[4] = "lo";
     }
 
     private void setUpLanguageSection() {
