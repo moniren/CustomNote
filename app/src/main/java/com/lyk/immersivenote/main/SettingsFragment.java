@@ -174,7 +174,11 @@ public class SettingsFragment extends Fragment {
         return forReturn;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity) this.getActivity()).closeDrawer();
+    }
 
     @Override
     public void onPause() {
