@@ -75,6 +75,7 @@ public class NotesFragment extends Fragment {
         super.onResume();
         showMaterialProgress("Loading...");
         new TaskLoadNote(this.getActivity(),this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        ((HomeActivity) this.getActivity()).closeDrawer();
     }
 
     private void applyThemeColor(){
