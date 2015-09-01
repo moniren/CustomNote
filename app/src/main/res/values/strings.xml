@@ -1,7 +1,5 @@
 <resources>
-
     <string name="app_name">ImmersiveNote</string>
-
     <string name="navigation_drawer_user_welcome">Welcome</string>
     <string name="navigation_drawer_notes">Notes</string>
     <string name="navigation_drawer_settings">Settings</string>
@@ -46,6 +44,5 @@
     <string name="notepad_dialog_sketch_color">Sketch Color</string>
     <string name = "dialog_kanji">Kanji</string>
     <string name = "dialog_latin">Latin</string>
-
     <string name = "dialog_choose_color">Choose A Color</string>
 </resources>

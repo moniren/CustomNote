@@ -39,7 +39,7 @@
 
     <string name ="notepad_dialog_title">ชื่อเรื่อง</string>
     <string name = "notepad_dialog_title_default">ไม่มีชื่อเรื่อง</string>
-    <string name = "notepad_dialog_title_hint">ตั้งชื่อสำหรับบันทึกของคุณ</string>
+    <string name = "notepad_dialog_title_hint">ตั้งชื่อบันทึกของคุณ</string>
     <string name = "notepad_dialog_title_error">ไม่เกิน 20 ตัวอักษร</string>
     <string name ="notepad_dialog_writing_mode">โหมดการเขียน</string>
     <string name="notepad_dialog_save_note">บันทึก</string>
