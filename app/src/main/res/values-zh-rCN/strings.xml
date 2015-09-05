@@ -1,10 +1,11 @@
 <resources>
 
-    <string name="app_name">材料记事本</string>
+    <string name="app_name">手写记事本</string>
 
     <string name="navigation_drawer_user_welcome">欢迎</string>
     <string name="navigation_drawer_notes">笔记</string>
     <string name="navigation_drawer_settings">设置</string>
+    <string name="navigation_drawer_view_intro">观看演示</string>
 
     <string name="settings_choose_language">语言偏好</string>
     <string name="settings_choose_language_label">选择您的语言</string>
@@ -48,5 +49,14 @@
     <string name = "dialog_latin">拉丁文</string>
 
     <string name = "dialog_choose_color">选择一个颜色</string>
+
+    <string name = "demo_page_1_title">一个多彩的手写记事本</string>
+    <string name = "demo_page_1_desc">支持多种语言</string>
+    <string name = "demo_page_2_title">在屏幕上自由书写</string>
+    <string name = "demo_page_2_desc">轻触以显示辅助图层</string>
+    <string name = "demo_page_3_title">自动对齐</string>
+    <string name = "demo_page_3_desc">取决于您选择的书写模式</string>
+    <string name = "demo_page_4_title">享受您的手写记事本吧</string>
+    <string name = "demo_page_4_desc">开始！</string>
 
 </resources>

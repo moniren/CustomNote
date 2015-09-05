@@ -30,6 +30,8 @@ import com.rey.material.widget.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 /**
  * Created by lyk on 2015/7/4.
@@ -44,6 +46,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView drawerNotes;
     private TextView drawerSettings;
+    private TextView drawerHelp;
+    private TextView drawerAbout;
     private TextView drawerViewIntro;
 
     private FragmentManager fragmentManager;
@@ -162,6 +166,8 @@ public class HomeActivity extends AppCompatActivity {
     private void initDrawer(){
         drawerNotes = (TextView) findViewById(R.id.drawer_notes);
         drawerSettings = (TextView) findViewById(R.id.drawer_settings);
+        drawerHelp = (TextView) findViewById(R.id.drawer_help);
+        drawerAbout = (TextView) findViewById(R.id.drawer_about);
         drawerViewIntro = (TextView) findViewById(R.id.drawer_view_demo);
         drawerNotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,17 +199,49 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+        drawerHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(fragment instanceof HelpFragment)) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.remove(fragment);
+                    fragmentTransaction.commit();
+                    fragment = new HelpFragment();
+                    FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
+                    fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
+                    fragmentTransactionNew.commit();
+                    setTitle(getResources().getString(R.string.navigation_drawer_help));
+                }
+            }
+        });
+        drawerAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(fragment instanceof AboutFragment)) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.remove(fragment);
+                    fragmentTransaction.commit();
+                    fragment = new AboutFragment();
+                    FragmentTransaction fragmentTransactionNew = fragmentManager.beginTransaction();
+                    fragmentTransactionNew.add(R.id.home_fragment_place_holder, fragment);
+                    fragmentTransactionNew.commit();
+                    setTitle(getResources().getString(R.string.navigation_drawer_about));
+                }
+            }
+        });
         drawerViewIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(self, AppDemo.class);
-                intent.putExtra(AppDemo.FORCE_VIEW,true);
+                intent.putExtra(AppDemo.FORCE_VIEW, true);
                 startActivity(intent);
-                self.finish();
+//                self.finish();
             }
         });
         RippleBgUti.setFlatRippleBackground(drawerNotes, this);
         RippleBgUti.setFlatRippleBackground(drawerSettings, this);
+        RippleBgUti.setFlatRippleBackground(drawerHelp, this);
+        RippleBgUti.setFlatRippleBackground(drawerAbout, this);
         RippleBgUti.setFlatRippleBackground(drawerViewIntro, this);
     }
 
@@ -262,6 +300,27 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SinglePageActivity.class);
         intent.putExtra(SinglePageActivity.WRITE_EDIT_INTENT, SinglePageActivity.START_WRITING);
         startActivity(intent);
+    }
+
+    public void showRateDialog(View view){
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog.setOwnerActivity(this);
+        sweetAlertDialog.setTitleText(this.getString(R.string.about_dialog_rate))
+                .setConfirmText(this.getString(R.string.dialog_yes))
+                .setCancelText(this.getString(R.string.dialog_no))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                    }
+                }).showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.cancel();
+                    }
+                });
+        sweetAlertDialog.show();
     }
 
     public void startEditing(int editPageId,String title){

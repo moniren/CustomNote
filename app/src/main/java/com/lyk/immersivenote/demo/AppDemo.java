@@ -42,7 +42,12 @@ public class AppDemo extends AppIntro2 {
 
     @Override
     public void onDonePressed() {
-        PrefUti.setBooleanPreference(PrefUti.NOT_FIRST_TIME_USE,true,this);
-        loadMainActivity();
+        PrefUti.setBooleanPreference(PrefUti.NOT_FIRST_TIME_USE, true, this);
+        if( ! getIntent().getBooleanExtra(FORCE_VIEW,false)){
+            loadMainActivity();
+        }
+        else{
+            finish();
+        }
     }
 }

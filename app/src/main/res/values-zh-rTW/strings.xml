@@ -1,10 +1,11 @@
 <resources>
 
-    <string name="app_name">材料記事本</string>
+    <string name="app_name">手寫記事本</string>
 
     <string name="navigation_drawer_user_welcome">歡迎</string>
     <string name="navigation_drawer_notes">筆記</string>
     <string name="navigation_drawer_settings">設置</string>
+    <string name="navigation_drawer_view_intro">觀看演示</string>
 
     <string name="settings_choose_language">語言偏好</string>
     <string name="settings_choose_language_label">選擇您的語言</string>
@@ -48,4 +49,13 @@
     <string name = "dialog_latin">拉丁文</string>
 
     <string name = "dialog_choose_color">選擇一個顏色</string>
+
+    <string name = "demo_page_1_title">一個多彩的手寫記事本</string>
+    <string name = "demo_page_1_desc">支持多種語言</string>
+    <string name = "demo_page_2_title">在屏幕上自由書寫</string>
+    <string name = "demo_page_2_desc">輕觸以顯示輔助圖層</string>
+    <string name = "demo_page_3_title">自動對齊</string>
+    <string name = "demo_page_3_desc">取決於您選擇的書寫模式</string>
+    <string name = "demo_page_4_title">享受您的手寫記事本吧</string>
+    <string name = "demo_page_4_desc">開始！</string>
 </resources>

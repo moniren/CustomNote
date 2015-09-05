@@ -24,6 +24,7 @@ public class ChooseColorDialog extends Dialog {
     private int id;
     private String previousColor;
     private GradientDrawable circleShape;
+    private CircleAbbrev circle;
 
     private View colorPreview;
     private Slider redSlider;
@@ -35,13 +36,14 @@ public class ChooseColorDialog extends Dialog {
     private Button cancelBtn;
     private ChooseColorDialog self;
 
-    public ChooseColorDialog(Context context,int id, LinearLayout circle) {
+    public ChooseColorDialog(Context context,int id, CircleAbbrev circle) {
         super(context);
         self = this;
         this.id = id;
-        this.previousColor = MainDataSource.getCircleBg(context,id);
+        this.previousColor = circle.getBgColor();
         this.setCanceledOnTouchOutside(false);
         setContentView(R.layout.dialog_choose_color);
+        this.circle = circle;
         this.circleShape = (GradientDrawable) circle.getBackground();
 
         colorPreview = findViewById(R.id.dialog_choose_color_color_preview);
@@ -93,6 +95,7 @@ public class ChooseColorDialog extends Dialog {
                             ContentValues values = new ContentValues();
                             values.put(MainTable.COLUMN_BACKGROUND, selectedThemeColor);
                             MainDataSource.updateNote(self.getContext().getApplicationContext(), id, values);
+                            circle.setBgColor(selectedThemeColor);
                         }
                     }
                 }).start();

@@ -1,12 +1,14 @@
 <resources>
-    <string name="app_name">ImmersiveNote</string>
+    <string name="app_name">HandwritingNote</string>
     <string name="navigation_drawer_user_welcome">Welcome</string>
     <string name="navigation_drawer_notes">Notes</string>
     <string name="navigation_drawer_settings">Settings</string>
+    <string name="navigation_drawer_help">Help</string>
+    <string name="navigation_drawer_about">About</string>
     <string name="navigation_drawer_view_intro">View Introduction</string>
 
     <string name="settings_choose_language">Language Preference</string>
-    <string name="settings_choose_language_label">choose your language</string>
+    <string name="settings_choose_language_label">Choose your language</string>
     <string name="settings_theme_color">Theme color</string>
     <string name="settings_red">Red : </string>
     <string name="settings_green">Green : </string>
@@ -46,4 +48,61 @@
     <string name = "dialog_kanji">Kanji</string>
     <string name = "dialog_latin">Latin</string>
     <string name = "dialog_choose_color">Choose A Color</string>
+
+
+    <string name = "demo_page_1_title">A colorful handwriting notepad</string>
+    <string name = "demo_page_1_desc">Supporting multiple languages</string>
+    <string name = "demo_page_2_title">Write freely on the screen</string>
+    <string name = "demo_page_2_desc">Showing the auxiliary-layer on touch</string>
+    <string name = "demo_page_3_title">Align automatically</string>
+    <string name = "demo_page_3_desc">Depending on the writing mode you choose</string>
+    <string name = "demo_page_4_title">Enjoy your HandwritingNote</string>
+    <string name = "demo_page_4_desc">Get started!</string>
+
+    <string name = "about_title">About</string>
+    <string name = "about_version">0.0.1</string>
+    <string name = "about_desc">This is a colorful, easy to use handwriting notes app. \n
+                                New features like secure access; export notes and share will be in future updates.</string>
+    <string name="about_opensrc_title">Open Source Libraries Used: </string>
+    <string name="about_opensrc_desc">   Material icons - by Google         \n\n
+                                         Material Library - by rey5137        \n\n
+                                         Material Menu - by balysv         \n\n
+                                         CircleIndicator - by ongakuer        \n\n
+                                         sweet-alert-dialog - by pedant         \n\n
+                                         CircularImageView - by Pkmmte          \n\n
+                                         AppIntro - by PaoloRotolo
+                                         </string>
+    <string name = "about_opensrc_link"> <a href="https://www.google.com/design/icons/">link</a> \n\n <a href="https://github.com/rey5137/material">link</a> \n\n <a href="https://github.com/balysv/material-menu">link</a> \n\n <a href="https://github.com/ongakuer/CircleIndicator">link</a> \n\n <a href="https://github.com/pedant/sweet-alert-dialog">link</a> \n\n <a href="https://github.com/Pkmmte/CircularImageView">link</a> \n\n <a href="https://github.com/PaoloRotolo/AppIntro">link</a></string>
+    <string name="about_translation_title">Translation: </string>
+    <string name="about_translation_desc">  English: Li Yuekang \n Simplified Chinese:  Li Yuekang \n Traditional Chinese: Li Yuekang \n Thai: Leelar \n Japanese: </string>
+    <string name="about_thanks">Thanks to all those who supported this app!</string>
+    <string name="about_dialog_rate">Rate this app?</string>
+
+    <string name="help_cursor_title">Cursor: </string>
+    <string name="help_cursor_desc">There is a cursor on the notepad to help your writing.\n
+                                Toggle to viewing mode to move the cursor manually.(Check the button section below for details)\n
+                                Click on a piece of handwriting to move the cursor in front of it.\n
+                                Click on a line to move the cursor to that line.</string>
+    <string name="help_writing_mode_title">Writing Mode: </string>
+    <string name="help_writing_mode_desc">There are 2 writing modes: latin and kanji.\n
+                                Toggle the writing mode in the options of the note.(Check the button section below for details)\n
+                                Set the default writing mode in settings.\n
+                                In kanji mode, each piece of handwriting will be cut into a square.\n
+                                In latin mode, the user need to refer to the auxiliary layer for better alignment.\n
+                                Note: The cursor may seems to be at the wrong place in latin mode sometimes.Don\'t worry, only the appearance goes wrong and the cursor can still function well. You can always set the cursor manually in this case.</string>
+    <string name="help_auxiliary_layer_title">Writing Auxiliary Layer: </string>
+    <string name="help_auxiliary_layer_desc">There is a writing auxiliary layer when you are in the editing mode.\n
+                                Touch the screen to show it.\n
+                                Write in the top gray section to make it a superscript.\n
+                                Write in the bottom gray section to make it a subscript.\n
+                                Write anywhere to make it a normal character.\n
+                                Note: For latin mode, there is another gray section which corresponds to the middle section when you write latin alphabets (like "o" in word "good"). Write accordingly will give a better alignment.</string>
+    <string name="help_buttons_notepad">Buttons on the notepad: </string>
+    <string name="help_buttons_space">Space button - Generates a white space on the note.</string>
+    <string name="help_buttons_backspace">Backspace button - Delete the item before the cursor.</string>
+    <string name="help_buttons_toggle_edit">Toggle button - Toggle between editing mode and viewing mode. (This means under editing mode.)</string>
+    <string name="help_buttons_toggle_view">Toggle button - Toggle between editing mode and viewing mode. (This means under viewing mode.)</string>
+    <string name="help_buttons_add">Add Page button - Add a new page for the note. (Under viewing mode.)</string>
+    <string name="help_buttons_remove">Remove Page button - Remove the current page from the note. (Under viewing mode. Shown only when there are at least 2 pages in the note.)</string>
+    <string name="help_buttons_options">Options button - Show the options for the note.</string>
 </resources>

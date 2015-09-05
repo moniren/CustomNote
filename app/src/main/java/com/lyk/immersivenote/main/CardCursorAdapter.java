@@ -32,7 +32,7 @@ public class CardCursorAdapter extends CursorAdapter {
     private CircleOnClickListener circleOnClickListener;
 
     private    static  class   ViewHolder  {
-        LinearLayout circle;
+        CircleAbbrev circle;
         TextView title;
         TextView   time;
         TextView abbrev;
@@ -42,9 +42,9 @@ public class CardCursorAdapter extends CursorAdapter {
 
     private class CircleOnClickListener implements View.OnClickListener{
         private int id;
-        private LinearLayout circle;
+        private CircleAbbrev circle;
 
-        CircleOnClickListener(int id, LinearLayout circle){
+        CircleOnClickListener(int id, CircleAbbrev circle){
             this.id = id;
             this.circle = circle;
         }
@@ -106,6 +106,7 @@ public class CardCursorAdapter extends CursorAdapter {
         deleteOnClickListener = new DeleteOnClickListener(id);
         editOnClickListener = new EditOnClickListener(id,title);
 
+        holder.circle.setBgColor(bgColor);
         holder.circle.setOnClickListener(circleOnClickListener);
         ((GradientDrawable) holder.circle.getBackground()).setColor(Color.parseColor(bgColor));
         holder.deleteBtn.setOnClickListener(deleteOnClickListener);
@@ -122,7 +123,7 @@ public class CardCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View   view    =   inflater.inflate(R.layout.view_note_card, null);
         ViewHolder holder  =   new ViewHolder();
-        holder.circle = (LinearLayout) view.findViewById(R.id.card_circle);
+        holder.circle = (CircleAbbrev) view.findViewById(R.id.card_circle);
         holder.title    =   (TextView)  view.findViewById(R.id.card_title);
         holder.time    =   (TextView)  view.findViewById(R.id.card_time);
         holder.abbrev = (TextView) view.findViewById(R.id.card_abbrev);

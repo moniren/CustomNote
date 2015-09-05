@@ -13,11 +13,10 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:layout_weight="2"
-        android:fontFamily="sans-serif-thin"
         android:textColor="#ffffff"
         android:paddingRight="32dp"
         android:textSize="28sp"
-        android:text="Slide 2 title"/>
+        android:text="@string/demo_page_2_title"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -44,7 +43,7 @@
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
         android:textSize="16sp"
-        android:text="Loooooooooooooooo[...]ooooooooong descreption here"/>
+        android:text="@string/demo_page_2_desc"/>
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="64dp" />

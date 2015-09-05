@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@android:color/background_light">
-        <LinearLayout
+        <com.lyk.immersivenote.main.CircleAbbrev
             android:id="@+id/card_circle"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -24,9 +24,8 @@
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:gravity="center"
-                android:fontFamily="sans-serif"
                 android:textSize="40dp"/>
-        </LinearLayout>
+        </com.lyk.immersivenote.main.CircleAbbrev>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,14 +51,12 @@
                 android:textAllCaps="true"
                 android:layout_margin="10dp"
                 android:textSize="25dp"
-                android:fontFamily="sans-serif"
                 />
             <TextView
                 android:id = "@+id/card_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:fontFamily="sans-serif"
                 android:textSize="15dp"/>
         </LinearLayout>
         <LinearLayout
