@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import java.util.jar.Attributes;
 
 /**
  * Created by John on 2015/9/4.

@@ -4,18 +4,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainTable;
-import com.lyk.immersivenote.utils.RippleBgUti;
-import com.pkmmte.view.CircularImageView;
 import com.rey.material.widget.ImageButton;
 
 /**
@@ -60,7 +56,6 @@ public class CardCursorAdapter extends CursorAdapter {
         private int id;
         DeleteOnClickListener(int id){
             this.id = id;
-            Log.d("DeleteOnClickListener","holding id: "+id);
         }
 
         @Override
@@ -75,7 +70,6 @@ public class CardCursorAdapter extends CursorAdapter {
         EditOnClickListener(int id, String title){
             this.id = id;
             this.title = title;
-            Log.d("TitleOnClickListener","holding id: "+id);
         }
 
         @Override

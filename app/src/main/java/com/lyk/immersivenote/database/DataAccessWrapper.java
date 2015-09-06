@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 
 public class DataAccessWrapper {
@@ -51,7 +50,6 @@ public class DataAccessWrapper {
         try {
             cursor = database.query(TABLE_NAME, allColumns, null, null, null, null, null);
         } catch (Exception e) {
-            Log.e(TAG, "Exception while getting all values from table: " + TABLE_NAME + "\nVALUES " + allColumns);
             e.printStackTrace();
         }
         return cursor;
@@ -89,7 +87,6 @@ public class DataAccessWrapper {
         try {
             cursor = database.query(TABLE_NAME, allColumns, where, selectionArgs, groupBy, having, orderBy);
         } catch (Exception e) {
-            Log.e(TAG, "Exception while querying from table: " + TABLE_NAME + "\nSELECT " + allColumns + "\nWHERE " + where);
             e.printStackTrace();
         }
         return cursor;
@@ -102,7 +99,6 @@ public class DataAccessWrapper {
             String[] column = {col};
             cursor = database.query(TABLE_NAME, column, where, null, null, null, null);
         } catch (Exception e) {
-            Log.e(TAG, "Exception while getting value from table: " + TABLE_NAME + "\nGET " + col + "\nWHERE " + where);
             e.printStackTrace();
         }
         return cursor;
@@ -120,9 +116,7 @@ public class DataAccessWrapper {
                 key = values.get(PRIMARY_KEY);
             }
 
-            DataAccessManager.NotifyInsert(ctx, TABLE_NAME, insertId, key);
         } catch (Exception e) {
-            Log.e(TAG, "Exception while inserting value in table: " + TABLE_NAME + "\nROW: " + insertId + "\nINSERT " + values.toString());
             e.printStackTrace();
         }
         return insertId;
@@ -133,9 +127,7 @@ public class DataAccessWrapper {
         String where = "_id = " + rowId;
         try {
             database.update(TABLE_NAME, newValues, where, null);
-            DataAccessManager.NotifyUpdate(ctx, TABLE_NAME, rowId, newValues);
         } catch (Exception e) {
-            Log.e(TAG, "Exception while updating value in table: " + TABLE_NAME + "\nUPDATE " + newValues.toString() + "\nWHERE " + where);
             e.printStackTrace();
         }
     }
@@ -159,13 +151,9 @@ public class DataAccessWrapper {
             if (c != null) {
                 c.close();
                 database.delete(TABLE_NAME, where, null);
-                DataAccessManager.NotifyRemove(ctx, TABLE_NAME, rowId);
                 numRows = DatabaseUtils.longForQuery(database, "SELECT COUNT(*) FROM " + TABLE_NAME, null);
-            } else {
-                Log.i(TAG, "Trying to remove a value from " + TABLE_NAME + " table that does not exist: " + where);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Exception while removing value from table: " + TABLE_NAME + "\nREMOVE ID:" + rowId + "\nWHERE " + where);
             e.printStackTrace();
         }
     }

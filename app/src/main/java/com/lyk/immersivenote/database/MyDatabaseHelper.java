@@ -7,7 +7,6 @@ package com.lyk.immersivenote.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 
@@ -22,7 +21,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     public MyDatabaseHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.i(LOGTAG, "Database CONSTRUCTOR");
         // this will wipe the database every time the app restarts
         // echo-mobile is using it, but currently it's disabled here for
         // debugging use
@@ -39,9 +37,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-
-        Log.i(LOGTAG, "Empty Database created");
-
     }
 
     public SQLiteDatabase getDB() {

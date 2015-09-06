@@ -4,7 +4,6 @@ package com.lyk.immersivenote.database;
  * Created by John on 2015/8/17.
  */
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class NoteTable {
     // Database table, the columns are created in the same order
@@ -25,8 +24,6 @@ public class NoteTable {
 
     public static void onUpgrade(SQLiteDatabase database, int oldVersion,
                                  int newVersion,String tableName) {
-        Log.w(tableName, "Upgrading database from version " + oldVersion
-                + " to " + newVersion + ", which will destroy all old data");
         DataAccessWrapper.upgrade(database, tableName, TABLE_COLUMNS, oldVersion,
                 newVersion);
     }

@@ -1,6 +1,5 @@
 package com.lyk.immersivenote.notepad;
 
-import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.utils.PrefUti;
 
 import android.content.Context;

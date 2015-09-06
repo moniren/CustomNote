@@ -5,7 +5,9 @@
     <string name="navigation_drawer_user_welcome">欢迎</string>
     <string name="navigation_drawer_notes">笔记</string>
     <string name="navigation_drawer_settings">设置</string>
-    <string name="navigation_drawer_view_intro">观看演示</string>
+    <string name="navigation_drawer_help">帮助</string>
+    <string name="navigation_drawer_about">关于</string>
+    <string name="navigation_drawer_view_intro">观看介绍</string>
 
     <string name="settings_choose_language">语言偏好</string>
     <string name="settings_choose_language_label">选择您的语言</string>
@@ -58,5 +60,53 @@
     <string name = "demo_page_3_desc">取决于您选择的书写模式</string>
     <string name = "demo_page_4_title">享受您的手写记事本吧</string>
     <string name = "demo_page_4_desc">开始！</string>
+
+
+    <string name = "about_title">关于</string>
+    <string name = "about_version">0.0.1</string>
+    <string name = "about_desc">一款多彩的，易于使用的手写笔记本。 \n
+                                新功能，例如安全控制，导出笔记等将会在以后的版本放出。</string>
+    <string name="about_opensrc_title">所用开源库： </string>
+    <string name="about_opensrc_desc">   Material icons - by Google         \n\n
+                                         Material Library - by rey5137        \n\n
+                                         Material Menu - by balysv         \n\n
+                                         CircleIndicator - by ongakuer        \n\n
+                                         sweet-alert-dialog - by pedant         \n\n
+                                         CircularImageView - by Pkmmte          \n\n
+                                         AppIntro - by PaoloRotolo
+                                         </string>
+    <string name = "about_opensrc_link"> <a href="https://www.google.com/design/icons/">link</a> \n\n <a href="https://github.com/rey5137/material">link</a> \n\n <a href="https://github.com/balysv/material-menu">link</a> \n\n <a href="https://github.com/ongakuer/CircleIndicator">link</a> \n\n <a href="https://github.com/pedant/sweet-alert-dialog">link</a> \n\n <a href="https://github.com/Pkmmte/CircularImageView">link</a> \n\n <a href="https://github.com/PaoloRotolo/AppIntro">link</a></string>
+    <string name="about_translation_title">翻译： </string>
+    <string name="about_translation_desc">  英语：李悦康 \n 简体中文：李悦康 \n 繁体中文：李悦康 \n 泰语： Leelar \n 日语： </string>
+    <string name="about_thanks">感谢所有支持这个应用的人！</string>
+    <string name="about_dialog_rate">为这个应用评分？</string>
+
+    <string name="help_cursor_title">光标： </string>
+    <string name="help_cursor_desc">这里提供一个光标来辅助您的书写。\n
+                                转换到观看模式来手动更改光标位置。\n
+                                点击一处笔迹来将光标移动到它的前面。\n
+                                点击一行的空白处来将光标移动到那一行。</string>
+    <string name="help_writing_mode_title">书写模式： </string>
+    <string name="help_writing_mode_desc">这里提供两种书写模式： 拉丁文和汉字。\n
+                                在记事本的“选项”对话框中设置书写模式。\n
+                                在“设置”栏中设定默认的书写模式。\n
+                                在汉字模式下，每一个字都会被转换成正方形。\n
+                                在拉丁文模式下，用户将需要用到辅助图层的帮助来达到更好的对齐效果。\n
+                                注意：在拉丁文模式下光标位置可能看上去有错。不用担心，只是显示位置有错，光标仍能正常工作。</string>
+    <string name="help_auxiliary_layer_title">书写辅助图层： </string>
+    <string name="help_auxiliary_layer_desc">这里提供一个书写辅助图层来帮助您的书写。\n
+                                轻触屏幕来显示辅助图层。\n
+                                写在上方灰色区域内的文字将变为上标。\n
+                                写在下方灰色区域内的文字将变为下标。\n
+                                随处写的将被当做普通文字对待。\n
+                                注意：在拉丁文模式下，会有一个灰色区域来对应拉丁文中的第二行（“good”中“o”的那一行）。请据此书写以达到更好的对齐效果。</string>
+    <string name="help_buttons_notepad">记事本上的按钮： </string>
+    <string name="help_buttons_space">空格 - 在笔记中插入一个空格</string>
+    <string name="help_buttons_backspace">退格 - 删除光标前面的笔记</string>
+    <string name="help_buttons_toggle_edit">转换模式 - 转换书写与观看模式 （这个图标表示正处于书写模式）</string>
+    <string name="help_buttons_toggle_view">转换模式 - 转换书写与观看模式 （这个图标表示正处于观看模式）</string>
+    <string name="help_buttons_add">添加新页 - 为这个笔记添加新的一页 （在观看模式下）</string>
+    <string name="help_buttons_remove">删除页 - 删除当前页 （在观看模式下，仅在至少有2页的情况下显示）</string>
+    <string name="help_buttons_options">选项 - 显示当前笔记的设置选项</string>
 
 </resources>

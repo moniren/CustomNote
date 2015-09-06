@@ -4,9 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.database.MainDataSource;

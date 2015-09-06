@@ -12,7 +12,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -236,18 +235,12 @@ public class SignatureCapture extends View {
                         if(noBtm && noTop){
                             paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH )));
                             paddingY = 2*cropH;
-                            Log.d("SignatureCapture","no btm and no top");
                         }
                         else if (!noBtm && !noTop){
                             paint.setStrokeWidth((int) ((strokeWidth * cropH) / (lineH * 2.7)));
                             paddingY = 0;
-                            Log.d("SignatureCapture","both btm and top");
                         }
                         else{
-                            if(noBtm)
-                                Log.d("SignatureCapture","no btm only");
-                            else
-                                Log.d("SignatureCapture","no top only");
                             paddingY = cropH/2;
                         }
                     }
@@ -335,7 +328,6 @@ public class SignatureCapture extends View {
 				if (!flagAuxiliary) {
                     if(!kanjiMode){
                         latinAuxiliaryLayer.setVisibility(View.VISIBLE);
-                        Log.d("SignatureCapture", "should set latin auxi visible");
                     }
                     else{
                         signatureAuxiliaryLayer.setVisibility(View.VISIBLE);

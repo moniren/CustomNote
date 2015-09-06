@@ -8,9 +8,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import java.util.ArrayList;
 
 public class MainDataSource {
     private static final String LOGTAG = "MAIN_DATA_SOURCE";
@@ -33,88 +30,12 @@ public class MainDataSource {
 
     public static synchronized void createMainTable() {
         MainTable.create(MainDataSource.database);
-        Log.i(LOGTAG, "MainTable has been created");
     }
 
     public static synchronized  Cursor getWholeCursor(){
         return DataAccessWrapper.queryDB(database,
                 MainTable.TABLE_MAIN, allColumns, null, null, null,
                 null, ORDER_BY_TIME);
-    }
-
-    /*
-     * The following getWhole... methods will return an ArrayList containing the
-     * item of the column as indicated by the name of the method 
-     * Notes: 
-     * 1. The list contains only the data for the alert items that are not acknowledged
-     * except for the getWholeAcknowledged() 
-     * 2. For the lists that contain several column items, the items are put together into one string and use
-     * a "!" to separate them
-     */
-    public static synchronized ArrayList<String> getWholeIDList() {
-        ArrayList<String> idList = new ArrayList<String>();
-        Cursor cursor = DataAccessWrapper.queryDB(database,
-                MainTable.TABLE_MAIN, allColumns, null, null, null,
-                null, ORDER_BY_TIME);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    idList.add(cursor.getString(0));
-                    cursor.moveToNext();
-                }
-            } else
-                Log.i(LOGTAG, "Cursor is empty!");
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
-
-        return idList;
-    }
-
-    public static synchronized ArrayList<String> getWholeDataCList() {
-        ArrayList<String> alertDataCList = new ArrayList<String>();
-        Cursor cursor = DataAccessWrapper.queryDB(database,
-                MainTable.TABLE_MAIN, allColumns, null, null, null,
-                null, ORDER_BY_TIME);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-
-                    alertDataCList.add(cursor.getString(5));
-                    cursor.moveToNext();
-                }
-            } else
-                Log.i(LOGTAG, "Cursor is empty!");
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
-
-        return alertDataCList;
-    }
-
-    public static synchronized boolean checkAlertAcknowledged(Context ctx,
-                                                              long rowId) {
-        String where = "\"" + MainTable.COLUMN_ID + "\" = " + rowId;
-        Cursor cursor = DataAccessWrapper.queryDB(database,
-                MainTable.TABLE_MAIN, allColumns, where, null, null, null,
-                null);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                if (cursor.getString(7).equals("true")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                Log.i(LOGTAG, "Cursor is empty!");
-                return false;
-            }
-        } else {
-            Log.i(LOGTAG, "Cursor is null!");
-            return false;
-        }
-
     }
 
     public static synchronized int getTableSize() {
@@ -124,8 +45,7 @@ public class MainDataSource {
                 ORDER_BY_TIME);
         if (cursor != null) {
             size = cursor.getCount();
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
+        }
 
         return size;
     }
@@ -139,11 +59,8 @@ public class MainDataSource {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 color = cursor.getString(cursor.getColumnIndex(MainTable.COLUMN_BACKGROUND));
-            } else {
-                Log.i(LOGTAG, "Cursor is empty!");
             }
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
+        }
         return color;
     }
 

@@ -5,7 +5,6 @@ package com.lyk.immersivenote.database;
  */
 
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class MainTable {
     // Database table, the columns are created in the same order
@@ -27,8 +26,6 @@ public class MainTable {
 
     public static void onUpgrade(SQLiteDatabase database, int oldVersion,
                                  int newVersion) {
-        Log.w(TABLE_MAIN, "Upgrading database from version " + oldVersion
-                + " to " + newVersion + ", which will destroy all old data");
         DataAccessWrapper.upgrade(database, TABLE_MAIN, TABLE_COLUMNS, oldVersion,
                 newVersion);
     }

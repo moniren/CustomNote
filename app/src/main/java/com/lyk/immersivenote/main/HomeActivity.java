@@ -5,16 +5,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,11 +20,9 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.lyk.immersivenote.R;
 import com.lyk.immersivenote.demo.AppDemo;
-import com.lyk.immersivenote.notepad.SinglePage;
 import com.lyk.immersivenote.notepad.SinglePageActivity;
 import com.lyk.immersivenote.utils.PrefUti;
 import com.lyk.immersivenote.utils.RippleBgUti;
-import com.rey.material.widget.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -57,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     private int themeColor;
 
     private HomeActivity self;
+    private final static String APP_PNAME = "com.lyk.immersivenote";
 
 
     @Override
@@ -131,9 +128,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setUpLocale(){
         String localePref = PrefUti.getStringPreference(PrefUti.CUSTOM_LOCALE,this);
         if(localePref != null) {
-            Log.d("HomeActivity","locale Pref is : "+localePref);
             PrefUti.updateLocale(localePref, this);
-            Log.d("HomeActivity", "after setting locale Pref is : " +getResources().getConfiguration().locale.getDisplayName());
         }
     }
 
@@ -312,6 +307,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismiss();
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
                     }
                 }).showCancelButton(true)
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.lyk.immersivenote.datamodel.SignatureViewModel;
 import com.lyk.immersivenote.notepad.CursorHolder;
@@ -38,7 +37,6 @@ public class NoteDataSource {
 
     public static synchronized void createNoteTable(String tableName) {
         NoteTable.create(NoteDataSource.database,tableName);
-        Log.i(LOGTAG, "NoteTable has been created");
     }
 
     public static synchronized ArrayList<String> getWholeIDList(String tableName) {
@@ -54,61 +52,12 @@ public class NoteDataSource {
                     idList.add(cursor.getString(0));
                     cursor.moveToNext();
                 }
-            } else
-                Log.i(LOGTAG, "Cursor is empty!");
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
+            }
+        }
 
         return idList;
     }
 
-
-
-    public static synchronized ArrayList<String> getWholeDataCList(String tableName) {
-        ArrayList<String> alertDataCList = new ArrayList<String>();
-        Cursor cursor = DataAccessWrapper.queryDB(database,
-                tableName, allColumns, null, null, null,
-                null, null);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-
-                    alertDataCList.add(cursor.getString(5));
-                    cursor.moveToNext();
-                }
-            } else
-                Log.i(LOGTAG, "Cursor is empty!");
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
-
-        return alertDataCList;
-    }
-
-    public static synchronized boolean checkAlertAcknowledged(Context ctx,
-                                                              long rowId,String tableName) {
-        String where = "\"" + NoteTable.COLUMN_ID + "\" = " + rowId;
-        Cursor cursor = DataAccessWrapper.queryDB(database,
-               tableName, allColumns, where, null, null, null,
-                null);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                if (cursor.getString(7).equals("true")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                Log.i(LOGTAG, "Cursor is empty!");
-                return false;
-            }
-        } else {
-            Log.i(LOGTAG, "Cursor is null!");
-            return false;
-        }
-
-    }
 
     public static synchronized ArrayList<SignatureViewModel> getSignaturesForPage(String tableName, int pageNumber,Context context, CursorHolder cursorHolder, int lineHeight){
         String where = "\"" + NoteTable.COLUMN_PAGE_NO + "\" = " + pageNumber;
@@ -128,18 +77,13 @@ public class NoteDataSource {
                         tempSig = new SignatureViewModel(context,type,lineNumber,pageNumber,cursorHolder,lineHeight);
                     }
                     else if (type == SignatureView.IMAGE){
-                        Log.d(LOGTAG,cursor.getString(cursor.getColumnIndex(NoteTable.COLUMN_BITMAP)));
                         bitmap = Base64Uti.decodeBase64(cursor.getString(cursor.getColumnIndex(NoteTable.COLUMN_BITMAP)));
                         tempSig = new SignatureViewModel(context,type,lineNumber,pageNumber,cursorHolder,bitmap);
                     }
                     signatureList.add(tempSig);
                     cursor.moveToNext();
                 }
-            } else {
-                Log.i(LOGTAG, "Cursor is empty!");
             }
-        } else {
-            Log.i(LOGTAG, "Cursor is null!");
         }
         return signatureList;
     }
@@ -152,11 +96,9 @@ public class NoteDataSource {
                 //must use a constant 0 here
                 return cursor.getInt(0);
             } else {
-                Log.i(LOGTAG, "Cursor is empty!");
                 return -1;
             }
         } else {
-            Log.i(LOGTAG, "Cursor is null!");
             return -1;
         }
     }
@@ -168,17 +110,11 @@ public class NoteDataSource {
                 null);
         if (cursor != null) {
             size = cursor.getCount();
-        } else
-            Log.i(LOGTAG, "Cursor is null!");
+        }
 
         return size;
     }
 
-    public static synchronized void updateOldAlert(Context ctx, long rowId,
-                                                   ContentValues values,String tableName) {
-        DataAccessWrapper.update(database, ctx, tableName, rowId,
-                values);
-    }
 
     public static synchronized void insertNoteTable(Context ctx,
                                                     ContentValues values, String tableName) {

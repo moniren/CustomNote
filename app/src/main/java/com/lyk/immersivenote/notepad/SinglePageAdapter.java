@@ -2,7 +2,6 @@ package com.lyk.immersivenote.notepad;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -46,8 +45,6 @@ public class SinglePageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View v = views.get(position);
-        Log.d("SinglePageAdapter", "instantiateItem position: " + position);
-        Log.d("SinglePageAdapter", container.toString());
         container.addView(v);
 //        notifyDataSetChanged();
         return v;
@@ -84,7 +81,6 @@ public class SinglePageAdapter extends PagerAdapter {
     // Returns the position of the new view.
     // The app should call this to add pages; not used by ViewPager.
     public void addView(SinglePage v, ViewPager pager,CircleIndicator circleIndicator) {
-        Log.d("SinglePageAdapter", "addView position: " + views.size());
 //        if (views.size() > 0) {
 //            singlePageActivity.setOnePageOnly(false);
 //            if(singlePageActivity.isViewing()){
